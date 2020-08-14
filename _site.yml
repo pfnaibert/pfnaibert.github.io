@@ -10,5 +10,5 @@ navbar:
     - text: "About"
       href: about.html
 output:
-  tufte::tufte_html: default
+  html_document
 ---
