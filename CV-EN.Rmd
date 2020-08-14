@@ -1,0 +1,19 @@
+---
+title: "Paulo Ferreira Naibert"
+---
+
+My name is Paulo Ferreira Naibert, I have a Phd in Applied Economics from
+[Universidade Federal do Rio Grande do Sul](https://www.ufrgs.br/ppge/).
+
+My research focused mainly in Stock and Bond Markets, and portfolio selection by quantitative methods.
+I have experience in `R` software and $\LaTeX$.
+
+My main interests are programming and Economics.
+
+## EDUCATION
+
+## Experience
+
+## Pulications and Presentations
+
+## Computer Skills
