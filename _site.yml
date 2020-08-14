@@ -1,14 +1,18 @@
 ---
-name: "my-website"
+name: "PFN"
 output_dir: docs
 exclude: ["README.md"]
 navbar:
-  title: "My Website"
+  title: "Paulo Ferreira Naibert"
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
-      href: about.html
+    - text: "CV-EN"
+      href: CV-EN.html
+    - text: "CV-PT"
+      href: CV-PT.html
 output:
-  html_document
+  html_document:
+    theme: journal
+    highlight: tango
 ---
