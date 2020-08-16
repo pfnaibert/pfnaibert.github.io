@@ -1,11 +1,5 @@
 ---
 title: "Paulo Ferreira Naibert"
+site: distill::distill_website
+listing: posts
 ---
-
-PhD in Applied Economics.
-
-
-
-- GITHUB: https://www.github.com/pfnaibert
-- EMAIL: paulo.naibert@gmail.com
-

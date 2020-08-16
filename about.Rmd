@@ -1,0 +1,37 @@
+---
+title: "Paulo Ferreira Naibert"
+---
+
+About
+=====
+
+My name is Paulo Ferreira Naibert, I have a Phd in Applied Economics from
+[Universidade Federal do Rio Grande do Sul](https://www.ufrgs.br/ppge/).
+
+My research focused mainly in Stock and Bond Markets, and portfolio selection by quantitative methods.
+I have experience in `R` software and $\LaTeX$.
+
+My main interests are programming and Economics.
+
+More Information
+================
+- [GitHub](https://www.github.com/pfnaibert)
+- [LinkedIn](https://www.linkedin.com/in/paulo-naibert)
+- [Printable CV](https://www.github.com/pfnaibert/CV/raw/master/CV-EN.pdf).
+- [CV para impressão](https://www.github.com/pfnaibert/CV/raw/master/CV-PT.pdf).
+
+Contact Me
+==========
+<paulo.naibert@gmail.com>
+
+
+
+<!---
+## Education
+
+## Experience
+
+## Pulications and Presentations
+
+## Computer Skills]
+--->
