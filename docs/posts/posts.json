@@ -1,0 +1,39 @@
+[
+  {
+    "path": "posts/2020-08-17_pib_graph/",
+    "title": "Graphing the Brazilian GDP in `R`",
+    "description": "Graphing the Brazilian GDP in `R`.",
+    "author": [
+      {
+        "name": "PFN",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-17",
+    "categories": [
+      "R-base",
+      "GDP",
+      "PIB",
+      "plot"
+    ],
+    "preview": "posts/2020-08-17_pib_graph/gdp.png",
+    "last_modified": "2020-08-17T18:59:51-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/simple/",
+    "title": "SIMPLE POST",
+    "description": "A description part for my simple post.",
+    "author": [
+      {
+        "name": "PFN",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-16",
+    "categories": [],
+    "preview": "posts/simple/simple_files/figure-html5/unnamed-chunk-1-1.png",
+    "last_modified": "2020-08-16T17:55:48-03:00",
+    "input_file": {}
+  }
+]
