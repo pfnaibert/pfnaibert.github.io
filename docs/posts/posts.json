@@ -1,5 +1,26 @@
 [
   {
+    "path": "posts/2020-08-18-converting-dates/",
+    "title": "Converting Date Strings to Numeric Dates",
+    "description": {},
+    "author": [
+      {
+        "name": "PFN",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-18",
+    "categories": [
+      "R",
+      "R-base",
+      "dates",
+      "text-manipulation"
+    ],
+    "preview": {},
+    "last_modified": "2020-08-18T15:10:36-03:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2020-08-18-wrapper-gdp/",
     "title": "Making a wrapper to Import and Plot Data",
     "description": "To make research reproducible, we have to automate the way `R` performs tasks.",
@@ -20,7 +41,7 @@
       "reproducible-research"
     ],
     "preview": "posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png",
-    "last_modified": "2020-08-18T10:56:59-03:00",
+    "last_modified": "2020-08-18T15:10:44-03:00",
     "input_file": {}
   },
   {
@@ -42,7 +63,7 @@
       "plot"
     ],
     "preview": "posts/2020-08-17-plot-base-gdp/gdp.png",
-    "last_modified": "2020-08-18T10:58:12-03:00",
+    "last_modified": "2020-08-18T15:03:57-03:00",
     "input_file": {}
   },
   {
