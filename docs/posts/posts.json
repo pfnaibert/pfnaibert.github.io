@@ -1,6 +1,30 @@
 [
   {
-    "path": "posts/2020-08-17_pib_graph/",
+    "path": "posts/2020-08-18-wrapper-gdp/",
+    "title": "Making a wrapper to Import and Plot Data",
+    "description": "To make research reproducible, we have to automate the way `R` performs tasks.",
+    "author": [
+      {
+        "name": "PFN",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-18",
+    "categories": [
+      "R",
+      "R-base",
+      "GDP",
+      "PIB",
+      "plot",
+      "wrapper",
+      "reproducible-research"
+    ],
+    "preview": "posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png",
+    "last_modified": "2020-08-18T10:56:59-03:00",
+    "input_file": {}
+  },
+  {
+    "path": "posts/2020-08-17-plot-base-gdp/",
     "title": "Graphing the Brazilian GDP in `R`",
     "description": "Graphing the Brazilian GDP in `R`.",
     "author": [
@@ -11,13 +35,14 @@
     ],
     "date": "2020-08-17",
     "categories": [
+      "R",
       "R-base",
       "GDP",
       "PIB",
       "plot"
     ],
-    "preview": "posts/2020-08-17_pib_graph/gdp.png",
-    "last_modified": "2020-08-17T18:59:51-03:00",
+    "preview": "posts/2020-08-17-plot-base-gdp/gdp.png",
+    "last_modified": "2020-08-18T10:58:12-03:00",
     "input_file": {}
   },
   {
