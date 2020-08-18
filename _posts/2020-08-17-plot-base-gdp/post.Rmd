@@ -29,7 +29,7 @@ Next, I will import the data to `R` and get some quick visualizations.
 
 ```{r}
 # Import
-PIB <- read.csv("_PIB_BASE_2000.csv")
+PIB <- read.csv("../../_resources/data/PIB_BASE_2000.csv")
 
 # info about PIB
 str(PIB)

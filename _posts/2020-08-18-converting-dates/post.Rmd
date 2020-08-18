@@ -1,0 +1,66 @@
+---
+title: "Converting Date Strings to Numeric Dates"
+description:
+categories:
+  - R
+  - R-base
+  - dates
+  - text-manipulation
+author: "PFN"
+date: "2020-08-18"
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+On my last two posts about
+[import and plot data](https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/)
+and
+[wrapper functions](https://pfnaibert.github.io/posts/2020-08-18-1-wrapper-gdp/)
+I used the recession limit dates on [this pdf](https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf) manually copied the dates in the form:
+
+```{r}
+recs <- c("1981:Q1", "1983:Q1",
+		  "1987:Q3", "1988:Q3",
+		  "1989:Q3", "1992:Q1",
+		  "1995:Q2", "1995:Q3",
+		  "1998:Q1", "1999:Q1",
+		  "2001:Q2", "2001:Q4",
+		  "2003:Q1", "2003:Q2",
+		  "2008:Q4", "2009:Q1" )
+```
+
+Then, manually transformed the string dates to numeric dates:
+
+```{r}
+recs2 <- c(1981.25, 1983.25,
+		   1987.75, 1988.75,
+		   1989.75, 1992.25,
+		   1995.50, 1995.75,
+		   1998.25, 1999.25,
+		   2001.50, 2002.00,
+		   2003.25, 2003.50,
+		   2009.00, 2009.25 )
+```
+
+This, actually could be done automatically with the following function:
+
+```{r}
+date2num <- function(data) return( as.numeric(substring(data, 1, 4)) + as.numeric( substring(data, 7) )/4 )
+
+newrecs <- date2num(recs);
+
+t( matrix( newrecs, nrow=2 ) )
+```
+
+The `substring()` function can subset the string, then we turn it into numeric and then we add the `:Qx` part after dividing `x` by `4`.
+
+The results are the same:
+
+```{r}
+all.equal(newrecs, recs2)
+```

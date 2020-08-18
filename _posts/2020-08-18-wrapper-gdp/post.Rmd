@@ -20,7 +20,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
-In my [last post](https://pfnaibert.github.io/2020-08-17-plot-base-gdp), I showed how to import a `.csv` file and plot the data.
+In my [last post](https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp), I showed how to import a `.csv` file and plot the data.
 This, entailed following the steps outlined in the post.
 In this post, I will make a [wrapper function](https://en.wikipedia.org/wiki/Wrapper_function) to automate the importing and formating.
 
@@ -65,7 +65,7 @@ And I can use `import_gdp` to import the file and format it as I like it:
 ls()
 
 # import data
-y <- import_gdp("_PIB_BASE_2000.csv")
+y <- import_gdp("../../_resources/data/PIB_BASE_2000.csv")
 
 # quick visualization
 head(y)
