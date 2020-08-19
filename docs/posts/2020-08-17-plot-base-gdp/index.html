@@ -23,6 +23,7 @@
 
 <meta property="description" itemprop="description" content="Graphing the Brazilian GDP in `R`."/>
 
+<link rel="canonical" href="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"/>
 
 <!--  https://schema.org/Article -->
 <meta property="article:published" itemprop="datePublished" content="2020-08-17"/>
@@ -33,19 +34,33 @@
 <meta property="og:title" content="Paulo Ferreira Naibert: Graphing the Brazilian GDP in `R`"/>
 <meta property="og:type" content="article"/>
 <meta property="og:description" content="Graphing the Brazilian GDP in `R`."/>
+<meta property="og:url" content="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"/>
+<meta property="og:image" content="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/gdp.png"/>
+<meta property="og:image:width" content="1248"/>
+<meta property="og:image:height" content="768"/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Paulo Ferreira Naibert"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
-<meta property="twitter:card" content="summary"/>
+<meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:title" content="Paulo Ferreira Naibert: Graphing the Brazilian GDP in `R`"/>
 <meta property="twitter:description" content="Graphing the Brazilian GDP in `R`."/>
+<meta property="twitter:url" content="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"/>
+<meta property="twitter:image" content="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/gdp.png"/>
+<meta property="twitter:image:width" content="1248"/>
+<meta property="twitter:image:height" content="768"/>
 
+<!--  https://scholar.google.com/intl/en/scholar/inclusion.html#indexing -->
+<meta name="citation_title" content="Paulo Ferreira Naibert: Graphing the Brazilian GDP in `R`"/>
+<meta name="citation_fulltext_html_url" content="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"/>
+<meta name="citation_online_date" content="2020/08/17"/>
+<meta name="citation_publication_date" content="2020/08/17"/>
+<meta name="citation_author" content="PFN"/>
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","categories","author","date","preview","output"]}},"value":[{"type":"character","attributes":{},"value":["Graphing the Brazilian GDP in `R`"]},{"type":"character","attributes":{},"value":["Graphing the Brazilian GDP in `R`."]},{"type":"character","attributes":{},"value":["R","R-base","GDP","PIB","plot"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["PFN"]}]}]},{"type":"character","attributes":{},"value":["2020-08-17"]},{"type":"character","attributes":{},"value":["gdp.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","categories","author","date","preview","output","citation_url","canonical_url"]}},"value":[{"type":"character","attributes":{},"value":["Graphing the Brazilian GDP in `R`"]},{"type":"character","attributes":{},"value":["Graphing the Brazilian GDP in `R`."]},{"type":"character","attributes":{},"value":["R","R-base","GDP","PIB","plot"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["PFN"]}]}]},{"type":"character","attributes":{},"value":["2020-08-17"]},{"type":"character","attributes":{},"value":["gdp.png"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"]},{"type":"character","attributes":{},"value":["https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -1281,6 +1296,13 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="../../site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-175878647-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-175878647-1');
+</script>
 <!--/radix_placeholder_site_in_header-->
 
 
@@ -1554,7 +1576,18 @@ lines(PIB.ts, ylim=c(60,200), col=&quot;blue&quot;, lwd=1.5)</code></pre>
 <!--radix_placeholder_site_after_body-->
 <!--/radix_placeholder_site_after_body-->
 <!--radix_placeholder_appendices-->
-<div class="appendix-bottom"></div>
+<div class="appendix-bottom">
+  <h3 id="citation">Citation</h3>
+  <p>For attribution, please cite this work as</p>
+  <pre class="citation-appendix short">PFN (2020, Aug. 17). Paulo Ferreira Naibert: Graphing the Brazilian GDP in `R`. Retrieved from https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/</pre>
+  <p>BibTeX citation</p>
+  <pre class="citation-appendix long">@misc{pfn2020graphing,
+  author = {PFN, },
+  title = {Paulo Ferreira Naibert: Graphing the Brazilian GDP in `R`},
+  url = {https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/},
+  year = {2020}
+}</pre>
+</div>
 <!--/radix_placeholder_appendices-->
 <!--radix_placeholder_navigation_after_body-->
 <!--/radix_placeholder_navigation_after_body-->
