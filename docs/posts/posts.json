@@ -1,5 +1,29 @@
 [
   {
+    "path": "posts/2020-08-20-ggplot/",
+    "title": "Times Series Plots with `ggplot2`",
+    "description": "`ggplot2` enables us to make beautiful graphics (as long as you use the tidyverse framework)",
+    "author": [
+      {
+        "name": "Paulo Ferreira Naibert",
+        "url": {}
+      }
+    ],
+    "date": "2020-08-19",
+    "categories": [
+      "R",
+      "ggplot2",
+      "PIB",
+      "GDP",
+      "plot"
+    ],
+    "preview": "posts/2020-08-20-ggplot/economist_plot.png",
+    "last_modified": "2020-08-20T14:12:04-03:00",
+    "input_file": "post.utf8.md",
+    "preview_width": 1357,
+    "preview_height": 960
+  },
+  {
     "path": "posts/2020-08-18-converting-dates/",
     "title": "Converting Date Strings to Numeric Dates",
     "description": {},
