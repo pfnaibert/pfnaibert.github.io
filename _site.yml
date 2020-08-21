@@ -1,12 +1,12 @@
----
 name: "pfnaibert.github.io"
 title: "Paulo Ferreira Naibert"
-# description: 'test'
+description: |
+  PFN's personal page. R, LaTeX, programming, economics.
 output_dir: "docs"
 navbar:
   right:
-    #     - text: "Home"
-    #       href: index.html
+    - text: "Home"
+      href: index.html
     - text: "About"
       href: about.html
     - icon: fab fa-github
@@ -21,6 +21,5 @@ collections:
     share: [twitter, linkedin, facebook]
     citations: false
 google_analytics: 'UA-175878647-1'
-exclude: ["README.md", "R"]
+exclude: ["R", "data"]
 output: distill::distill_article
----

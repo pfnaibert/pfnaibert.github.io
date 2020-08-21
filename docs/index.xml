@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Paulo Ferreira Naibert</title>
+    <link>https://pfnaibert.github.io/</link>
+    <atom:link href="https://pfnaibert.github.io/index.xml" rel="self" type="application/rss+xml"/>
+    <description>PFN's personal page. R, LaTeX, programming, economics.
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>sex, 21 ago 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Interactive Plots with `dygraphs`</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-21-dygraph</link>
+      <description>`dygraphs` allows us to make interactive plots in webpages.</description>
+      <category>R</category>
+      <category>dygraphs</category>
+      <category>PIB</category>
+      <category>GDP</category>
+      <category>plot</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-21-dygraph</guid>
+      <pubDate>sex, 21 ago 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Times Series Plots with `ggplot2`</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-20-ggplot</link>
+      <description>`ggplot2` enables us to make beautiful graphics (as long as you use the tidyverse framework)</description>
+      <category>R</category>
+      <category>ggplot2</category>
+      <category>PIB</category>
+      <category>GDP</category>
+      <category>plot</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-20-ggplot</guid>
+      <pubDate>qui, 20 ago 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-20-ggplot/economist_plot.png" medium="image" type="image/png" width="1357" height="960"/>
+    </item>
+    <item>
+      <title>Converting Date Strings to Numeric Dates</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-18-converting-dates</link>
+      <description>Converting Date Strings to Numeric Dates.</description>
+      <category>R</category>
+      <category>R-base</category>
+      <category>dates</category>
+      <category>text-manipulation</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-18-converting-dates</guid>
+      <pubDate>ter, 18 ago 2020 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Making a wrapper to Import and Plot Data</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp</link>
+      <description>To make research reproducible, we have to automate the way `R` performs tasks.</description>
+      <category>R</category>
+      <category>R-base</category>
+      <category>GDP</category>
+      <category>PIB</category>
+      <category>plot</category>
+      <category>wrapper</category>
+      <category>reproducible-research</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp</guid>
+      <pubDate>ter, 18 ago 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>Graphing the Brazilian GDP in `R`</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp</link>
+      <description>Graphing the Brazilian GDP in `R`.</description>
+      <category>R</category>
+      <category>R-base</category>
+      <category>GDP</category>
+      <category>PIB</category>
+      <category>plot</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp</guid>
+      <pubDate>seg, 17 ago 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/gdp.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+  </channel>
+</rss>

@@ -1,5 +1,27 @@
 [
   {
+    "path": "posts/2020-08-21-dygraph/",
+    "title": "Interactive Plots with `dygraphs`",
+    "description": "`dygraphs` allows us to make interactive plots in webpages.",
+    "author": [
+      {
+        "name": "Paulo Ferreira Naibert",
+        "url": "https://github.com/pfnaibert/"
+      }
+    ],
+    "date": "2020-08-21",
+    "categories": [
+      "R",
+      "dygraphs",
+      "PIB",
+      "GDP",
+      "plot"
+    ],
+    "preview": {},
+    "last_modified": "2020-08-21T17:34:11-03:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2020-08-20-ggplot/",
     "title": "Times Series Plots with `ggplot2`",
     "description": "`ggplot2` enables us to make beautiful graphics (as long as you use the tidyverse framework)",
@@ -18,7 +40,7 @@
       "plot"
     ],
     "preview": "posts/2020-08-20-ggplot/economist_plot.png",
-    "last_modified": "2020-08-21T11:44:43-03:00",
+    "last_modified": "2020-08-21T16:00:11-03:00",
     "input_file": {},
     "preview_width": 1357,
     "preview_height": 960
@@ -26,11 +48,11 @@
   {
     "path": "posts/2020-08-18-converting-dates/",
     "title": "Converting Date Strings to Numeric Dates",
-    "description": {},
+    "description": "Converting Date Strings to Numeric Dates.",
     "author": [
       {
         "name": "Paulo Ferreira Naibert",
-        "url": {}
+        "url": "https://github.com/pfnaibert/"
       }
     ],
     "date": "2020-08-18",
@@ -41,7 +63,7 @@
       "text-manipulation"
     ],
     "preview": {},
-    "last_modified": "2020-08-21T10:13:21-03:00",
+    "last_modified": "2020-08-21T16:45:36-03:00",
     "input_file": {}
   },
   {
@@ -51,7 +73,7 @@
     "author": [
       {
         "name": "Paulo Ferreira Naibert",
-        "url": {}
+        "url": "https://github.com/pfnaibert/"
       }
     ],
     "date": "2020-08-18",
@@ -65,7 +87,7 @@
       "reproducible-research"
     ],
     "preview": "posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png",
-    "last_modified": "2020-08-21T10:13:42-03:00",
+    "last_modified": "2020-08-21T15:59:55-03:00",
     "input_file": {},
     "preview_width": 1248,
     "preview_height": 768
@@ -77,7 +99,7 @@
     "author": [
       {
         "name": "Paulo Ferreira Naibert",
-        "url": {}
+        "url": "https://github.com/pfnaibert"
       }
     ],
     "date": "2020-08-17",
@@ -89,7 +111,7 @@
       "plot"
     ],
     "preview": "posts/2020-08-17-plot-base-gdp/gdp.png",
-    "last_modified": "2020-08-21T10:13:06-03:00",
+    "last_modified": "2020-08-21T16:33:44-03:00",
     "input_file": {},
     "preview_width": 1248,
     "preview_height": 768

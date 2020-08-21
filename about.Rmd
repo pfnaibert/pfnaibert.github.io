@@ -1,6 +1,12 @@
 ---
 title: "Paulo Ferreira Naibert"
+description: |
+  Some additional details about the me
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
 
 About
 =====
@@ -25,13 +31,3 @@ Contact Me
 <paulo.naibert@gmail.com>
 
 
-
-<!---
-## Education
-
-## Experience
-
-## Pulications and Presentations
-
-## Computer Skills]
---->
