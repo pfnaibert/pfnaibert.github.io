@@ -6,10 +6,10 @@
     "author": [
       {
         "name": "Paulo Ferreira Naibert",
-        "url": {}
+        "url": "https://github.com/pfnaibert/"
       }
     ],
-    "date": "2020-08-19",
+    "date": "2020-08-20",
     "categories": [
       "R",
       "ggplot2",
@@ -18,8 +18,8 @@
       "plot"
     ],
     "preview": "posts/2020-08-20-ggplot/economist_plot.png",
-    "last_modified": "2020-08-20T14:12:04-03:00",
-    "input_file": "post.utf8.md",
+    "last_modified": "2020-08-21T11:44:43-03:00",
+    "input_file": {},
     "preview_width": 1357,
     "preview_height": 960
   },
@@ -29,7 +29,7 @@
     "description": {},
     "author": [
       {
-        "name": "PFN",
+        "name": "Paulo Ferreira Naibert",
         "url": {}
       }
     ],
@@ -41,7 +41,7 @@
       "text-manipulation"
     ],
     "preview": {},
-    "last_modified": "2020-08-18T15:10:36-03:00",
+    "last_modified": "2020-08-21T10:13:21-03:00",
     "input_file": {}
   },
   {
@@ -50,7 +50,7 @@
     "description": "To make research reproducible, we have to automate the way `R` performs tasks.",
     "author": [
       {
-        "name": "PFN",
+        "name": "Paulo Ferreira Naibert",
         "url": {}
       }
     ],
@@ -65,7 +65,7 @@
       "reproducible-research"
     ],
     "preview": "posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png",
-    "last_modified": "2020-08-18T15:10:44-03:00",
+    "last_modified": "2020-08-21T10:13:42-03:00",
     "input_file": {},
     "preview_width": 1248,
     "preview_height": 768
@@ -76,7 +76,7 @@
     "description": "Graphing the Brazilian GDP in `R`.",
     "author": [
       {
-        "name": "PFN",
+        "name": "Paulo Ferreira Naibert",
         "url": {}
       }
     ],
@@ -89,7 +89,7 @@
       "plot"
     ],
     "preview": "posts/2020-08-17-plot-base-gdp/gdp.png",
-    "last_modified": "2020-08-18T15:03:57-03:00",
+    "last_modified": "2020-08-21T10:13:06-03:00",
     "input_file": {},
     "preview_width": 1248,
     "preview_height": 768
