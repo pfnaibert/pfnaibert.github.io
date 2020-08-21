@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+  <meta name="generator" content="distill" />
+
+  <style type="text/css">
+  /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
+  body {
+    visibility: hidden;
+  }
+  </style>
+
+ <!--radix_placeholder_import_source-->
+ <!--/radix_placeholder_import_source-->
+
+  <!--radix_placeholder_meta_tags-->
+  <title>Interactive Plots with `dygraphs`</title>
+
+  <meta property="description" itemprop="description" content="`dygraphs` allows us to make interactive plots in webpages."/>
+
+
+  <!--  https://schema.org/Article -->
+  <meta property="article:published" itemprop="datePublished" content="2020-08-21"/>
+  <meta property="article:created" itemprop="dateCreated" content="2020-08-21"/>
+  <meta name="article:author" content="Paulo Ferreira Naibert"/>
+
+  <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
+  <meta property="og:title" content="Interactive Plots with `dygraphs`"/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:description" content="`dygraphs` allows us to make interactive plots in webpages."/>
+  <meta property="og:locale" content="en_US"/>
+
+  <!--  https://dev.twitter.com/cards/types/summary -->
+  <meta property="twitter:card" content="summary"/>
+  <meta property="twitter:title" content="Interactive Plots with `dygraphs`"/>
+  <meta property="twitter:description" content="`dygraphs` allows us to make interactive plots in webpages."/>
+
+  <!--/radix_placeholder_meta_tags-->
+  <!--radix_placeholder_rmarkdown_metadata-->
+
+  <script type="text/json" id="radix-rmarkdown-metadata">
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","categories","author","repository_url","date","draft","output"]}},"value":[{"type":"character","attributes":{},"value":["Interactive Plots with `dygraphs`"]},{"type":"character","attributes":{},"value":["`dygraphs` allows us to make interactive plots in webpages."]},{"type":"character","attributes":{},"value":["R","dygraphs","PIB","GDP","plot"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Paulo Ferreira Naibert"]},{"type":"character","attributes":{},"value":["https://github.com/pfnaibert/"]}]}]},{"type":"character","attributes":{},"value":["https://github.com/pfnaibert/pfnaibert.github.io"]},{"type":"character","attributes":{},"value":["2020-08-21"]},{"type":"logical","attributes":{},"value":[false]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  </script>
+  <!--/radix_placeholder_rmarkdown_metadata-->
+  
+  <script type="text/json" id="radix-resource-manifest">
+  {"type":"character","attributes":{},"value":["post_files/bowser-1.9.3/bowser.min.js","post_files/distill-2.2.21/template.v2.js","post_files/dygraphs-1.1.1/dygraph-combined-dev.js","post_files/dygraphs-1.1.1/dygraph-combined.js","post_files/dygraphs-1.1.1/dygraph.css","post_files/dygraphs-1.1.1/shapes.js","post_files/dygraphs-binding-1.1.1.6/dygraphs.js","post_files/figure-html5/unnamed-chunk-3-1.png","post_files/header-attrs-2.3/header-attrs.js","post_files/htmlwidgets-1.5.1.9001/htmlwidgets.js","post_files/jquery-1.11.3/jquery.min.js","post_files/moment-2.8.4/moment-timezone-with-data.js","post_files/moment-2.8.4/moment.js","post_files/moment-fquarter-1.0.0/moment-fquarter.min.js","post_files/moment-timezone-0.2.5/moment-timezone-with-data.js","post_files/moment-timezone-0.2.5/moment.js","post_files/webcomponents-2.0.0/webcomponents.js"]}
+  </script>
+  <!--radix_placeholder_navigation_in_header-->
+  <!--/radix_placeholder_navigation_in_header-->
+  <!--radix_placeholder_distill-->
+
+  <style type="text/css">
+
+  body {
+    background-color: white;
+  }
+
+  .pandoc-table {
+    width: 100%;
+  }
+
+  .pandoc-table>caption {
+    margin-bottom: 10px;
+  }
+
+  .pandoc-table th:not([align]) {
+    text-align: left;
+  }
+
+  .pagedtable-footer {
+    font-size: 15px;
+  }
+
+  .html-widget {
+    margin-bottom: 2.0em;
+  }
+
+  .l-screen-inset {
+    padding-right: 16px;
+  }
+
+  .l-screen .caption {
+    margin-left: 10px;
+  }
+
+  .shaded {
+    background: rgb(247, 247, 247);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .html-widget {
+    margin-bottom: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .shaded .shaded-content {
+    background: white;
+  }
+
+  .text-output {
+    margin-top: 0;
+    line-height: 1.5em;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  d-article {
+    padding-bottom: 30px;
+  }
+
+  d-appendix {
+    padding-top: 30px;
+  }
+
+  d-article>p>img {
+    width: 100%;
+  }
+
+  d-article iframe {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 2.0em;
+    width: 100%;
+  }
+
+  figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  /* CSS for table of contents */
+
+  .d-toc {
+    color: rgba(0,0,0,0.8);
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+
+  .d-toc-header {
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.5);
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 1.3em;
+  }
+
+  .d-toc a {
+    border-bottom: none;
+  }
+
+  .d-toc ul {
+    padding-left: 0;
+  }
+
+  .d-toc li>ul {
+    padding-top: 0.8em;
+    padding-left: 16px;
+    margin-bottom: 0.6em;
+  }
+
+  .d-toc ul,
+  .d-toc li {
+    list-style-type: none;
+  }
+
+  .d-toc li {
+    margin-bottom: 0.9em;
+  }
+
+  .d-toc-separator {
+    margin-top: 20px;
+    margin-bottom: 2em;
+  }
+
+  .d-article-with-toc {
+    border-top: none;
+    padding-top: 0;
+  }
+
+
+
+  /* Tweak code blocks (note that this CSS is repeated above in an injection
+     into the d-code shadow dom) */
+
+  d-code {
+    overflow-x: auto !important;
+  }
+
+  pre.d-code code.d-code {
+    padding-left: 10px;
+    font-size: 12px;
+    border-left: 2px solid rgba(0,0,0,0.1);
+  }
+
+  pre.text-output {
+
+    font-size: 12px;
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  @media(min-width: 768px) {
+
+  d-code {
+    overflow-x: visible !important;
+  }
+
+  pre.d-code code.d-code  {
+      padding-left: 18px;
+      font-size: 14px;
+  }
+  pre.text-output {
+    font-size: 14px;
+  }
+  }
+
+  /* Figure */
+
+  .figure {
+    position: relative;
+    margin-bottom: 2.5em;
+    margin-top: 1.5em;
+  }
+
+  .figure img {
+    width: 100%;
+  }
+
+  .figure .caption {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    line-height: 1.5em;
+  }
+
+  .figure img.external {
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    padding: 18px;
+    box-sizing: border-box;
+  }
+
+  .figure .caption a {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .figure .caption b,
+  .figure .caption strong, {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 1.0);
+  }
+
+
+
+  /* Tweak 1000px media break to show more text */
+
+  @media(min-width: 1000px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 80px [middle-start] 50px [text-start kicker-end] 65px 65px 65px 65px 65px 65px 65px 65px [text-end gutter-start] 65px [middle-end] 65px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 16px;
+    }
+
+    .grid {
+      grid-column-gap: 16px;
+    }
+
+    d-article {
+      font-size: 1.06rem;
+      line-height: 1.7em;
+    }
+    figure .caption, .figure .caption, figure figcaption {
+      font-size: 13px;
+    }
+  }
+
+  @media(min-width: 1180px) {
+    .base-grid,
+    distill-header,
+    d-title,
+    d-abstract,
+    d-article,
+    d-appendix,
+    distill-appendix,
+    d-byline,
+    d-footnote-list,
+    d-citation-list,
+    distill-footer {
+      grid-template-columns: [screen-start] 1fr [page-start kicker-start] 60px [middle-start] 60px [text-start kicker-end] 60px 60px 60px 60px 60px 60px 60px 60px [text-end gutter-start] 60px [middle-end] 60px [page-end gutter-end] 1fr [screen-end];
+      grid-column-gap: 32px;
+    }
+
+    .grid {
+      grid-column-gap: 32px;
+    }
+  }
+
+
+  /* Get the citation styles for the appendix (not auto-injected on render since
+     we do our own rendering of the citation appendix) */
+
+  d-appendix .citation-appendix,
+  .d-appendix .citation-appendix {
+    font-size: 11px;
+    line-height: 15px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    padding-left: 18px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: rgba(0, 0, 0, 0.02);
+    padding: 10px 18px;
+    border-radius: 3px;
+    color: rgba(150, 150, 150, 1);
+    overflow: hidden;
+    margin-top: -12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+
+  /* Social footer */
+
+  .social_footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.67);
+  }
+
+  .disqus-comments {
+    margin-right: 30px;
+  }
+
+  .disqus-comment-count {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
+
+  #disqus_thread {
+    margin-top: 30px;
+  }
+
+  .article-sharing a {
+    border-bottom: none;
+    margin-right: 8px;
+  }
+
+  .article-sharing a:hover {
+    border-bottom: none;
+  }
+
+  .sidebar-section.subscribe {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .subscribe p {
+    margin-bottom: 0.5em;
+  }
+
+
+  .article-footer .subscribe {
+    font-size: 15px;
+    margin-top: 45px;
+  }
+
+
+  .sidebar-section.custom {
+    font-size: 12px;
+    line-height: 1.6em;
+  }
+
+  .custom p {
+    margin-bottom: 0.5em;
+  }
+
+
+  /* Improve display for browsers without grid (IE/Edge <= 15) */
+
+  .downlevel {
+    line-height: 1.6em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+  }
+
+  .downlevel .d-title {
+    padding-top: 6rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .downlevel .d-title h1 {
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 1.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  .downlevel .d-title p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 1.55em;
+    margin-top: 0;
+  }
+
+  .downlevel .d-byline {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    font-size: 0.8rem;
+    line-height: 1.8em;
+  }
+
+  .downlevel .section-separator {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .downlevel .d-article {
+    font-size: 1.06rem;
+    line-height: 1.7em;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+  }
+
+
+  .downlevel .d-appendix {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    font-size: 0.8em;
+    line-height: 1.7em;
+    margin-bottom: 0;
+    color: rgba(0,0,0,0.5);
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .downlevel .footnotes ol {
+    padding-left: 13px;
+  }
+
+  .downlevel .base-grid,
+  .downlevel .distill-header,
+  .downlevel .d-title,
+  .downlevel .d-abstract,
+  .downlevel .d-article,
+  .downlevel .d-appendix,
+  .downlevel .distill-appendix,
+  .downlevel .d-byline,
+  .downlevel .d-footnote-list,
+  .downlevel .d-citation-list,
+  .downlevel .distill-footer,
+  .downlevel .appendix-bottom,
+  .downlevel .posts-container {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  @media(min-width: 768px) {
+    .downlevel .base-grid,
+    .downlevel .distill-header,
+    .downlevel .d-title,
+    .downlevel .d-abstract,
+    .downlevel .d-article,
+    .downlevel .d-appendix,
+    .downlevel .distill-appendix,
+    .downlevel .d-byline,
+    .downlevel .d-footnote-list,
+    .downlevel .d-citation-list,
+    .downlevel .distill-footer,
+    .downlevel .appendix-bottom,
+    .downlevel .posts-container {
+    padding-left: 150px;
+    padding-right: 150px;
+    max-width: 900px;
+  }
+  }
+
+  .downlevel pre code {
+    display: block;
+    border-left: 2px solid rgba(0, 0, 0, .1);
+    padding: 0 0 0 20px;
+    font-size: 14px;
+  }
+
+  .downlevel code, .downlevel pre {
+    color: black;
+    background: none;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+
+  </style>
+
+  <script type="application/javascript">
+
+  function is_downlevel_browser() {
+    if (bowser.isUnsupportedBrowser({ msie: "12", msedge: "16"},
+                                   window.navigator.userAgent)) {
+      return true;
+    } else {
+      return window.load_distill_framework === undefined;
+    }
+  }
+
+  // show body when load is complete
+  function on_load_complete() {
+
+    // set body to visible
+    document.body.style.visibility = 'visible';
+
+    // force redraw for leaflet widgets
+    if (window.HTMLWidgets) {
+      var maps = window.HTMLWidgets.findAll(".leaflet");
+      $.each(maps, function(i, el) {
+        var map = this.getMap();
+        map.invalidateSize();
+        map.eachLayer(function(layer) {
+          if (layer instanceof L.TileLayer)
+            layer.redraw();
+        });
+      });
+    }
+
+    // trigger 'shown' so htmlwidgets resize
+    $('d-article').trigger('shown');
+  }
+
+  function init_distill() {
+
+    init_common();
+
+    // create front matter
+    var front_matter = $('<d-front-matter></d-front-matter>');
+    $('#distill-front-matter').wrap(front_matter);
+
+    // create d-title
+    $('.d-title').changeElementType('d-title');
+
+    // create d-byline
+    var byline = $('<d-byline></d-byline>');
+    $('.d-byline').replaceWith(byline);
+
+    // create d-article
+    var article = $('<d-article></d-article>');
+    $('.d-article').wrap(article).children().unwrap();
+
+    // move posts container into article
+    $('.posts-container').appendTo($('d-article'));
+
+    // create d-appendix
+    $('.d-appendix').changeElementType('d-appendix');
+
+    // create d-bibliography
+    var bibliography = $('<d-bibliography></d-bibliography>');
+    $('#distill-bibliography').wrap(bibliography);
+
+    // flag indicating that we have appendix items
+    var appendix = $('.appendix-bottom').children('h3').length > 0;
+
+    // replace citations with <d-cite>
+    $('.citation').each(function(i, val) {
+      appendix = true;
+      var cites = $(this).attr('data-cites').split(" ");
+      var dt_cite = $('<d-cite></d-cite>');
+      dt_cite.attr('key', cites.join());
+      $(this).replaceWith(dt_cite);
+    });
+    // remove refs
+    $('#refs').remove();
+
+    // replace footnotes with <d-footnote>
+    $('.footnote-ref').each(function(i, val) {
+      appendix = true;
+      var href = $(this).attr('href');
+      var id = href.replace('#', '');
+      var fn = $('#' + id);
+      var fn_p = $('#' + id + '>p');
+      fn_p.find('.footnote-back').remove();
+      var text = fn_p.html();
+      var dtfn = $('<d-footnote></d-footnote>');
+      dtfn.html(text);
+      $(this).replaceWith(dtfn);
+    });
+    // remove footnotes
+    $('.footnotes').remove();
+
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      var id = $(this).attr('id');
+      $('.d-toc a[href="#' + id + '"]').parent().remove();
+      appendix = true;
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('d-appendix'));
+    });
+
+    // show d-appendix if we have appendix content
+    $("d-appendix").css('display', appendix ? 'grid' : 'none');
+
+    // replace code blocks with d-code
+    $('pre>code').each(function(i, val) {
+      var code = $(this);
+      var pre = code.parent();
+      var clz = "";
+      var language = pre.attr('class');
+      if (language) {
+        // map unknown languages to "clike" (without this they just dissapear)
+        if ($.inArray(language, ["bash", "clike", "css", "go", "html",
+                                 "javascript", "js", "julia", "lua", "markdown",
+                                 "markup", "mathml", "python", "svg", "xml"]) == -1)
+          language = "clike";
+        language = ' language="' + language + '"';
+        var dt_code = $('<d-code block' + language + clz + '></d-code>');
+        dt_code.text(code.text());
+        pre.replaceWith(dt_code);
+      } else {
+        code.addClass('text-output').unwrap().changeElementType('pre');
+      }
+    });
+
+    // localize layout chunks to just output
+    $('.layout-chunk').each(function(i, val) {
+
+      // capture layout
+      var layout = $(this).attr('data-layout');
+
+      // apply layout to markdown level block elements
+      var elements = $(this).children().not('d-code, pre.text-output, script');
+      elements.each(function(i, el) {
+        var layout_div = $('<div class="' + layout + '"></div>');
+        if (layout_div.hasClass('shaded')) {
+          var shaded_content = $('<div class="shaded-content"></div>');
+          $(this).wrap(shaded_content);
+          $(this).parent().wrap(layout_div);
+        } else {
+          $(this).wrap(layout_div);
+        }
+      });
+
+
+      // unwrap the layout-chunk div
+      $(this).children().unwrap();
+    });
+
+    // load distill framework
+    load_distill_framework();
+
+    // wait for window.distillRunlevel == 4 to do post processing
+    function distill_post_process() {
+
+      if (!window.distillRunlevel || window.distillRunlevel < 4)
+        return;
+
+      // hide author/affiliations entirely if we have no authors
+      var front_matter = JSON.parse($("#distill-front-matter").html());
+      var have_authors = front_matter.authors && front_matter.authors.length > 0;
+      if (!have_authors)
+        $('d-byline').addClass('hidden');
+
+      // table of contents
+      if (have_authors) // adjust border if we are in authors
+        $('.d-toc').parent().addClass('d-article-with-toc');
+
+      // strip links that point to #
+      $('.authors-affiliations').find('a[href="#"]').removeAttr('href');
+
+      // hide elements of author/affiliations grid that have no value
+      function hide_byline_column(caption) {
+        $('d-byline').find('h3:contains("' + caption + '")').parent().css('visibility', 'hidden');
+      }
+
+      // affiliations
+      var have_affiliations = false;
+      for (var i = 0; i<front_matter.authors.length; ++i) {
+        var author = front_matter.authors[i];
+        if (author.affiliation !== "&nbsp;") {
+          have_affiliations = true;
+          break;
+        }
+      }
+      if (!have_affiliations)
+        $('d-byline').find('h3:contains("Affiliations")').css('visibility', 'hidden');
+
+      // published date
+      if (!front_matter.publishedDate)
+        hide_byline_column("Published");
+
+      // document object identifier
+      var doi = $('d-byline').find('h3:contains("DOI")');
+      var doi_p = doi.next().empty();
+      if (!front_matter.doi) {
+        // if we have a citation and valid citationText then link to that
+        if ($('#citation').length > 0 && front_matter.citationText) {
+          doi.html('Citation');
+          $('<a href="#citation"></a>')
+            .text(front_matter.citationText)
+            .appendTo(doi_p);
+        } else {
+          hide_byline_column("DOI");
+        }
+      } else {
+        $('<a></a>')
+           .attr('href', "https://doi.org/" + front_matter.doi)
+           .html(front_matter.doi)
+           .appendTo(doi_p);
+      }
+
+       // change plural form of authors/affiliations
+      if (front_matter.authors.length === 1) {
+        var grid = $('.authors-affiliations');
+        grid.children('h3:contains("Authors")').text('Author');
+        grid.children('h3:contains("Affiliations")').text('Affiliation');
+      }
+
+      // inject pre code styles (can't do this with a global stylesheet b/c a shadow root is used)
+      $('d-code').each(function(i, val) {
+        var style = document.createElement('style');
+        style.innerHTML = 'pre code { padding-left: 10px; font-size: 12px; border-left: 2px solid rgba(0,0,0,0.1); } ' +
+                          '@media(min-width: 768px) { pre code { padding-left: 18px; font-size: 14px; } }';
+        if (this.shadowRoot)
+          this.shadowRoot.appendChild(style);
+      });
+
+      // move appendix-bottom entries to the bottom
+      $('.appendix-bottom').appendTo('d-appendix').children().unwrap();
+      $('.appendix-bottom').remove();
+
+      // clear polling timer
+      clearInterval(tid);
+
+      // show body now that everything is ready
+      on_load_complete();
+    }
+
+    var tid = setInterval(distill_post_process, 50);
+    distill_post_process();
+
+  }
+
+  function init_downlevel() {
+
+    init_common();
+
+     // insert hr after d-title
+    $('.d-title').after($('<hr class="section-separator"/>'));
+
+    // check if we have authors
+    var front_matter = JSON.parse($("#distill-front-matter").html());
+    var have_authors = front_matter.authors && front_matter.authors.length > 0;
+
+    // manage byline/border
+    if (!have_authors)
+      $('.d-byline').remove();
+    $('.d-byline').after($('<hr class="section-separator"/>'));
+    $('.d-byline a').remove();
+
+    // remove toc
+    $('.d-toc-header').remove();
+    $('.d-toc').remove();
+    $('.d-toc-separator').remove();
+
+    // move appendix elements
+    $('h1.appendix, h2.appendix').each(function(i, val) {
+      $(this).changeElementType('h3');
+    });
+    $('h3.appendix').each(function(i, val) {
+      $(this).nextUntil($('h1, h2, h3')).addBack().appendTo($('.d-appendix'));
+    });
+
+
+    // inject headers into references and footnotes
+    var refs_header = $('<h3></h3>');
+    refs_header.text('References');
+    $('#refs').prepend(refs_header);
+
+    var footnotes_header = $('<h3></h3');
+    footnotes_header.text('Footnotes');
+    $('.footnotes').children('hr').first().replaceWith(footnotes_header);
+
+    // move appendix-bottom entries to the bottom
+    $('.appendix-bottom').appendTo('.d-appendix').children().unwrap();
+    $('.appendix-bottom').remove();
+
+    // remove appendix if it's empty
+    if ($('.d-appendix').children().length === 0)
+      $('.d-appendix').remove();
+
+    // prepend separator above appendix
+    $('.d-appendix').before($('<hr class="section-separator" style="clear: both"/>'));
+
+    // trim code
+    $('pre>code').each(function(i, val) {
+      $(this).html($.trim($(this).html()));
+    });
+
+    // move posts-container right before article
+    $('.posts-container').insertBefore($('.d-article'));
+
+    $('body').addClass('downlevel');
+
+    on_load_complete();
+  }
+
+
+  function init_common() {
+
+    // jquery plugin to change element types
+    (function($) {
+      $.fn.changeElementType = function(newType) {
+        var attrs = {};
+
+        $.each(this[0].attributes, function(idx, attr) {
+          attrs[attr.nodeName] = attr.nodeValue;
+        });
+
+        this.replaceWith(function() {
+          return $("<" + newType + "/>", attrs).append($(this).contents());
+        });
+      };
+    })(jQuery);
+
+    // prevent underline for linked images
+    $('a > img').parent().css({'border-bottom' : 'none'});
+
+    // mark non-body figures created by knitr chunks as 100% width
+    $('.layout-chunk').each(function(i, val) {
+      var figures = $(this).find('img, .html-widget');
+      if ($(this).attr('data-layout') !== "l-body") {
+        figures.css('width', '100%');
+      } else {
+        figures.css('max-width', '100%');
+        figures.filter("[width]").each(function(i, val) {
+          var fig = $(this);
+          fig.css('width', fig.attr('width') + 'px');
+        });
+
+      }
+    });
+
+    // auto-append index.html to post-preview links in file: protocol
+    // and in rstudio ide preview
+    $('.post-preview').each(function(i, val) {
+      if (window.location.protocol === "file:")
+        $(this).attr('href', $(this).attr('href') + "index.html");
+    });
+
+    // get rid of index.html references in header
+    if (window.location.protocol !== "file:") {
+      $('.distill-site-header a[href]').each(function(i,val) {
+        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+      });
+    }
+
+    // add class to pandoc style tables
+    $('tr.header').parent('thead').parent('table').addClass('pandoc-table');
+    $('.kable-table').children('table').addClass('pandoc-table');
+
+    // add figcaption style to table captions
+    $('caption').parent('table').addClass("figcaption");
+
+    // initialize posts list
+    if (window.init_posts_list)
+      window.init_posts_list();
+
+    // implmement disqus comment link
+    $('.disqus-comment-count').click(function() {
+      window.headroom_prevent_pin = true;
+      $('#disqus_thread').toggleClass('hidden');
+      if (!$('#disqus_thread').hasClass('hidden')) {
+        var offset = $(this).offset();
+        $(window).resize();
+        $('html, body').animate({
+          scrollTop: offset.top - 35
+        });
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (is_downlevel_browser())
+      init_downlevel();
+    else
+      window.addEventListener('WebComponentsReady', init_distill);
+  });
+
+  </script>
+
+  <!--/radix_placeholder_distill-->
+  <script src="post_files/header-attrs-2.3/header-attrs.js"></script>
+  <script src="post_files/htmlwidgets-1.5.1.9001/htmlwidgets.js"></script>
+  <script src="post_files/jquery-1.11.3/jquery.min.js"></script>
+  <link href="post_files/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+  <script src="post_files/dygraphs-1.1.1/dygraph-combined.js"></script>
+  <script src="post_files/dygraphs-1.1.1/shapes.js"></script>
+  <script src="post_files/moment-2.8.4/moment.js"></script>
+  <script src="post_files/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+  <script src="post_files/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+  <script src="post_files/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+  <script src="post_files/bowser-1.9.3/bowser.min.js"></script>
+  <script src="post_files/webcomponents-2.0.0/webcomponents.js"></script>
+  <script src="post_files/distill-2.2.21/template.v2.js"></script>
+  <!--radix_placeholder_site_in_header-->
+  <!--/radix_placeholder_site_in_header-->
+
+
+</head>
+
+<body>
+
+<!--radix_placeholder_front_matter-->
+
+<script id="distill-front-matter" type="text/json">
+{"title":"Interactive Plots with `dygraphs`","description":"`dygraphs` allows us to make interactive plots in webpages.","authors":[{"author":"Paulo Ferreira Naibert","authorURL":"https://github.com/pfnaibert/","affiliation":"&nbsp;","affiliationURL":"#"}],"publishedDate":"2020-08-21T00:00:00.000-03:00","citationText":"Naibert, 2020"}
+</script>
+
+<!--/radix_placeholder_front_matter-->
+<!--radix_placeholder_navigation_before_body-->
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div class="d-title">
+<h1>Interactive Plots with dygraphs</h1>
+<p><code>dygraphs</code> allows us to make interactive plots in webpages.</p>
+</div>
+
+<div class="d-byline">
+  Paulo Ferreira Naibert <a href="https://github.com/pfnaibert/" class="uri">https://github.com/pfnaibert/</a> 
+  
+<br/>2020-08-21
+</div>
+
+<div class="d-article">
+<p>On previous posts, I showed how to make plots with the <code>base</code> and <code>ggplot2</code> libraries. Today, I will make <strong>interactive</strong> plots with dygraphs. This package has a terrific documentation website <a href="https://rstudio.github.io/dygraphs/">here</a>.</p>
+<p>First, let’s load the data and the functions:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# import funs
+source(&quot;../../R/funs.R&quot;)
+
+# import data
+y     &lt;- import_gdp(&quot;../../data/PIB_BASE_2000.csv&quot;)
+
+# visualization
+head(y)</code></pre>
+<pre><code>
+1980:Q1 1980:Q2 1980:Q3 1980:Q4 1981:Q1 1981:Q2 
+   70.6    76.3    75.5    73.2    70.5    74.3 </code></pre>
+</div>
+<p>Now, we load <code>dygraphs</code> and try to make a plot:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# libraries
+library(dygraphs)
+
+# plot
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;)</code></pre>
+<div id="htmlwidget-fbe4d85ee7e7702f1c40" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fbe4d85ee7e7702f1c40">{"x":{"attrs":{"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","V1"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}}},"scale":"quarterly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>OH! That worked out of the box, with similar syntax as <code>base::plot()</code>. Take that <code>ggplot</code>!</p>
+<p>Ok, let’s try some options. First, let’s label the series as “GDP”.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE)</code></pre>
+<div id="htmlwidget-71eca80ebc38d46783ba" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-71eca80ebc38d46783ba">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false},"scale":"quarterly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>Yes, we have to use the pipe <code>%&gt;%</code>, so not EVERYTHING is similar to the <code>base::plot()</code>. As I said about <code>ggplot</code>, this is a fancy package. Let’s have go at the range selector option.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyRangeSelector(height = 20)</code></pre>
+<div id="htmlwidget-667017d17c9faea28fee" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-667017d17c9faea28fee">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false,"showRangeSelector":true,"rangeSelectorHeight":20,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"quarterly","annotations":[],"shadings":[],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":["attrs.interactionModel"],"jsHooks":[]}</script>
+</div>
+<p>COOL! Now, let’s try to make lines. <code>dygraphs</code> uses <code>dyEvent()</code> for vertical lines and <code>dyLimit()</code> for horizontal lines.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyEvent(&quot;1983-03-30&quot;, &quot;LABEL&quot;,  labelLoc = &quot;top&quot;) %&gt;%
+dyEvent(&quot;2010-03-30&quot;, &quot;LABEL&quot;,  labelLoc = &quot;bottom&quot;) %&gt;%
+dyLimit( as.numeric(100), &quot;LABEL&quot;, labelLoc = &quot;right&quot;, color=&quot;red&quot; )</code></pre>
+<div id="htmlwidget-e3707e4010d16218515e" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e3707e4010d16218515e">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false},"scale":"quarterly","annotations":[],"shadings":[],"events":[{"pos":"1983-03-30T00:00:00.000Z","label":"LABEL","labelLoc":"top","color":"black","strokePattern":[7,3],"axis":"x"},{"pos":"2010-03-30T00:00:00.000Z","label":"LABEL","labelLoc":"bottom","color":"black","strokePattern":[7,3],"axis":"x"},{"pos":100,"label":"LABEL","labelLoc":"right","color":"red","strokePattern":[7,3],"axis":"y"}],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>So far, so good, now, let’s make those rectangles. <code>dygraphs</code> uses <code>dyShading()</code> to make those. Before, we have to load the recession limit dates.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# load recs
+recs  &lt;- qtr2date( readRDS(&quot;../../data/recessions.rds&quot;) )
+
+# visualization
+head(recs)</code></pre>
+<pre><code>
+[1] &quot;1981-03-31&quot; &quot;1983-03-31&quot; &quot;1987-09-30&quot; &quot;1988-09-30&quot; &quot;1989-09-30&quot;
+[6] &quot;1992-03-31&quot;</code></pre>
+<pre class="r"><code>
+# tranform recs to data frame
+recs.mat &lt;- t( matrix( recs, nrow=2 ) ); colnames(recs.mat) &lt;- c(&quot;start&quot;, &quot;end&quot;); recs.mat</code></pre>
+<pre><code>
+     start        end         
+[1,] &quot;1981-03-31&quot; &quot;1983-03-31&quot;
+[2,] &quot;1987-09-30&quot; &quot;1988-09-30&quot;
+[3,] &quot;1989-09-30&quot; &quot;1992-03-31&quot;
+[4,] &quot;1995-06-30&quot; &quot;1995-09-30&quot;
+[5,] &quot;1998-03-31&quot; &quot;1999-03-31&quot;
+[6,] &quot;2001-06-30&quot; &quot;2001-12-31&quot;
+[7,] &quot;2003-03-31&quot; &quot;2003-06-30&quot;
+[8,] &quot;2008-12-31&quot; &quot;2009-03-31&quot;</code></pre>
+<pre class="r"><code>
+# plot
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyShading( recs.mat[1, 1], recs.mat[1, 2] ) %&gt;%
+dyShading( recs.mat[2, 1], recs.mat[2, 2] ) %&gt;%
+dyShading( recs.mat[3, 1], recs.mat[3, 2] ) %&gt;%
+dyShading( recs.mat[4, 1], recs.mat[4, 2] ) %&gt;%
+dyShading( recs.mat[5, 1], recs.mat[5, 2] ) %&gt;%
+dyShading( recs.mat[6, 1], recs.mat[6, 2] ) %&gt;%
+dyShading( recs.mat[7, 1], recs.mat[7, 2] ) %&gt;%
+dyShading( recs.mat[8, 1], recs.mat[8, 2] )</code></pre>
+<div id="htmlwidget-b865bca449bcaaafea79" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b865bca449bcaaafea79">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false},"scale":"quarterly","annotations":[],"shadings":[{"from":"1981-03-31T00:00:00.000Z","to":"1983-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"1987-09-30T00:00:00.000Z","to":"1988-09-30T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"1989-09-30T00:00:00.000Z","to":"1992-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"1995-06-30T00:00:00.000Z","to":"1995-09-30T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"1998-03-31T00:00:00.000Z","to":"1999-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"2001-06-30T00:00:00.000Z","to":"2001-12-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"2003-03-31T00:00:00.000Z","to":"2003-06-30T00:00:00.000Z","color":"#EFEFEF","axis":"x"},{"from":"2008-12-31T00:00:00.000Z","to":"2009-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"}],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>NICE! But it seems a lot of <code>dyShading</code> lines, can we make it like in <code>ggplot</code>?</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyShading( recs.mat)</code></pre>
+<pre><code>
+Error in asISO8601Time(to): argument &quot;to&quot; is missing, with no default</code></pre>
+</div>
+<p>OH! Do I have to provide two arguments?</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyShading( recs.mat, recs.mat )</code></pre>
+<div id="htmlwidget-c884f5cdb932d90ca573" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c884f5cdb932d90ca573">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false},"scale":"quarterly","annotations":[],"shadings":[{"from":"1981-03-31T00:00:00.000Z","to":"1981-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"}],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>NOPE! Should I define the dimensions?</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+dyShading( recs.mat[, 1], recs.mat[, 2] )</code></pre>
+<div id="htmlwidget-09472c67534f5610e486" style="width:768px;height:384px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-09472c67534f5610e486">{"x":{"attrs":{"axes":{"x":{"pixelsPerLabel":60,"drawGrid":false}},"series":{"GDP":{"axis":"y"}},"title":"Cronologia Trimestral dos Ciclos de Negócios Brasileiros","labels":["quarter","GDP"],"legend":"auto","retainDateWindow":false},"scale":"quarterly","annotations":[],"shadings":[{"from":"1981-03-31T00:00:00.000Z","to":"1983-03-31T00:00:00.000Z","color":"#EFEFEF","axis":"x"}],"events":[],"format":"date","data":[["1980-01-01T00:00:00.000Z","1980-04-01T00:00:00.000Z","1980-07-01T00:00:00.000Z","1980-10-01T00:00:00.000Z","1981-01-01T00:00:00.000Z","1981-04-01T00:00:00.000Z","1981-07-01T00:00:00.000Z","1981-10-01T00:00:00.000Z","1982-01-01T00:00:00.000Z","1982-04-01T00:00:00.000Z","1982-07-01T00:00:00.000Z","1982-10-01T00:00:00.000Z","1983-01-01T00:00:00.000Z","1983-04-01T00:00:00.000Z","1983-07-01T00:00:00.000Z","1983-10-01T00:00:00.000Z","1984-01-01T00:00:00.000Z","1984-04-01T00:00:00.000Z","1984-07-01T00:00:00.000Z","1984-10-01T00:00:00.000Z","1985-01-01T00:00:00.000Z","1985-04-01T00:00:00.000Z","1985-07-01T00:00:00.000Z","1985-10-01T00:00:00.000Z","1986-01-01T00:00:00.000Z","1986-04-01T00:00:00.000Z","1986-07-01T00:00:00.000Z","1986-10-01T00:00:00.000Z","1987-01-01T00:00:00.000Z","1987-04-01T00:00:00.000Z","1987-07-01T00:00:00.000Z","1987-10-01T00:00:00.000Z","1988-01-01T00:00:00.000Z","1988-04-01T00:00:00.000Z","1988-07-01T00:00:00.000Z","1988-10-01T00:00:00.000Z","1989-01-01T00:00:00.000Z","1989-04-01T00:00:00.000Z","1989-07-01T00:00:00.000Z","1989-10-01T00:00:00.000Z","1990-01-01T00:00:00.000Z","1990-04-01T00:00:00.000Z","1990-07-01T00:00:00.000Z","1990-10-01T00:00:00.000Z","1991-01-01T00:00:00.000Z","1991-04-01T00:00:00.000Z","1991-07-01T00:00:00.000Z","1991-10-01T00:00:00.000Z","1992-01-01T00:00:00.000Z","1992-04-01T00:00:00.000Z","1992-07-01T00:00:00.000Z","1992-10-01T00:00:00.000Z","1993-01-01T00:00:00.000Z","1993-04-01T00:00:00.000Z","1993-07-01T00:00:00.000Z","1993-10-01T00:00:00.000Z","1994-01-01T00:00:00.000Z","1994-04-01T00:00:00.000Z","1994-07-01T00:00:00.000Z","1994-10-01T00:00:00.000Z","1995-01-01T00:00:00.000Z","1995-04-01T00:00:00.000Z","1995-07-01T00:00:00.000Z","1995-10-01T00:00:00.000Z","1996-01-01T00:00:00.000Z","1996-04-01T00:00:00.000Z","1996-07-01T00:00:00.000Z","1996-10-01T00:00:00.000Z","1997-01-01T00:00:00.000Z","1997-04-01T00:00:00.000Z","1997-07-01T00:00:00.000Z","1997-10-01T00:00:00.000Z","1998-01-01T00:00:00.000Z","1998-04-01T00:00:00.000Z","1998-07-01T00:00:00.000Z","1998-10-01T00:00:00.000Z","1999-01-01T00:00:00.000Z","1999-04-01T00:00:00.000Z","1999-07-01T00:00:00.000Z","1999-10-01T00:00:00.000Z","2000-01-01T00:00:00.000Z","2000-04-01T00:00:00.000Z","2000-07-01T00:00:00.000Z","2000-10-01T00:00:00.000Z","2001-01-01T00:00:00.000Z","2001-04-01T00:00:00.000Z","2001-07-01T00:00:00.000Z","2001-10-01T00:00:00.000Z","2002-01-01T00:00:00.000Z","2002-04-01T00:00:00.000Z","2002-07-01T00:00:00.000Z","2002-10-01T00:00:00.000Z","2003-01-01T00:00:00.000Z","2003-04-01T00:00:00.000Z","2003-07-01T00:00:00.000Z","2003-10-01T00:00:00.000Z","2004-01-01T00:00:00.000Z","2004-04-01T00:00:00.000Z","2004-07-01T00:00:00.000Z","2004-10-01T00:00:00.000Z","2005-01-01T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-10-01T00:00:00.000Z","2006-01-01T00:00:00.000Z","2006-04-01T00:00:00.000Z","2006-07-01T00:00:00.000Z","2006-10-01T00:00:00.000Z","2007-01-01T00:00:00.000Z","2007-04-01T00:00:00.000Z","2007-07-01T00:00:00.000Z","2007-10-01T00:00:00.000Z","2008-01-01T00:00:00.000Z","2008-04-01T00:00:00.000Z","2008-07-01T00:00:00.000Z","2008-10-01T00:00:00.000Z","2009-01-01T00:00:00.000Z","2009-04-01T00:00:00.000Z","2009-07-01T00:00:00.000Z","2009-10-01T00:00:00.000Z","2010-01-01T00:00:00.000Z","2010-04-01T00:00:00.000Z","2010-07-01T00:00:00.000Z","2010-10-01T00:00:00.000Z","2011-01-01T00:00:00.000Z","2011-04-01T00:00:00.000Z","2011-07-01T00:00:00.000Z","2011-10-01T00:00:00.000Z","2012-01-01T00:00:00.000Z","2012-04-01T00:00:00.000Z","2012-07-01T00:00:00.000Z","2012-10-01T00:00:00.000Z","2013-01-01T00:00:00.000Z","2013-04-01T00:00:00.000Z","2013-07-01T00:00:00.000Z","2013-10-01T00:00:00.000Z","2014-01-01T00:00:00.000Z","2014-04-01T00:00:00.000Z","2014-07-01T00:00:00.000Z"],[70.6,76.3,75.5,73.2,70.5,74.3,71,67.3,67.3,74.8,73.7,69.5,65.2,71.9,71.1,68.8,68,75.3,74.9,73.8,72.6,79.4,81.8,81.1,77.9,85.4,88.3,86.9,83.8,91.1,88.8,86.7,83.8,90.8,90.8,84.8,81.5,93.8,95.5,90.4,83.6,85.2,91.8,85,83.5,87.7,91,87,80.8,85.9,90.2,90.6,84.7,89.7,94.7,94.7,87.6,91.6,99.9,103.9,96.5,99.8,101.7,102.1,95.6,100.8,107.8,104.4,99.2,105.8,109.5,107.9,100,107.4,109.4,105.8,100.5,106.5,108.3,108.2,105.3,110.7,112.9,112.9,109,113.3,113.2,112.2,109.1,115.4,117.4,117.6,111.7,116.4,118.1,118.6,116.4,123.6,125.5,125.9,121.2,129,128.2,128.5,126.5,131.5,134.3,134.8,133,139.9,142.4,143.8,141.4,148.9,152.5,145.1,137.5,145.4,150.3,152.9,150.4,158.1,160.7,161,156.8,163.3,164.1,163.2,158,164.2,165.7,166.2,161,169.9,169.7,169.8,164.1,168.4,169.3]]},"evals":[],"jsHooks":[]}</script>
+</div>
+<p>No, again. Oh well, should I try a <code>for</code> loop?</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+nrecs &lt;- length(recs)/2; nrecs
+
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+for(i in 1:nrecs) dyShading( recs.mat[i, 1], recs.mat[i, 2] ) %&gt;%</code></pre>
+<pre><code>
+Error: &lt;text&gt;:7:0: unexpected end of input
+5: dyAxis(&quot;x&quot;, drawGrid = FALSE) %&gt;%
+6: for(i in 1:nrecs) dyShading( recs.mat[i, 1], recs.mat[i, 2] ) %&gt;%
+  ^</code></pre>
+</div>
+<p>$%&amp;*# !!!</p>
+<p>OK, calm down, maybe it’s the pipe in the end, let’s change the order of the lines:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+dygraph(y, main = &quot;Cronologia Trimestral dos Ciclos de Negócios Brasileiros&quot;) %&gt;%
+dySeries(label = &quot;GDP&quot;) %&gt;%
+for(i in 1:nrecs) dyShading( recs.mat[i, 1], recs.mat[i, 2] ) %&gt;%
+dyAxis(&quot;x&quot;, drawGrid = FALSE)</code></pre>
+<pre><code>
+Error in function_list[[k]](value): object &#39;i&#39; not found</code></pre>
+</div>
+<p>Well, it wasn’t meant to be. But hey, the <code>dyShading</code> feature works, I just don’t know how to automate them. If you had more patience than me, give me some feedback on the comments.</p>
+<p>Thank you for reading.</p>
+<!--radix_placeholder_article_footer-->
+<!--/radix_placeholder_article_footer-->
+</div>
+
+<div class="d-appendix">
+</div>
+
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_appendices-->
+<div class="appendix-bottom">
+<h3 id="updates-and-corrections">Corrections</h3>
+<p>If you see mistakes or want to suggest changes, please <a href="https://github.com/pfnaibert/pfnaibert.github.io/issues/new">create an issue</a> on the source repository.</p>
+</div>
+<!--/radix_placeholder_appendices-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+</body>
+
+</html>

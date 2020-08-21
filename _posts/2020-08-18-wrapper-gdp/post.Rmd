@@ -1,0 +1,156 @@
+---
+title: "Making a wrapper to Import and Plot Data"
+description: |
+  To make research reproducible, we have to automate the way `R` performs tasks.
+categories:
+  - R
+  - R-base
+  - GDP
+  - PIB
+  - plot
+  - wrapper
+  - reproducible-research
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+date: "2020-08-18"
+draft: false
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+In my [last post](https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp), I showed how to import a `.csv` file and plot the data.
+This, entailed following the steps outlined in the post.
+In this post, I will make a [wrapper function](https://en.wikipedia.org/wiki/Wrapper_function) to automate the importing and formating.
+
+# Import Wrapper
+
+Remembering that I already downloaded the data and saved the only column that I will need in a `.csv` file.
+Our wrapper function is:
+
+```{r}
+import_gdp <- function(filename)
+{
+
+# import csv
+data  <- read.csv(filename)
+
+# delete last 2 lines
+data  <- head(data, -2)
+
+# save dates
+dates <- data[,1]
+
+# delete first row
+data  <- data[,-1]
+
+# rearrange strings in dates
+dates <- gsub(" T", ":Q", dates)
+
+# give names to values
+names(data) <- dates
+
+# `ts` object
+data.ts <- ts(data, start=c(1980, 1), end=c(2014, 3), freq=4 )
+
+return(data.ts)
+}
+```
+
+And I can use `import_gdp` to import the file and format it as I like it:
+
+```{r}
+# check loaded objects
+ls()
+
+# import data
+y <- import_gdp("../../_data/PIB_BASE_2000.csv")
+
+# quick visualization
+head(y)
+
+# print whole series
+y
+```
+
+## Extensions
+On this function I could have created variables to pass options about the dates and the frequency of data.
+We won't do this today, but I do intend to make a following post about how to scrape the brazilian GDP data from the [SIDRA-IBGE site](https://sidra.ibge.gov.br/home/cnt/brasil).
+
+
+# Plot Wrapper
+
+Also, I can make a wrapper for the plot script.
+
+```{r}
+plot_gdp <- function(data, rec_dates)
+{
+
+# blank plot
+plot(NULL,
+ main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros",
+ xlim = c(1980, 2015), ylim = c(60,200),
+ xlab = "", ylab = "")
+
+# recession rectangles
+for(i in 1:(length(rec_dates)/2) ) rect(rec_dates[1+2*(i-1)], 1, rec_dates[2*i], 250, col="gray", border=T)
+
+# gdp line
+lines(data, col="blue", lwd=1.5)
+}
+```
+
+The `plot_gdp()` function uses the `rec_dates` input to make the recession rectangles, so I must create a vector with recession limit dates.
+We use [this document](https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf) to get the dates.
+
+
+```{r}
+# recession limits in numeric dates
+recs <- c( 1981.25, 1983.25,
+ 1987.75, 1988.75,
+ 1989.75, 1992.25,
+ 1995.50, 1995.75,
+ 1998.25, 1999.25,
+ 2001.50, 2002.00,
+ 2003.25, 2003.50,
+ 2009.00, 2009.25 )
+```
+
+Now I can make the plot with a single line:
+
+```{r}
+# graph with wrapper
+plot_gdp(y, recs)
+```
+
+Beacause the `rec_dates` argument generalizes the recession limit dates, I can make expansion (instead of recession) rectangles.
+Again, we use [this document](https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf) to get the dates.
+
+```{r}
+# expansion limits in numeric dates
+exps <- c( 1983.50, 1987.50,
+1989.25, 1989.50,
+1992.50, 1995.25,
+1996.00, 1998.00,
+1999.50, 2001.25,
+2002.25, 2003.00,
+2003.75, 2008.75,
+2009.50, 2014.25 )
+
+# graph with wrapper
+plot_gdp(y, exps)
+```
+
+# Error Catching
+Notice that I didn't have any error catching functions, I did this because that would be beyond the scope of the post.
+If my goal was to make a more general function, I would absolutely have to include error catching lines.
+
+# Final Remarks
+To make research reproducible, we have to automate the way `R` executes tasks.
+In this post I do this via wrappers.

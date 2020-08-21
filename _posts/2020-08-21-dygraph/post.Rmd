@@ -1,0 +1,174 @@
+---
+title: "Interactive Plots with `dygraphs`"
+description: "`dygraphs` allows us to make interactive plots in webpages."
+categories:
+  - R
+  - dygraphs
+  - PIB
+  - GDP
+  - plot
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+date: "2020-08-21"
+draft: false
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+On previous posts, I showed how to make plots with the `base` and `ggplot2` libraries.
+Today, I will make **interactive** plots with dygraphs.
+This package has a terrific documentation website [here](https://rstudio.github.io/dygraphs/).
+
+First, let's load the data and the functions:
+
+```{r}
+# import funs
+source("../../R/funs.R")
+
+# import data
+y     <- import_gdp("../../data/PIB_BASE_2000.csv")
+
+# visualization
+head(y)
+```
+
+
+Now, we load `dygraphs` and try to make a plot:
+
+```{r}
+# libraries
+library(dygraphs)
+
+# plot
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros")
+```
+
+OH! That worked out of the box, with similar syntax as `base::plot()`.
+Take that `ggplot`!
+
+Ok, let's try some options.
+First, let's label the series as "GDP".
+
+```{r}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE)
+```
+
+Yes, we have to use the pipe `%>%`, so not EVERYTHING is similar to the `base::plot()`.
+As I said about `ggplot`, this is a fancy package.
+Let's have go at the range selector option.
+
+```{r}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyRangeSelector(height = 20)
+```
+
+COOL!
+Now, let's try to make lines.
+`dygraphs` uses `dyEvent()` for vertical lines and `dyLimit()` for horizontal lines.
+
+```{r}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyEvent("1983-03-30", "LABEL",  labelLoc = "top") %>%
+dyEvent("2010-03-30", "LABEL",  labelLoc = "bottom") %>%
+dyLimit( as.numeric(100), "LABEL", labelLoc = "right", color="red" )
+```
+
+So far, so good, now, let's make those rectangles.
+`dygraphs` uses `dyShading()` to make those.
+Before, we have to load the recession limit dates.
+
+```{r}
+# load recs
+recs  <- qtr2date( readRDS("../../data/recessions.rds") )
+
+# visualization
+head(recs)
+
+# tranform recs to data frame
+recs.mat <- t( matrix( recs, nrow=2 ) ); colnames(recs.mat) <- c("start", "end"); recs.mat
+
+# plot
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyShading( recs.mat[1, 1], recs.mat[1, 2] ) %>%
+dyShading( recs.mat[2, 1], recs.mat[2, 2] ) %>%
+dyShading( recs.mat[3, 1], recs.mat[3, 2] ) %>%
+dyShading( recs.mat[4, 1], recs.mat[4, 2] ) %>%
+dyShading( recs.mat[5, 1], recs.mat[5, 2] ) %>%
+dyShading( recs.mat[6, 1], recs.mat[6, 2] ) %>%
+dyShading( recs.mat[7, 1], recs.mat[7, 2] ) %>%
+dyShading( recs.mat[8, 1], recs.mat[8, 2] )
+```
+
+NICE!
+But it seems a lot of `dyShading` lines, can we make it like in `ggplot`?
+
+```{r, error=T}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyShading( recs.mat)
+```
+
+OH! Do I have to provide two arguments?
+
+```{r, error=T}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyShading( recs.mat, recs.mat )
+```
+
+NOPE!
+Should I define the dimensions?
+
+```{r, error=T}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+dyShading( recs.mat[, 1], recs.mat[, 2] )
+```
+
+No, again.
+Oh well, should I try a `for` loop?
+
+```{r, error=T}
+nrecs <- length(recs)/2; nrecs
+
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", drawGrid = FALSE) %>%
+for(i in 1:nrecs) dyShading( recs.mat[i, 1], recs.mat[i, 2] ) %>%
+```
+
+$%&\*# !!!
+
+OK, calm down, maybe it's the pipe in the end, let's change the order of the lines:
+
+```{r, error=T}
+dygraph(y, main = "Cronologia Trimestral dos Ciclos de Negócios Brasileiros") %>%
+dySeries(label = "GDP") %>%
+for(i in 1:nrecs) dyShading( recs.mat[i, 1], recs.mat[i, 2] ) %>%
+dyAxis("x", drawGrid = FALSE)
+```
+
+Well, it wasn't meant to be.
+But hey, the `dyShading` feature works, I just don't know how to automate them.
+If you had more patience than me, give me some feedback on the comments.
+
+Thank you for reading.
