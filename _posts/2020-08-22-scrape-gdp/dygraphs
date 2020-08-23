@@ -1,0 +1,24 @@
+```{r}
+dygraph( gdp.ts[,"ret1"], main = "GDP in Millions Nominal Reais AC 4Q") %>%
+    dySeries(label = "t/t-1") %>%
+    dyEvent("2002-01-1", "Lula",  labelLoc = "bottom") %>%
+    dyEvent("2008-10-1", "Crise", labelLoc = "bottom") %>%
+    dyEvent("2010-01-1", "Dilma", labelLoc = "bottom") %>%
+    dyEvent("2016-09-1", "Temer", labelLoc = "bottom") %>%
+    dyEvent("2019-01-1", "Bolsonaro", labelLoc = "bottom") %>%
+    dyBarChart() %>%
+    dyOptions(includeZero = TRUE)
+```
+
+```{r}
+dygraph(tmp, main = "GDP in Millions of 1995 Reais AC 4Q") %>%
+    dySeries(label = "AC t/t-4") %>%
+    dyEvent("2002-01-1", "Lula",  labelLoc = "bottom") %>%
+    dyEvent("2008-10-1", "Crise", labelLoc = "bottom") %>%
+    dyEvent("2010-01-1", "Dilma", labelLoc = "bottom") %>%
+    dyEvent("2016-09-1", "Temer", labelLoc = "bottom") %>%
+    dyEvent("2019-01-1", "Bolsonaro", labelLoc = "bottom") %>%
+    dyBarChart() %>%
+    dyOptions(includeZero = TRUE)
+```
+
