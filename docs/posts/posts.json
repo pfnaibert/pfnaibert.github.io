@@ -1,5 +1,33 @@
 [
   {
+    "path": "posts/2020-08-24-scrape-gdp/",
+    "title": "Scraping Brazilian GDP data from the SIDRA-IBGE website",
+    "description": "Scraping Brazilian GDP data from the SIDRA-IBGE website",
+    "author": [
+      {
+        "name": "Paulo Ferreira Naibert",
+        "url": "https://github.com/pfnaibert/"
+      }
+    ],
+    "date": "2020-08-24",
+    "categories": [
+      "R",
+      "ggplot2",
+      "dygraphs",
+      "scraping",
+      "webscraping",
+      "reproducible-report",
+      "reproducible-research",
+      "PIB",
+      "GDP"
+    ],
+    "preview": "posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-6-1.png",
+    "last_modified": "2020-08-24T15:39:27-03:00",
+    "input_file": "post.utf8.md",
+    "preview_width": 1536,
+    "preview_height": 768
+  },
+  {
     "path": "posts/2020-08-21-dygraph/",
     "title": "Interactive Plots with `dygraphs`",
     "description": "`dygraphs` allows us to make interactive plots in webpages.",

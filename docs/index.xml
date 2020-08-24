@@ -7,7 +7,25 @@
     <description>PFN's personal page. R, LaTeX, programming, economics.
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>sex, 21 ago 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>seg, 24 ago 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Scraping Brazilian GDP data from the SIDRA-IBGE website</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp</link>
+      <description>Scraping Brazilian GDP data from the SIDRA-IBGE website</description>
+      <category>R</category>
+      <category>ggplot2</category>
+      <category>dygraphs</category>
+      <category>scraping</category>
+      <category>webscraping</category>
+      <category>reproducible-report</category>
+      <category>reproducible-research</category>
+      <category>PIB</category>
+      <category>GDP</category>
+      <guid>https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp</guid>
+      <pubDate>seg, 24 ago 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-6-1.png" medium="image" type="image/png" width="1536" height="768"/>
+    </item>
     <item>
       <title>Interactive Plots with `dygraphs`</title>
       <dc:creator>Paulo Ferreira Naibert</dc:creator>
