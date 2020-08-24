@@ -1,4 +1,8 @@
 ################################################
+# load libraries
+library(xts)
+
+################################################
 # Download GDP long series
 gdp.dl <- function()
 {
@@ -144,4 +148,7 @@ return( as.Date(data) )
 qtr2num <- function(data) return( as.numeric(substring(data, 1, 4)) - 1/4 + as.numeric( substring(data, 7) )/4 )
 
 ####################################################
+normalize <- function(data, date) return( 100*data / rep( data[date], NROW(data) ) )
 
+####################################################
+normalize.yr <- function(data, date) return( 100*data/mean(data[date]) )
