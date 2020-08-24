@@ -201,7 +201,7 @@ So that is our little report of the brazilian GDP series.
 On future posts I intend to break it up by sectors and components.
 
 ## Automation and cron jobs
-Also, we can run the `gdp.dl()` and  `gdp.transform()` functions separately on an executable script using cron jobs ([more details here](https://en.wikipedia.org/wiki/Cronr)) to autmate the scraping part.
+Also, we can run the `gdp.dl()` and  `gdp.transform()` functions separately on an executable script using cron jobs ([more details here](https://en.wikipedia.org/wiki/Cron)) to autmate the scraping part.
 The rest of the script is completely reusable to automate reporting.
 
 ## Future dates
