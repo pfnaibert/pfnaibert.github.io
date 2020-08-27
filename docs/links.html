@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
   <meta name="generator" content="distill" />
-  <link rel="alternate" type="application/rss+xml" href="https://pfnaibert.github.io/index.xml" />
 
   <style type="text/css">
   /* Hide doc at startup (prevent jankiness while JS renders/transforms) */
@@ -22,24 +21,27 @@
   <!--radix_placeholder_meta_tags-->
   <title>Paulo Ferreira Naibert</title>
 
+  <meta property="description" itemprop="description" content="Some Links I find Useful (or fun)"/>
 
 
 
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
   <meta property="og:title" content="Paulo Ferreira Naibert"/>
   <meta property="og:type" content="article"/>
+  <meta property="og:description" content="Some Links I find Useful (or fun)"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="Paulo Ferreira Naibert"/>
 
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
   <meta property="twitter:title" content="Paulo Ferreira Naibert"/>
+  <meta property="twitter:description" content="Some Links I find Useful (or fun)"/>
 
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","site","listing"]}},"value":[{"type":"character","attributes":{},"value":["Paulo Ferreira Naibert"]},{"type":"character","attributes":{},"value":["distill::distill_website"]},{"type":"character","attributes":{},"value":["posts"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description"]}},"value":[{"type":"character","attributes":{},"value":["Paulo Ferreira Naibert"]},{"type":"character","attributes":{},"value":["Some Links I find Useful (or fun)"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -1283,12 +1285,12 @@
 
 </head>
 
-<body class="layout-listing">
+<body>
 
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Paulo Ferreira Naibert","authors":[]}
+{"title":"Paulo Ferreira Naibert","description":"Some Links I find Useful (or fun)","authors":[]}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -1315,482 +1317,79 @@
 <!--/radix_placeholder_navigation_before_body-->
 <!--radix_placeholder_site_before_body-->
 <!--/radix_placeholder_site_before_body-->
-<!--radix_placeholder_article_listing-->
-
-<style type="text/css">
-
-/* Styles for listing layout (hide title) */
-.layout-listing d-title, .layout-listing .d-title {
-  display: none;
-}
-
-/* Styles for posts lists (not auto-injected) */
-
-
-.posts-with-sidebar {
-  padding-left: 45px;
-  padding-right: 45px;
-}
-
-.posts-list .description h2,
-.posts-list .description p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
-}
-
-.posts-list .description h2 {
-  font-weight: 700;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.posts-list h2.post-tag {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  padding-bottom: 12px;
-}
-.posts-list {
-  margin-top: 60px;
-  margin-bottom: 24px;
-}
-
-.posts-list .post-preview {
-  text-decoration: none;
-  overflow: hidden;
-  display: block;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 24px 0;
-}
-
-.post-preview-last {
-  border-bottom: none !important;
-}
-
-.posts-list .posts-list-caption {
-  grid-column: screen;
-  font-weight: 400;
-}
-
-.posts-list .post-preview h2 {
-  margin: 0 0 6px 0;
-  line-height: 1.2em;
-  font-style: normal;
-  font-size: 24px;
-}
-
-.posts-list .post-preview p {
-  margin: 0 0 12px 0;
-  line-height: 1.4em;
-  font-size: 16px;
-}
-
-.posts-list .post-preview .thumbnail {
-  box-sizing: border-box;
-  margin-bottom: 24px;
-  position: relative;
-  max-width: 500px;
-}
-.posts-list .post-preview img {
-  width: 100%;
-  display: block;
-}
-
-.posts-list .metadata {
-  font-size: 12px;
-  line-height: 1.4em;
-  margin-bottom: 18px;
-}
-
-.posts-list .metadata > * {
-  display: inline-block;
-}
-
-.posts-list .metadata .publishedDate {
-  margin-right: 1em;
-}
-
-.posts-list .metadata .tags {
-  margin-top: 1em;
-}
-
-.posts-list .tags .tag {
-  color: rgba(0,0,0,0.67);
-  padding: 0.3em 0.5em;
-  margin: 0;
-  font-size: 80%;
-  border: 1px solid rgba(0,0,0,0.4);
-  border-radius: 3px;
-  text-transform: uppercase;
-  font-weight: 500;
-}
-
-.posts-list img {
-  opacity: 1;
-}
-
-.posts-list img[data-src] {
-  opacity: 0;
-}
-
-.posts-more {
-  clear: both;
-}
-
-
-.posts-sidebar {
-  font-size: 16px;
-}
-
-.posts-sidebar h3 {
-  font-size: 16px;
-  margin-top: 0;
-  margin-bottom: 0.5em;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  margin-bottom: 30px;
-}
-
-.categories ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.categories li {
-  color: rgba(0, 0, 0, 0.8);
-  margin-bottom: 0;
-}
-
-.categories li>a {
-  border-bottom: none;
-}
-
-.categories li>a:hover {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
-.categories .active {
-  font-weight: 600;
-}
-
-.categories .category-count {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-
-@media(min-width: 768px) {
-  .posts-list .post-preview h2 {
-    font-size: 26px;
-  }
-  .posts-list .post-preview .thumbnail {
-    float: right;
-    width: 35%;
-    margin-bottom: 0;
-  }
-  .posts-list .post-preview .description {
-    float: left;
-    width: 45%;
-  }
-  .posts-list .post-preview .metadata {
-    float: left;
-    width: 15%;
-    margin-top: 8px;
-  }
-  .posts-list .post-preview p {
-    margin: 0 0 12px 0;
-    line-height: 1.5em;
-    font-size: 16px;
-  }
-  .posts-with-sidebar .posts-list {
-    float: left;
-    width: 72%;
-  }
-  .posts-with-sidebar .posts-sidebar {
-    float: right;
-    width: 20%;
-    margin-top: 60px;
-    padding-top: 24px;
-    padding-bottom: 24px;
-  }
-}
-
-.downlevel .posts-list .post-preview {
-  color: inherit;
-}
-
-</style>
-
-<script type="application/javascript">
-
-function init_posts_list() {
-
-  function load_image(img) {
-    var src = $(img).attr('data-src');
-    if (src) {
-      $(img).attr('src', src);
-      $(img).load(function() {
-        img.removeAttribute('data-src');
-      });
-    }
-  }
-
-  function set_posts_visible(posts, visible) {
-    if (visible) {
-
-      // show bottom border by default
-      $(posts).removeClass('post-preview-last');
-
-      // apply limits if need be
-      var max_posts = 25;
-      var apply_limits = $('.posts-container').hasClass('posts-apply-limit');
-      if (apply_limits && posts.length > max_posts) {
-        posts = $(posts).slice(0, max_posts);
-      } else {
-        $('.posts-more a').addClass('hidden');
-      }
-
-      // apply last style
-      $(posts.slice(-1)[0]).addClass('post-preview-last');
-
-      $(posts).removeClass('hidden');
-      $(posts).find('img[data-src]').each(function(i, img) {
-        load_image(img);
-      });
-    } else {
-      $(posts).addClass('hidden');
-    }
-  }
-
-  function apply_hash_filter() {
-
-    // clear active state
-    $('.categories .active').removeClass('active');
-
-    // mark all posts invisible to start
-    set_posts_visible($('.posts-list').children('a'), false);
-
-    // if we have a hash filter
-    if (window.location.hash) {
-
-      // mark posts that match the category visible
-      var page_category = window.location.hash.replace("#", "");
-      var posts = $('.post-metadata').map(function(idx, script) {
-        var metadata = $.parseJSON($(script).html());
-        var post = null;
-        $.each(metadata.categories, function(idx, category) {
-          category = category.replace(/ /g,"_");
-          if (category == page_category) {
-            post = $(script).parent().get();
-            return false;
-          }
-        });
-        return post;
-      });
-      set_posts_visible(posts, true);
-
-      // mark the hash active
-      $('.categories li>a[href="' + window.location.hash + '"]').addClass('active');
-
-    } else {
-
-      // no hash filter, make all posts visible (subject to max display)
-      set_posts_visible($('.posts-list').children(), true);
-
-    }
-  }
-
-  // more articles
-  function apply_post_limits(apply) {
-    if (apply) {
-      $('.posts-container').addClass('posts-apply-limit');
-      $('.posts-more a').removeClass('hidden');
-    } else {
-      $('.posts-container').removeClass('posts-apply-limit');
-      $('.posts-more a').addClass('hidden');
-    }
-  }
-
-  // hash filter handling
-  apply_hash_filter();
-  $(window).on('hashchange',function() {
-    apply_post_limits(true);
-    apply_hash_filter();
-  });
-
-  // more articles link
-  $('.posts-more a').click(function(e) {
-    e.preventDefault();
-    apply_post_limits(false);
-    apply_hash_filter();
-    return false;
-  });
-
-}
-
-</script>
-
-
-
-<div class="posts-container posts-with-sidebar posts-apply-limit l-screen-inset">
-<div class="posts-list">
-<h1 class="posts-list-caption">Paulo Ferreira Naibert</h1>
-<a href="posts/2020-08-24-scrape-gdp/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","ggplot2","dygraphs","scraping","webscraping","reproducible-report","reproducible-research","PIB","GDP"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 24, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-6-1.png"/>
-</div>
-<div class="description">
-<h2>Scraping Brazilian GDP data from the SIDRA-IBGE website</h2>
-<p>Scraping Brazilian GDP data from the SIDRA-IBGE website</p>
-</div>
-</a>
-<a href="posts/2020-08-21-dygraph/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","dygraphs","PIB","GDP","plot"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 21, 2020</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Interactive Plots with `dygraphs`</h2>
-<p>`dygraphs` allows us to make interactive plots in webpages.</p>
-</div>
-</a>
-<a href="posts/2020-08-20-ggplot/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","ggplot2","PIB","GDP","plot"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 20, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-20-ggplot/economist_plot.png"/>
-</div>
-<div class="description">
-<h2>Times Series Plots with `ggplot2`</h2>
-<p>`ggplot2` enables us to make beautiful graphics (as long as you use the tidyverse framework)</p>
-</div>
-</a>
-<a href="posts/2020-08-18-converting-dates/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","R-base","dates","text-manipulation"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 18, 2020</div>
-</div>
-<div class="thumbnail">
-<img/>
-</div>
-<div class="description">
-<h2>Converting Date Strings to Numeric Dates</h2>
-<p>Converting Date Strings to Numeric Dates.</p>
-</div>
-</a>
-<a href="posts/2020-08-18-wrapper-gdp/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","R-base","GDP","PIB","plot","wrapper","reproducible-research"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 18, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png"/>
-</div>
-<div class="description">
-<h2>Making a wrapper to Import and Plot Data</h2>
-<p>To make research reproducible, we have to automate the way `R` performs tasks.</p>
-</div>
-</a>
-<a href="posts/2020-08-17-plot-base-gdp/" class="post-preview">
-<script class="post-metadata" type="text/json">{"categories":["R","R-base","GDP","PIB","plot"]}</script>
-<div class="metadata">
-<div class="publishedDate">Aug. 17, 2020</div>
-</div>
-<div class="thumbnail">
-<img data-src="posts/2020-08-17-plot-base-gdp/gdp.png"/>
-</div>
-<div class="description">
-<h2>Graphing the Brazilian GDP in `R`</h2>
-<p>Graphing the Brazilian GDP in `R`.</p>
-</div>
-</a>
-</div>
-<div class="posts-sidebar">
-<div class="sidebar-section categories">
-<h3>Categories</h3>
-<ul>
-<li>
-<a href="#dates">dates</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#dygraphs">dygraphs</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#GDP">GDP</a>
-<span class="category-count">(5)</span>
-</li>
-<li>
-<a href="#ggplot2">ggplot2</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#PIB">PIB</a>
-<span class="category-count">(5)</span>
-</li>
-<li>
-<a href="#plot">plot</a>
-<span class="category-count">(4)</span>
-</li>
-<li>
-<a href="#R">R</a>
-<span class="category-count">(6)</span>
-</li>
-<li>
-<a href="#R-base">R-base</a>
-<span class="category-count">(3)</span>
-</li>
-<li>
-<a href="#reproducible-report">reproducible-report</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#reproducible-research">reproducible-research</a>
-<span class="category-count">(2)</span>
-</li>
-<li>
-<a href="#scraping">scraping</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#text-manipulation">text-manipulation</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#webscraping">webscraping</a>
-<span class="category-count">(1)</span>
-</li>
-<li>
-<a href="#wrapper">wrapper</a>
-<span class="category-count">(1)</span>
-</li>
-</ul>
-</div>
-</div>
-<div class="posts-more">
-<a href="#">More articles &raquo;</a>
-</div>
-</div>
-<!--/radix_placeholder_article_listing-->
 
 <div class="d-title">
 <h1>Paulo Ferreira Naibert</h1>
-
+<p><p>Some Links I find Useful (or fun)</p></p>
 </div>
 
 
 <div class="d-article">
-
+<h2 id="interesting-links">Interesting Links</h2>
+<ul>
+<li><a href="http://nefin.com.br/">nefin</a></li>
+<li><a href="https://www.r-bloggers.com/">r-bloggers</a></li>
+<li><a href="https://www.r-econometrics.com/">r-econometrics</a></li>
+<li><a href="http://www.reproduciblefinance.com/">Reproducible Finance</a></li>
+<li><a href="https://www.statmethods.net/">statmethods</a></li>
+<li><a href="http://www.rcpp.org/">rcpp</a></li>
+<li><a href="http://numerical.recipes/">Numerical Recipes</a></li>
+<li><a href="http://econphd.econwiki.com/index.htm">econwiki</a></li>
+<li><a href="http://cvxr.com/">CVX - Convex Optimization</a></li>
+<li><a href="https://rstudio.github.io/tufte/">tufte handout</a></li>
+<li><a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html">Ken French Data Library</a></li>
+</ul>
+<h2 id="journals">Journals</h2>
+<ul>
+<li><a href="https://journal.r-project.org/">R Journal</a></li>
+</ul>
+<h2 id="personal-websites">Personal Websites</h2>
+<ul>
+<li><a href="https://sites.google.com/site/gabrielitorm/home">Gabrielito</a></li>
+<li><a href="https://www.cs.princeton.edu/~bwk/">Brian Kernighan</a></li>
+<li><a href="https://kochiuyu.github.io/">Chiu Yu Ko</a></li>
+<li><a href="https://www.stat.pitt.edu/stoffer/index.html">stoffer</a></li>
+<li><a href="https://www.sas.upenn.edu/~fdiebold/">Francis X. Diebold</a></li>
+<li><a href="https://yihui.org/">Yihui Xie</a></li>
+<li><a href="http://matt.might.net/">Matt Might</a></li>
+<li><a href="https://www.johnhcochrane.com/">John Cochrane</a></li>
+<li><a href="https://johnhcochrane.blogspot.com/">Grumpy Economist</a></li>
+<li><a href="https://faculty.washington.edu/ezivot/index.htm">Eric Zivot</a></li>
+<li><a href="https://www.bell-labs.com/usr/dmr/www/index.html">Dennis M. Ritchie</a></li>
+<li><a href="https://www.sas.upenn.edu/~jesusfv/index.html">Jesus Fernandez Villaverde</a></li>
+<li><a href="https://statweb.stanford.edu/~tibs/">Rob Tibshirani</a></li>
+<li><a href="https://www.kellogg.northwestern.edu/faculty/jagannathan/htm/">Ravi Jagannathan</a></li>
+<li><a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/index.html">Ken French</a></li>
+<li><a href="https://econweb.ucsd.edu/~jhamilto/">James D. Hamilton</a></li>
+</ul>
+<h2 id="books">Books</h2>
+<ul>
+<li><a href="https://r4ds.had.co.nz/">R for Data Science</a></li>
+<li><a href="https://www.datascienceatthecommandline.com/1e/">dscl</a></li>
+</ul>
+<h2 id="specific-links">Specific Links</h2>
+<ul>
+<li><a href="http://www.onthelambda.com/2014/09/17/fun-with-rprofile-and-customizing-r-startup/">R profile</a></li>
+<li><a href="https://www.statmethods.net/interface/customizing.html">R profile statmethods</a></li>
+<li><a href="https://kochiuyu.github.io/programming/tikz/consumer/">TikZ examples</a></li>
+<li><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">vim-R</a></li>
+<li><a href="https://www.stat.pitt.edu/stoffer/tsa4/Rissues.htm">stoffer-Rissues</a></li>
+<li><a href="https://www.r-bloggers.com/creating-shaded-areas-in-r/">R-plot shades</a></li>
+<li><a href="http://www.alisonsinclair.ca/2011/03/shading-between-curves-in-r/">R-plot shaddes</a></li>
+<li><a href="https://www.r-bloggers.com/%f0%9f%93%81-project-oriented-workflow/">Project-oriented workflow</a></li>
+</ul>
+<h2 id="r-packages">R packages</h2>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/itsmr/">itsmr</a></li>
+<li><a href="https://cran.r-project.org/web/packages/astsa/">astsa</a></li>
+</ul>
+<h2 id="bcb">BCB</h2>
+<ul>
+<li><a href="https://dadosabertos.bcb.gov.br/">dados abertos</a></li>
+<li><a href="https://www.bcb.gov.br/estatisticas">estatísticas</a></li>
+<li><a href="https://gabrielrega.com/2017/07/26/baixando-series-diretamente-do-sgs-do-banco-central-pelo-r/">SGS R</a></li>
+<li><a href="https://www.tesourotransparente.gov.br/">Tesourro Transparente</a></li>
+</ul>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

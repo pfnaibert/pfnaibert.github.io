@@ -1,0 +1,71 @@
+---
+title: "Paulo Ferreira Naibert"
+description: |
+  Some Links I find Useful (or fun)
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Interesting Links
+
+- [nefin](http://nefin.com.br/)
+- [r-bloggers](https://www.r-bloggers.com/)
+- [r-econometrics](https://www.r-econometrics.com/)
+- [Reproducible Finance](http://www.reproduciblefinance.com/)
+- [statmethods](https://www.statmethods.net/)
+- [rcpp](http://www.rcpp.org/)
+- [Numerical Recipes](http://numerical.recipes/)
+- [econwiki](http://econphd.econwiki.com/index.htm)
+- [CVX - Convex Optimization](http://cvxr.com/)
+- [tufte handout](https://rstudio.github.io/tufte/)
+- [Ken French Data Library](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html)
+
+## Journals
+- [R Journal](https://journal.r-project.org/)
+
+## Personal Websites
+
+- [Gabrielito](https://sites.google.com/site/gabrielitorm/home)
+- [Brian Kernighan](https://www.cs.princeton.edu/~bwk/)
+- [Chiu Yu Ko](https://kochiuyu.github.io/)
+- [stoffer](https://www.stat.pitt.edu/stoffer/index.html)
+- [Francis X. Diebold](https://www.sas.upenn.edu/~fdiebold/)
+- [Yihui Xie](https://yihui.org/)
+- [Matt Might](http://matt.might.net/)
+- [John Cochrane](https://www.johnhcochrane.com/)
+- [Grumpy Economist](https://johnhcochrane.blogspot.com/)
+- [Eric Zivot](https://faculty.washington.edu/ezivot/index.htm)
+- [Dennis M. Ritchie](https://www.bell-labs.com/usr/dmr/www/index.html)
+- [Jesus Fernandez Villaverde](https://www.sas.upenn.edu/~jesusfv/index.html)
+- [Rob Tibshirani](https://statweb.stanford.edu/~tibs/)
+- [Ravi Jagannathan](https://www.kellogg.northwestern.edu/faculty/jagannathan/htm/)
+- [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/index.html)
+- [James D. Hamilton](https://econweb.ucsd.edu/~jhamilto/)
+
+## Books
+- [R for Data Science](https://r4ds.had.co.nz/)
+- [dscl](https://www.datascienceatthecommandline.com/1e/)
+
+
+## Specific Links
+- [R profile](http://www.onthelambda.com/2014/09/17/fun-with-rprofile-and-customizing-r-startup/)
+- [R profile statmethods](https://www.statmethods.net/interface/customizing.html)
+- [TikZ examples](https://kochiuyu.github.io/programming/tikz/consumer/)
+- [vim-R](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
+- [stoffer-Rissues](https://www.stat.pitt.edu/stoffer/tsa4/Rissues.htm)
+- [R-plot shades](https://www.r-bloggers.com/creating-shaded-areas-in-r/)
+- [R-plot shaddes](http://www.alisonsinclair.ca/2011/03/shading-between-curves-in-r/)
+- [Project-oriented workflow](https://www.r-bloggers.com/%f0%9f%93%81-project-oriented-workflow/)
+
+## R packages
+- [itsmr](https://cran.r-project.org/web/packages/itsmr/)
+- [astsa](https://cran.r-project.org/web/packages/astsa/)
+- [ggplot2](https://ggplot2-book.org/)
+
+## BCB
+- [dados abertos](https://dadosabertos.bcb.gov.br/)
+- [estatísticas](https://www.bcb.gov.br/estatisticas)
+- [SGS R](https://gabrielrega.com/2017/07/26/baixando-series-diretamente-do-sgs-do-banco-central-pelo-r/)
+- [Tesourro Transparente](https://www.tesourotransparente.gov.br/)

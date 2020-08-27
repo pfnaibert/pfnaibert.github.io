@@ -9,6 +9,8 @@ navbar:
       href: index.html
     - text: "About"
       href: about.html
+    - text: "Links"
+      href: links.html
     - icon: fab fa-github
       href: https://github.com/pfnaibert
     - icon: fa fa-rss
