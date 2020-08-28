@@ -1,5 +1,33 @@
 [
   {
+    "path": "posts/2020-08-27-gdp-shares/",
+    "title": "Shares of the Brazilian GDP data from the SIDRA-IBGE website",
+    "description": "plot shares of the brazilian GDP data from the SIDRA-IBGE website",
+    "author": [
+      {
+        "name": "Paulo Ferreira Naibert",
+        "url": "https://github.com/pfnaibert/"
+      }
+    ],
+    "date": "2020-08-27",
+    "categories": [
+      "R",
+      "ggplot2",
+      "dygraphs",
+      "scraping",
+      "webscraping",
+      "reproducible-report",
+      "reproducible-research",
+      "PIB",
+      "GDP"
+    ],
+    "preview": "posts/2020-08-27-gdp-shares/post_files/figure-html5/unnamed-chunk-6-1.png",
+    "last_modified": "2020-08-27T21:25:18-03:00",
+    "input_file": {},
+    "preview_width": 1536,
+    "preview_height": 768
+  },
+  {
     "path": "posts/2020-08-24-scrape-gdp/",
     "title": "Scraping Brazilian GDP data from the SIDRA-IBGE website",
     "description": "Scraping Brazilian GDP data from the SIDRA-IBGE website",
