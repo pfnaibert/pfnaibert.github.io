@@ -1,0 +1,271 @@
+---
+title: "Shares of the Brazilian GDP data from the SIDRA-IBGE website"
+description: "plot shares of the brazilian GDP data from the SIDRA-IBGE website"
+categories:
+  - R
+  - ggplot2
+  - dygraphs
+  - scraping
+  - webscraping
+  - reproducible-report
+  - reproducible-research
+  - PIB
+  - GDP
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+draft: false
+date: 2020-08-27
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+In this post, we will calculate the participation of GDP by sectors and by demand variables, and make plots and tables.
+As usual, my source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
+
+First, let's load up our functions and other libraries.
+
+```{r, error=T, warning=T, message=T}
+# source functions
+source("../../R/funs-macro.R")
+
+# load libraries
+library(reshape2)
+library(ggplot2)
+library(dygraphs)
+#' [Why not dplyr](https://www.stat.pitt.edu/stoffer/tsa4/Rissues.htm)
+```
+
+Load the data.
+
+```{r}
+# load data
+gdp.nom  <- readRDS("../../data/gdp-nominal.rds")
+gdp.rea  <- readRDS("../../data/gdp-real-NSA.rds")
+gdp.rsa  <- readRDS("../../data/gdp-real-SA.rds")
+```
+
+## GDP Levels (Current Values)
+
+Before we calculate the shares, let's replicate the [IBGE release of 2020:Q1 GDP](https://sidra.ibge.gov.br/tabela/1846#/n1/all/v/all/p/202001/c11255/90687,90691,90696,90705,90706,90707,93404,93405,93406,93407,93408,102880/l/v,,c11255+t+p/resultado), but with all the other quarters included.
+
+```{r}
+# gdp table function
+gdp.table <- function(data, type="level" , period="qtr", digits=0)
+{
+# TODO: ERROR CATCHING
+
+# subset vars by type
+if(type=="level") vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "DE", "X", "M")
+else if(type=="ret4") vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "X", "M")
+else if(type=="ret1") vars <- c("AGR", "IND", "SER", "VAB", "GDP", "C", "G", "FBKF", "X", "M")
+
+# subset time by period
+if(period =="year") data <- data[c(grepl("*-12-*", data$date)[-NROW(data)], TRUE),]
+
+# trasnform data
+newdata <- data.frame( t( apply( data[,vars], 2 , rev) ) )
+
+# attribute colnames
+if(period =="qtr") colnames(newdata) <- rev( paste0( data[,"year"], ":Q", data[,"qtr"] ) )
+else if(period =="year") colnames(newdata) <- rev( c( paste0( data[-NROW(data),"year"] ), paste0( data[NROW(data),"year"], ":Q", data[NROW(data),"qtr"] )  ) )
+
+
+# return table
+return( round(newdata, digits) )
+}
+
+# pretty show table
+paged_table(gdp.table(gdp.nom), list(rows.print=12) )
+```
+
+Full disclosure, I started by trying to do this with the `dplyr` package, but I am not as experienced with the *GRAMMAR* of data, so I defaulted to the `R-base` functions.
+
+## GDP Shares (Current Values)
+
+Now that we have the GDP nominal levels, let's calculate the share of each variable.
+
+```{r}
+# gdp shares
+gdp.share <- cbind(gdp.nom[,c(1,2,3)], 100*gdp.nom[,-c(1,2,3)]/gdp.nom$GDP )
+
+# sum gdp.nom over 4 quarters and coerce to data.frame
+gdp.nom.ac4  <- data.frame( apply( gdp.nom[,-c(1,2,3)], 2, sum4 ) )
+
+# divide by gdp to get shares
+gdp.share.ac <- cbind( gdp.nom[,c(1,2,3)], 100*gdp.nom.ac4/gdp.nom.ac4$GDP )
+```
+
+### By Quarter
+
+```{r}
+paged_table(gdp.table(gdp.share, digits=1), list(rows.print=12) )
+```
+
+```{r}
+# plot SECTORS function
+plot.sector.gg <- function(data, start.year=0, type="qtr")
+{
+# TODO: ERROR CATCHING
+
+# index of years
+id.year <- (data$year >= start.year)
+
+# conditional date
+if(type=="year")
+{
+id.qtr       <- c(grepl(4, data$qtr)[-NROW(data)], TRUE)
+newdata      <- data[(id.year & id.qtr),]
+newdata$date <- newdata$year;
+newdata      <- newdata[,c("date", "AGR", "IND", "SER", "TAX")]
+} else
+{
+newdata <- data[id.year, c("date", "AGR", "IND", "SER", "TAX")]
+}
+
+# melt data
+newdata <- melt( newdata, id="date" )
+
+#plot
+ggplot(newdata, aes( x = date, y = value, fill = variable) ) +
+geom_bar( stat="identity" ) +
+geom_hline(yintercept=c(0, 100) ) +
+xlab("") + ylab("")
+}
+
+# Acutally plot Sectors
+plot.sector.gg(gdp.share, start.year=2019)
+```
+
+```{r}
+# plot DEMAND function
+plot.demand.gg <- function(data, start.year=0, type="qtr")
+{
+# TODO: ERROR CATCHING
+
+data$M <- -data$M
+
+# index of years
+id.year <- (data$year >= start.year)
+
+# conditional date
+if(type=="year")
+{
+id.qtr       <- c(grepl(4, data$qtr)[-NROW(data)], TRUE)
+newdata      <- data[(id.year & id.qtr),]
+newdata$date <- newdata$year;
+newdata      <- newdata[, c("date", "C", "G", "FBKF", "DE", "X", "M")]
+} else
+{
+newdata <- data[id.year, c("date", "C", "G", "FBKF", "DE", "X", "M")]
+}
+
+# melt data
+newdata <- melt( newdata, id="date" )
+
+#plot
+ggplot(newdata, aes( x = date, y = value, fill = variable) ) +
+geom_bar( stat="identity") +
+geom_hline(yintercept=c(0, 100) ) +
+xlab("") + ylab("")
+}
+
+# Actually plot DEMAND
+plot.demand.gg(gdp.share, 2019)
+```
+
+In the plot above, notice that the rectangle above $100$ is the same as the one below $0$.
+This is because of the Identity $GDP_t = C_t + I_t + G_t + (X_t - M_t)$.
+With $I_t$ being equal to fixed investment plus Inventory variation.
+Inventory variation may be positive or negative, and depending on its sign, it shows either above or below zero in the graph.
+Above zero we have $C_t + I_t + G_t + X_t$.
+Below zero we have imports $M_t$ (and ocasionally the variation of inventory).
+Only the full sum $C_t + I_t + G_t + (X_t - M_t)$ equals to $100$.
+So, the part below $0$ equals the part above $100$.
+
+
+### AC 4Q
+```{r}
+# visualize
+paged_table(gdp.table(gdp.share.ac, digits=1, period="year"), list(rows.print=12) )
+```
+
+```{r}
+# plot SECTORS AC
+plot.sector.gg(gdp.share.ac, start.year=2014, type="year")
+```
+
+```{r}
+# plot DEMAND AC
+plot.demand.gg(gdp.share.ac, 2014, type="year")
+```
+
+## dygraphs
+
+Now, let's make interactive plots with dygraphs:
+
+### By Quarter
+
+```{r, error=T}
+vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "DE", "X", "M")
+tmp <- gdp.share[,vars]; tmp$M <- -tmp$M
+tmp.ts <- ts( tmp, start = c(1996,1), freq=4);
+
+dygraph(tmp.ts[,c("AGR", "IND", "SER", "TAX")], main = "GDP by Sectors") %>%
+  dyStackedBarGroup(c("AGR", "IND", "SER", "TAX")) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-5, 120) )
+
+dygraph(tmp.ts[,c("C", "FBKF", "DE", "G", "X", "M")], main = "GDP by Demand") %>%
+  dyStackedBarGroup( c("C", "G", "X", "FBKF", "DE") ) %>%
+  dyStackedBarGroup( c("M") ) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-20, 140) )
+```
+
+### AC4Q
+
+```{r, error=T}
+tmp <- gdp.share.ac[,vars]; tmp$M <- -tmp$M
+tmp.ts <- ts( tmp, start = c(1996,1), freq=4);
+
+dygraph(tmp.ts[,c("AGR", "IND", "SER", "TAX")], main = "GDP by Sectors") %>%
+  dyStackedBarGroup(c("AGR", "IND", "SER", "TAX")) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-5, 120) )
+
+dygraph(tmp.ts[,c("C", "FBKF", "DE", "G", "X", "M")], main = "GDP by Demand") %>%
+  dyStackedBarGroup( c("C", "G", "X", "FBKF", "DE") ) %>%
+  dyStackedBarGroup( c("M") ) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-20, 140) )
+```
+
+### AC4Q Only Years
+
+```{r, error=T}
+library(forecast)
+tmp.ts <- ts(subset(tmp.ts, quarter=4 ), start=1996, freq=1)
+
+dygraph(tmp.ts[,c("AGR", "IND", "SER", "TAX")], main = "GDP by Sectors") %>%
+  dyStackedBarGroup(c("AGR", "IND", "SER", "TAX")) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-5, 120) )
+
+dygraph(tmp.ts[,c("C", "FBKF", "DE", "G", "X", "M")], main = "GDP by Demand") %>%
+  dyStackedBarGroup( c("C", "G", "X", "FBKF", "DE") ) %>%
+  dyStackedBarGroup( c("M") ) %>%
+  dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+  dyAxis("y", valueRange = c(-20, 140) )
+```
+
+That's it.
+
+# Thank you for reading!
