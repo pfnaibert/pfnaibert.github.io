@@ -157,16 +157,16 @@ return(data)
 }
 
 ####################################################
-gdp.df2xts <- function(gdp.df)
+df2xts <- function(df)
 {
 
 # require xts
-if(!require(xts)) stop("\nInstall xts package:\nHere use the following line:\ninstall.packages(\"xts\")")
+# if(!require(xts)) stop("\nInstall xts package:\nHere use the following line:\ninstall.packages(\"xts\")")
 # require data.frame
-if(!class(gdp.df) == "data.frame") stop("\nYour data is not a dataframe.\nConvert your data")
+if(!class(df) == "data.frame") stop("\nYour data is not a dataframe.\nConvert your data")
 
-gdp.xts <- xts(gdp.df[,-c(1,2,3)], order.by=qtr2date(gdp.df[,1]) )
-return( gdp.xts)
+df.xts <- xts(df[,-1], order.by=df[,1] )
+return( df.xts )
 }
 
 ####################################################
@@ -236,3 +236,4 @@ normalize <- function(data, date) return( 100*data / rep( data[date], NROW(data)
 
 ####################################################
 normalize.yr <- function(data, date) return( 100*data/mean(data[date]) )
+
