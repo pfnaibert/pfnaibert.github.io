@@ -2,7 +2,6 @@
 # Download GDP long series
 gdp.dl <- function()
 {
-
 # urls for site download CSV
 # 1846 -- Valores a preços correntes (Milhões de Reais)
 url1 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela1846.csv&terr=N&rank=-&query=t/1846/n1/all/v/all/p/all/c11255/all/d/v585%204/l/v%2Bt,c11255,p"
@@ -13,15 +12,32 @@ url2 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela6612.csv&
 # 6613 -- Valores encadeados a preços de 1995 com ajuste sazonal (Milhões de Reais)
 url3 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela6613.csv&terr=N&rank=-&query=t/6613/n1/all/v/all/p/all/c11255/all/d/v9319%204/l/v%2Bt,c11255,p"
 
+# Tabela 1620 - Série encadeada do índice de volume trimestral (Base: média 1995 = 100)
+url4 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela1620.csv&terr=N&rank=-&query=t/1620/n1/all/v/all/p/all/c11255/all/d/v583%204/l/t%2Bv,c11255,p"
+
+# Tabela 5932 - Taxa de variação do índice de volume trimestral
+url5 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela5932.csv&terr=N&rank=-&query=t/5932/n1/all/v/6561/p/all/c11255/all/d/v6561%201/l/t%2Bv,c11255,p" # QoQ-4
+url6 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela5932.csv&terr=N&rank=-&query=t/5932/n1/all/v/6562/p/all/c11255/all/d/v6562%201/l/t%2Bv,c11255,p" # 4Qo4Q
+url7 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela5932.csv&terr=N&rank=-&query=t/5932/n1/all/v/6563/p/all/c11255/all/d/v6563%201/l/t%2Bv,c11255,p" # Ac. Year
+url8 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela5932.csv&terr=N&rank=-&query=t/5932/n1/all/v/6564/p/all/c11255/all/d/v6564%201/l/t%2Bv,c11255,p" # QoQ-1
+# url9 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela5932.csv&terr=N&rank=-&query=t/5932/n1/all/v/all/p/all/c11255/all/d/v6561%201,v6562%201,v6563%201,v6564%201/l/t,v%2Bc11255,p"
+
 # Download Data json via API
 # download.file("https://apisidra.ibge.gov.br/values/t/1846/n1/all/v/all/p/all/c11255/all/d/v585%204", "CNT-SIDRA-1846.json")
 # download.file("https://apisidra.ibge.gov.br/values/t/6612/n1/all/v/all/p/all/c11255/all/d/v9318%204", "CNT-SIDRA-6612.json")
 # download.file("https://apisidra.ibge.gov.br/values/t/6613/n1/all/v/all/p/all/c11255/all/d/v9319%204", "CNT-SIDRA-6613.json")
+# download.file("https://apisidra.ibge.gov.br/values/t/1620/n1/all/v/all/p/all/c11255/all/d/v583%204", "CNT-SIDRA-1620.json")
+# download.file("https://apisidra.ibge.gov.br/values/t/5932/n1/all/v/all/p/all/c11255/all/d/v6561%201,v6562%201,v6563%201,v6564%201", "CNT-SIDRA-5932.json")
 
 # Download Data CSV VIA SITE URL
 download.file(url1, "../../data/CNT-SIDRA-1846.csv") # current 10^6 BRL
 download.file(url2, "../../data/CNT-SIDRA-6612.csv") # chained 10^6 BRL from 1995 NSA
 download.file(url3, "../../data/CNT-SIDRA-6613.csv") # chained 10^6 BRL from 1995 SA
+download.file(url4, "../../data/CNT-SIDRA-1620.csv") # chained series of quarterly volume (1995=100)
+download.file(url5, "../../data/CNT-SIDRA-5932-ret4.csv") #
+download.file(url6, "../../data/CNT-SIDRA-5932-retsum4.csv") #
+download.file(url7, "../../data/CNT-SIDRA-5932-retyear.csv") #
+download.file(url8, "../../data/CNT-SIDRA-5932-ret1.csv") #
 
 # success message
 return(1)
@@ -41,82 +57,109 @@ return(newdata)
 }
 
 ################################################
-# load gdp raw
-gdp.save.df <- function()
+# gdp dates
+gdp.dates <- function(dates)
 {
-
-# NOMINAL
-# load trim CSV
-data <- load.trim("../../data/CNT-SIDRA-1846.csv", 5, 9) # current 10^6 BRL
-
-# dates # just do it once
-dates <- data[,1]
 # rownames are HUMAN readable `YYYY:QX`
 Q <- substring(dates, 1,1)
 Y <- substring(dates, 14,17)
 dates <- paste0(Y, ":","Q", Q)
 
-tmp1 <- qtr2date(dates)
-tmp2 <- substring(dates, 1,4)
-tmp3 <- substring(dates, 7)
+newdates <- qtr2date(dates)
+year     <- substring(dates, 1,4)
+quarter  <- substring(dates, 7)
+date.df  <- data.frame(newdates, year, quarter)
+return(date.df)
+}
 
-# data in data frame and colnames
-newdata <- data.frame(tmp1, tmp2, tmp3, sapply(data[,-1], as.numeric) )
-colnames(newdata) <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "TAX", "GDP", "C", "G", "FBKF", "DE", "X", "M")
-saveRDS(newdata,  "../../data/gdp-nominal.rds" )
+################################################
+# transform gdp data into df
+gdp.csv2df <- function(data)
+{
+dates  <- gdp.dates(data[,1])
+gdp.df <- data.frame(dates, sapply(data[,-1], as.numeric) )
+return(gdp.df)
+}
 
-# REAL
-# load trim CSV
-data <- load.trim("../../data/CNT-SIDRA-6612.csv", 5, 9) # chained 10^6 BRL from 1995 NSA
-# data in data frame and colnames
-newdata <- data.frame(tmp1, tmp2, tmp3, sapply(data[,-1], as.numeric) )
-colnames(newdata) <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "TAX", "GDP", "C", "G", "FBKF", "X", "M")
-saveRDS(newdata,  "../../data/gdp-real-NSA.rds" )
+################################################
+# gdp dates
+gdp.vars <- function(nvars)
+{
 
-# REAL with SESONAL ADJ
-# load trim CSV
-data <- load.trim("../../data/CNT-SIDRA-6613.csv", 5, 9) # chained 10^6 BRL from 1995 SA
-# data in data frame and colnames
-newdata <- data.frame(tmp1, tmp2, tmp3, sapply(data[,-1], as.numeric) )
-colnames(newdata) <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "GDP", "C", "G", "FBKF", "X", "M")
-# SAVE DF in RDS
-saveRDS(newdata,  "../../data/gdp-real-SA.rds" )
+# 21 vars plus dates
+vars.22 <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "GDP", "C", "G", "FBKF", "X", "M")
+
+# 22 vars plus dates
+vars.23 <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "TAX", "GDP", "C", "G", "FBKF", "X", "M")
+
+# 23 vars plus dates
+vars.24 <- c("date", "year", "qtr", "AGR", "IND", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "SER", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "VAB", "TAX", "GDP", "C", "G", "FBKF", "DE", "X", "M")
+
+if (!(nvars %in% c(22,23,24)) ) stop("invalid number of variales")
+else
+if(nvars==24) vars <- vars.24
+else
+if(nvars==23) vars <- vars.23
+else
+if(nvars==22) vars <- vars.22
+
+return(vars)
+}
+
+################################################
+#
+gdp.save.rets <- function()
+{
+
+# CHANGE -- ret4
+data              <- load.trim("../../data/CNT-SIDRA-5932-ret4.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                      # data into data frame
+colnames(newdata) <- gdp.vars(23)                                          # put colnames
+saveRDS(newdata,  "../../data/gdp-ret4.rds" )                              # save in RDS
+
+# CHANGE -- retsum4
+data              <- load.trim("../../data/CNT-SIDRA-5932-retsum4.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                         # data into data frame
+colnames(newdata) <- gdp.vars(23)                                             # put colnames
+saveRDS(newdata,  "../../data/gdp-retsum4.rds" )                              # save in RDS
+
+# CHANGE -- retyear
+data              <- load.trim("../../data/CNT-SIDRA-5932-retyear.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                         # data into data frame
+colnames(newdata) <- gdp.vars(23)                                             # put colnames
+saveRDS(newdata,  "../../data/gdp-retyear.rds" )                              # save in RDS
+
+# CHANGE -- ret1
+data              <- load.trim("../../data/CNT-SIDRA-5932-ret1.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                      # data into data frame
+colnames(newdata) <- gdp.vars(23)                                          # put colnames
+saveRDS(newdata,  "../../data/gdp-ret1.rds" )                              # save in RDS
 
 return(1)
 }
 
 ################################################
-# transform gdp
-gdp.transform <- function()
+# load gdp raw
+gdp.save.levels <- function()
 {
 
-gdp.nom <- readRDS("../../data/gdp-nominal.rds")
-gdp.rea <- readRDS("../../data/gdp-real-NSA.rds")
-gdp.rsa <- readRDS("../../data/gdp-real-SA.rds")
+# NOMINAL -- value in current 10^6 BRL
+data              <- load.trim("../../data/CNT-SIDRA-1846.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                 # data into data frame
+colnames(newdata) <- gdp.vars(24)                                     # put colnames
+saveRDS(newdata,  "../../data/gdp-nominal.rds" )                      # save in RDS
 
-# T/T-1
-gdp.ret1 <- cbind( gdp.rsa[,c(1,2,3)], apply(gdp.rsa[,-c(1,2,3)], 2, ret1) );
-saveRDS(gdp.ret1[-1,],  "../../data/gdp-ret1.rds" )
+# Volume index
+data              <- load.trim("../../data/CNT-SIDRA-1620.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                 # data into data frame
+colnames(newdata) <- gdp.vars(23)                                     # put colnames
+saveRDS(newdata,  "../../data/gdp-index-NSA.rds" )                    # save in RDS
 
-# T/T-4
-gdp.ret4 <- cbind( gdp.rea[,c(1,2,3)], apply(gdp.rea[,-c(1,2,3)], 2, ret4) );
-saveRDS(gdp.ret4[-c(1,2,3,4),],  "../../data/gdp-ret4.rds" )
-
-# AC4Q
-gdp.ac4  <- cbind( gdp.rea[,c(1,2,3)], apply(gdp.rea[,-c(1,2,3)], 2, sum4) );
-saveRDS(gdp.ac4[-c(1,2,3),],  "../../data/gdp-ac4.rds" )
-
-# T/T-4 AC4Q
-gdp.rac  <- cbind( gdp.rea[,c(1,2,3)], apply(gdp.rea[,-c(1,2,3)], 2, retsum4) );
-saveRDS(gdp.rac[-seq(1,7),],  "../../data/gdp-ret-ac4.rds" )
-
-# # share of GDP
-# gdp.shr  <- cbind( gdp.nom[,c(1,2,3)], 100*gdp.nom[,-c(1,2,3)]/gdp.nom$GDP );
-# saveRDS(gdp.shr[-seq(1,7),],  "../../data/gdp-share.rds" )
-#
-# # share of GDP
-# vab.shr  <- cbind( gdp.nom[,c(1,2,3)], 100*gdp.nom[,-c(1,2,3)]/gdp.nom$VAB );
-# saveRDS(vab.shr[-seq(1,7),],  "../../data/vab-share.rds" )
+# REAL -- value in chained 10^6 BRL from 1995 NSA
+data              <- load.trim("../../data/CNT-SIDRA-6612.csv", 5, 9) # load trim CSV
+newdata           <- gdp.csv2df(data)                                 # data into data frame
+colnames(newdata) <- gdp.vars(23)                                     # put colnames
+saveRDS(newdata,  "../../data/gdp-real-NSA.rds" )                     # save in RDS
 
 return(1)
 }
@@ -154,6 +197,19 @@ data <- readRDS("../../data/gdp-real-SA.rds")
 }
 
 return(data)
+}
+
+####################################################
+df2ts <- function(df)
+{
+
+# require xts
+# if(!require(xts)) stop("\nInstall xts package:\nHere use the following line:\ninstall.packages(\"xts\")")
+# require data.frame
+if(!class(df) == "data.frame") stop("\nYour data is not a dataframe.\nConvert your data")
+
+df.ts <- ts(df[,-c(1,2,3)], start=c(1996,1), freq=4 )
+return( df.ts )
 }
 
 ####################################################
@@ -196,7 +252,7 @@ ret4 <- function(data)
 T    <- NROW(data)
 id1  <- seq(1,4); id2 <- seq(T-3,T)
 tmp1 <- data[-id1]; tmp2 <- data[-id2]
-ret  <- c( rep(NA, 4), 100*(tmp1/tmp2 - 1) )
+ret  <- c( rep(NA, 4), (tmp1/tmp2 - 1) )
 return(ret)
 }
 
@@ -229,6 +285,17 @@ return( as.Date(data) )
 }
 
 ####################################################
+date2qtr <- function(data)
+{
+newdata <- as.character(data)
+newdata <- gsub("-03-31", ":Q1", newdata)
+newdata <- gsub("-06-30", ":Q2", newdata)
+newdata <- gsub("-09-30", ":Q3", newdata)
+newdata <- gsub("-12-31", ":Q4", newdata)
+return( newdata )
+}
+
+####################################################
 qtr2num <- function(data) return( as.numeric(substring(data, 1, 4)) - 1/4 + as.numeric( substring(data, 7) )/4 )
 
 ####################################################
@@ -237,3 +304,67 @@ normalize <- function(data, date) return( 100*data / rep( data[date], NROW(data)
 ####################################################
 normalize.yr <- function(data, date) return( 100*data/mean(data[date]) )
 
+####################################################
+# gdp table function
+gdp.table <- function(data, type="level" , period="qtr", digits=0)
+{
+# TODO: ERROR CATCHING
+
+# subset vars by type
+if(type=="level") vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "DE", "X", "M")
+else if(type=="ret4") vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "X", "M")
+else if(type=="ret1") vars <- c("AGR", "IND", "SER", "VAB", "GDP", "C", "G", "FBKF", "X", "M")
+
+# subset time by period
+if(period =="year") data <- data[c(grepl("*-12-*", data$date)[-NROW(data)], TRUE),]
+
+# trasnform data
+newdata <- data.frame( t( apply( data[,vars], 2 , rev) ) )
+
+# attribute colnames
+if(period =="qtr") colnames(newdata) <- rev( paste0( data[,"year"], ":Q", data[,"qtr"] ) )
+else if(period =="year") colnames(newdata) <- rev( c( paste0( data[-NROW(data),"year"] ), paste0( data[NROW(data),"year"], ":Q", data[NROW(data),"qtr"] )  ) )
+
+# return table
+return( round(newdata, digits) )
+}
+
+#	####################################################
+#	gdp.vars.old <- function(data)
+#	{
+#	vars <- c("AGR", "IND", "SER", "VAB", "TAX", "GDP", "C", "G", "FBKF", "X", "M")
+#	idx  <- colnames(data) %in% vars
+#	return( colnames(data[,idx]) )
+#	}
+
+# ####################################################
+# # contribution
+# contrib <- function(data, l=4, var.num, vars.den)
+# {
+# T    <- NROW(data)
+# id1  <- seq(1,l); id2 <- seq(T-(l-1),T)
+# tmp1 <- data[-id1,]; tmp2 <- data[-id2,]
+#
+# den <- apply(tmp1[,vars.den], 1, sum)
+# num <- tmp1[,var.num] - tmp2[,var.num]
+#
+# contrib  <- c( rep(NA, l), 100*num/den )
+# return(contrib)
+# }
+
+#  ####################################################
+#  # contribution
+#  contrib <- function(data, l=4, var.num, var.den)
+#  {
+#  T    <- NROW(data)
+#  id1  <- seq(1,l); id2 <- seq(T-(l-1),T)
+#  tmp1 <- data[-id1,]; tmp2 <- data[-id2,]
+#
+#  den <- tmp1[,var.den]
+#  num <- tmp1[,var.num] - tmp2[,var.num]
+#
+#  contrib  <- c( rep(NA, l), 100*num/den )
+#  return(contrib)
+#  }
+
+####################################################
