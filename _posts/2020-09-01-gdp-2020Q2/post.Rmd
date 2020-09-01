@@ -1,0 +1,288 @@
+---
+title: "Brazilian GDP 2020:Q2"
+description: "Data from the 2020:Q2 Brazilian GDP"
+categories:
+  - R
+  - ggplot2
+  - dygraphs
+  - scraping
+  - webscraping
+  - reproducible-report
+  - reproducible-research
+  - PIB
+  - GDP
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+draft: false
+date: 2020-09-01
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+# knitr::opts_chunk$set(echo = TRUE, eval = TRUE, error=T, warning=T)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+In this post, we will do a not so deep dive in the IBGE release of the 2020:Q2 GDP results.
+As usual, my source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
+
+First, let's load up our functions and other libraries.
+
+```{r, error=T, warning=T, message=T}
+# source functions
+source("../../R/funs-macro.R")
+
+# load libraries
+library(reshape2)
+library(ggplot2)
+library(dygraphs)
+```
+
+I already downloaded the data from the SIDRA website using the functions, from the `funs-macro.R` file.
+
+```{r, eval=F}
+gdp.dl()
+gdp.save.rets()
+gdp.save.levels()
+```
+
+Now, we load the data and make some transformations.
+
+```{r}
+# LOAD DATA
+
+# levels
+gdp.nominal <- readRDS("../../data/gdp-nominal.rds")
+gdp.index   <- readRDS("../../data/gdp-index-NSA.rds")
+gdp.real    <- readRDS("../../data/gdp-real-NSA.rds")
+
+# rets
+gdp.ret4    <- readRDS("../../data/gdp-ret4.rds")
+gdp.ret1    <- readRDS("../../data/gdp-ret1.rds")
+gdp.retsum4 <- readRDS("../../data/gdp-retsum4.rds")
+gdp.retyear <- readRDS("../../data/gdp-retyear.rds")
+```
+
+```{r}
+# data as ts (for dygraphs)
+gdp.nominal.ts <- df2ts(gdp.nominal)
+gdp.index.ts   <- df2ts(gdp.index)
+gdp.real.ts    <- df2ts(gdp.real)
+gdp.ret4.ts    <- df2ts(gdp.ret4)
+gdp.ret1.ts    <- df2ts(gdp.ret1)
+gdp.retsum4.ts <- df2ts(gdp.retsum4)
+gdp.retyear.ts <- df2ts(gdp.retyear)
+```
+
+```{r}
+# only GDPs
+gdps <- data.frame( gdp.nominal[, c(1,2,3)],  "nominal"=gdp.nominal[, "GDP"]/1000, "index"=gdp.index[, "GDP"], "real"=gdp.real[, "GDP"]/1000 )
+gdps$nominal.sum4 <- sum4(gdps$nominal)
+gdps$real.sum4    <- sum4(gdps$real)
+gdps$index.sum4   <- sum4(gdps$index)/4
+gdps.ts <- df2ts(gdps)
+```
+
+## GGPLOT Functions
+
+Because I will make a lot of the same plot, but using different data as input, I decided to make some `ggplot` wraper functions.
+
+```{r}
+# function to ggplot Growth by SECTORS
+ggplot.last <- function(data, vars)
+{
+# TODO: ERROR CATCHING
+
+newdata <- melt( sort( tail( data[, vars], 1 ), decreasing=T ) )
+
+# plot
+ggplot(newdata, aes( x = variable, y = value, fill = value > 0 ) ) +
+geom_bar( stat="identity" ) +
+scale_fill_manual(values=c("red", "blue") ) +
+guides(fill=FALSE) +
+geom_hline(yintercept=0 ) +
+geom_text( aes(label=value, vjust=ifelse(value > 0, "bottom", "top") ) )+
+theme(axis.text.x = element_text(color="black", size=10, angle=90) ) +
+xlab("") + ylab("")
+}
+```
+
+```{r}
+# function to ggplot Growth by SECTORS
+ggplot.growth <- function(data, ndates, vars)
+{
+# TODO: ERROR CATCHING
+
+newdata      <- tail(data[, vars], ndates)
+newdata$date <- date2qtr( newdata$date )
+newdata      <- melt( newdata, id="date" )
+
+#plot
+ggplot(newdata, aes( x = date, y = value, group=variable, color=variable) ) +
+geom_line( size=1 ) +
+geom_hline(yintercept=0 ) +
+theme(axis.text.x = element_text(color="black", size=11) ) +
+xlab("") + ylab("")
+}
+```
+
+```{r}
+# vars for ggplot.last
+cond.vars <- !(colnames(gdp.ret4) %in% c("date", "year", "qtr", "IND", "SER", "VAB", "TAX", "C", "FBKF", "M", "X", "G"))
+vars1     <- colnames(gdp.ret4[, cond.vars])
+```
+
+## GDP GROWTH
+
+### T/T-1 (With Seasonal Adjustment)
+
+```{r}
+ggplot.last(gdp.ret1, vars1)
+
+ggplot.growth(gdp.ret1, ndates=8, vars=c("date", "GDP", "AGR", "IND", "SER"))
+
+dygraph(window(gdp.ret1.ts[,c("GDP", "AGR", "IND", "SER")], start=c(2018,3) ), main = "GDP by Sectors") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+
+
+ggplot.growth(gdp.ret1, ndates=8, vars=c("date", "GDP", "C", "G", "FBKF", "X", "M"))
+
+dygraph(window(gdp.ret1.ts[,c("GDP", "C", "G", "FBKF", "X", "M")], start=c(2018,3) ), main = "GDP by Demand Variables") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+```
+
+#### T/T-4
+
+```{r}
+ggplot.last(gdp.ret4, vars1)
+
+ggplot.growth(gdp.ret4, ndate=8, vars=c("date", "GDP", "AGR", "IND", "SER", "TAX"))
+
+dygraph(window(gdp.ret4.ts[,c("GDP", "AGR", "IND", "SER", "TAX")], start=c(2018,3) ), main = "GDP by Sectors") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+
+ggplot.growth(gdp.ret4, ndate=8, vars=c("date", "GDP", "C", "G", "FBKF", "X", "M"))
+
+dygraph(window(gdp.ret4.ts[,c("GDP", "C", "G", "FBKF", "X", "M")], start=c(2018,3) ), main = "GDP by Demand Variables") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+```
+
+#### AC4Q T/T-4
+
+```{r}
+ggplot.last(gdp.retsum4, vars1)
+
+ggplot.growth(gdp.retsum4, ndate=8, vars=c("date", "GDP", "AGR", "IND", "SER", "TAX"))
+
+dygraph(window(gdp.retsum4.ts[,c("GDP", "AGR", "IND", "SER", "TAX")], start=c(2018,3) ), main = "GDP by Sectors") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+
+
+ggplot.growth(gdp.retsum4, ndate=8, vars=c("date", "GDP", "C", "G", "FBKF", "X", "M"))
+
+dygraph(window(gdp.retsum4.ts[,c("GDP", "C", "G", "FBKF", "X", "M")], start=c(2018,3) ), main = "GDP by Demand Variables") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(0))
+```
+
+## GDP GROWTH TABLES
+
+### T/T-1 (With Seasonal Adjustment)
+
+```{r}
+paged_table(gdp.table(gdp.ret1, type="ret1", digits=1 ), list(rows.print=12) )
+```
+
+### T/T-4
+
+```{r}
+paged_table(gdp.table(gdp.ret4, type="ret4", digits=1), list(rows.print=12) )
+```
+
+### AC4Q T/T-4
+
+```{r}
+paged_table(gdp.table(gdp.retsum4, type="ret4", digits=1), list(rows.print=12) )
+```
+
+## GDP LEVELS
+
+### NOMINAL
+
+```{r}
+dygraph(gdps.ts[,"nominal"], main = "Nominal GDP (Billions of Current BRL)") %>%
+dySeries(label = "Nominal GDP") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(gdps.ts[NROW(gdps), "nominal"]) )
+
+
+dygraph(gdps.ts[,"nominal.sum4"], main = "Nominal GDP AC4Q (Billions of Current BRL)") %>%
+dySeries(label = "Nominal GDP") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(gdps.ts[NROW(gdps), "nominal.sum4"]) )
+```
+
+### REAL
+
+```{r}
+dygraph(gdps.ts[,"index"], main = "GDP INDEX (1995=100)") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(gdps.ts[NROW(gdps), "index"]) )
+
+dygraph(gdps.ts[,"index.sum4"], main = "GDP INDEX Mean of 4 Quarters (1995=100)") %>%
+dySeries(label = "GDP") %>%
+dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
+dyLimit( as.numeric(gdps.ts[NROW(gdps), "index.sum4"]) )
+```
+
+## GDP LEVELS TABLES
+
+### NOMINAL (Millions of Current BRL)
+
+```{r}
+paged_table( gdp.table(gdp.nominal, type="level" , period="qtr", digits=0), list(rows.print=12) )
+```
+[SIDRA TABLE](https://sidra.ibge.gov.br/tabela/1846#resultado)
+
+### REAL (Milliions of 1995 Chained BRL)
+
+```{r}
+paged_table( gdp.table(gdp.real, type="ret4" , period="qtr", digits=0), list(rows.print=12) )
+```
+[SIDRA TABLE](https://sidra.ibge.gov.br/tabela/6612#resultado)
+
+### INDEX (Chained Index)
+
+```{r}
+paged_table( gdp.table(gdp.index, type="ret4" , period="qtr", digits=2), list(rows.print=12) )
+```
+[SIDRA TABLE](https://sidra.ibge.gov.br/tabela/1620#resultado)
+
+## NEXT RELEASES FROM IBGE
+
+|Reference Date | Publishing Date
+|:--- |:--- |
+| 2020:Q3 |	2020-12-03 |
+
+
+## Useful Links
+- [SCNT](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html?=&t=o-que-e)
+- [SCNT-releases](https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=72121)
+- [2020:Q1 IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_1tri.pdf)
+- [2020:Q2 IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_2tri.pdf)
+- [SIDRA-CNT](https://sidra.ibge.gov.br/home/cnt/brasil)
+- [sthda-ggplot](http://www.sthda.com/english/wiki/ggplot2-essentials)
+- [R-cookbook plots](http://www.cookbook-r.com/Graphs/)
+
+# THANK YOU FOR READING!
