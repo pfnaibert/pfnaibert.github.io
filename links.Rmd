@@ -64,6 +64,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - [itsmr](https://cran.r-project.org/web/packages/itsmr/)
 - [astsa](https://cran.r-project.org/web/packages/astsa/)
 - [ggplot2](https://ggplot2-book.org/)
+- [dygraphs](https://rstudio.github.io/dygraphs/)
 
 ## BCB
 - [dados abertos](https://dadosabertos.bcb.gov.br/)
