@@ -22,6 +22,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
+#### Updated 2020-09-03
+
 In this post, we want to make a similar plot as the figure in
 [this pdf](https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf).
 
@@ -32,7 +34,7 @@ Next, I will import the data to `R` and get some quick visualizations.
 
 ```{r}
 # Import
-PIB <- read.csv("../data/PIB_BASE_2000.csv")
+PIB <- read.csv("../../data/PIB_BASE_2000.csv")
 
 # info about PIB
 str(PIB)
@@ -131,7 +133,9 @@ The dates in `recs` are correct and are more intuitive, however, `rect()` and `a
 
 ```{r}
 # get recession limits in numeric dates
-recs2 <-c(1981.25, 1983.25, 1987.75, 1988.75, 1989.75, 1992.25, 1995.5, 1995.75, 1998.25, 1999.25, 2001.5, 2002, 2003.25, 2003.5, 2009, 2009.25 )
+qtr2num <- function(data) return( as.numeric(substring(data, 1, 4)) - 1/4 + as.numeric( substring(data, 7) )/4 )
+recs2 <- qtr2num(recs)
+recs2
 ```
 
 Or we can get the series indices of the recession dates.
