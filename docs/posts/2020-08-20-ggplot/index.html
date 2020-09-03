@@ -59,7 +59,7 @@
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["economist_plot.png","post_files/bowser-1.9.3/bowser.min.js","post_files/distill-2.2.21/template.v2.js","post_files/figure-html5/unnamed-chunk-10-1.png","post_files/figure-html5/unnamed-chunk-11-1.png","post_files/figure-html5/unnamed-chunk-12-1.png","post_files/figure-html5/unnamed-chunk-13-1.png","post_files/figure-html5/unnamed-chunk-14-1.png","post_files/figure-html5/unnamed-chunk-15-1.png","post_files/figure-html5/unnamed-chunk-16-1.png","post_files/figure-html5/unnamed-chunk-16-2.png","post_files/figure-html5/unnamed-chunk-16-3.png","post_files/figure-html5/unnamed-chunk-3-1.png","post_files/figure-html5/unnamed-chunk-4-1.png","post_files/figure-html5/unnamed-chunk-5-1.png","post_files/figure-html5/unnamed-chunk-6-1.png","post_files/figure-html5/unnamed-chunk-7-1.png","post_files/figure-html5/unnamed-chunk-8-1.png","post_files/header-attrs-2.3/header-attrs.js","post_files/jquery-1.11.3/jquery.min.js","post_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["economist_plot.png","post_files/figure-html5/unnamed-chunk-10-1.png","post_files/figure-html5/unnamed-chunk-11-1.png","post_files/figure-html5/unnamed-chunk-12-1.png","post_files/figure-html5/unnamed-chunk-13-1.png","post_files/figure-html5/unnamed-chunk-14-1.png","post_files/figure-html5/unnamed-chunk-15-1.png","post_files/figure-html5/unnamed-chunk-16-1.png","post_files/figure-html5/unnamed-chunk-16-2.png","post_files/figure-html5/unnamed-chunk-16-3.png","post_files/figure-html5/unnamed-chunk-3-1.png","post_files/figure-html5/unnamed-chunk-4-1.png","post_files/figure-html5/unnamed-chunk-5-1.png","post_files/figure-html5/unnamed-chunk-6-1.png","post_files/figure-html5/unnamed-chunk-7-1.png","post_files/figure-html5/unnamed-chunk-8-1.png"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 
@@ -1347,15 +1347,16 @@ gtag('config', 'UA-175878647-1');
 </div>
 
 <div class="d-article">
+<h4 id="last-updated-2020-09-03">Last Updated 2020-09-03</h4>
 <p>On previous posts (<a href="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/">here</a> and <a href="https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/">here</a> ), I demonstrated how to import and graph data using <code>R</code>. On this post, I will make those same plots using <code>ggplot2</code> to make <em>beautiful</em> plots. First we will need to load the data and the functions.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # funs
-source(&quot;../../R/funs.R&quot;)
+source(&quot;./myfuns.R&quot;)
 
 # import data
-y    &lt;- import_gdp(&quot;../../_data/PIB_BASE_2000.csv&quot;)
-recs &lt;- readRDS(&quot;../../_data/recessions.rds&quot;)
+y    &lt;- import_gdp(&quot;../../data/PIB_BASE_2000.csv&quot;)
+recs &lt;- readRDS(&quot;../../data/gdp-recessions.rds&quot;)
 
 # transform dates
 dates &lt;- date2num(names(y))
@@ -1367,9 +1368,9 @@ head(y); head(dates); head(recs)</code></pre>
 1980:Q1 1980:Q2 1980:Q3 1980:Q4 1981:Q1 1981:Q2 
    70.6    76.3    75.5    73.2    70.5    74.3 </code></pre>
 <pre><code>
-[1] 1980.25 1980.50 1980.75 1981.00 1981.25 1981.50</code></pre>
+[1] 1980.00 1980.25 1980.50 1980.75 1981.00 1981.25</code></pre>
 <pre><code>
-[1] 1981.25 1983.25 1987.75 1988.75 1989.75 1992.25</code></pre>
+[1] 1981.0 1983.0 1987.5 1988.5 1989.5 1992.0</code></pre>
 </div>
 <p>Now, let’s load the <code>ggplot2</code> library and make some graphs.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1396,12 +1397,12 @@ y.df  &lt;- as.data.frame(cbind(dates, &quot;GDP&quot;=y) )
 head(y.df)</code></pre>
 <pre><code>
     dates  GDP
-1 1980.25 70.6
-2 1980.50 76.3
-3 1980.75 75.5
-4 1981.00 73.2
-5 1981.25 70.5
-6 1981.50 74.3</code></pre>
+1 1980.00 70.6
+2 1980.25 76.3
+3 1980.50 75.5
+4 1980.75 73.2
+5 1981.00 70.5
+6 1981.25 74.3</code></pre>
 <pre class="r"><code>
 # plot
 ggplot(y.df)</code></pre>

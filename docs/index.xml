@@ -60,7 +60,7 @@
       <category>GDP</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp</guid>
       <pubDate>seg, 24 ago 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-6-1.png" medium="image" type="image/png" width="1536" height="768"/>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-7-1.png" medium="image" type="image/png" width="1536" height="768"/>
     </item>
     <item>
       <title>Interactive Plots with `dygraphs`</title>
@@ -90,18 +90,6 @@
       <media:content url="https://pfnaibert.github.io/posts/2020-08-20-ggplot/economist_plot.png" medium="image" type="image/png" width="1357" height="960"/>
     </item>
     <item>
-      <title>Converting Date Strings to Numeric Dates</title>
-      <dc:creator>Paulo Ferreira Naibert</dc:creator>
-      <link>https://pfnaibert.github.io/posts/2020-08-18-converting-dates</link>
-      <description>Converting Date Strings to Numeric Dates.</description>
-      <category>R</category>
-      <category>R-base</category>
-      <category>dates</category>
-      <category>text-manipulation</category>
-      <guid>https://pfnaibert.github.io/posts/2020-08-18-converting-dates</guid>
-      <pubDate>ter, 18 ago 2020 00:00:00 +0000</pubDate>
-    </item>
-    <item>
       <title>Making a wrapper to Import and Plot Data</title>
       <dc:creator>Paulo Ferreira Naibert</dc:creator>
       <link>https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp</link>
@@ -115,7 +103,7 @@
       <category>reproducible-research</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp</guid>
       <pubDate>ter, 18 ago 2020 00:00:00 +0000</pubDate>
-      <media:content url="https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-5-1.png" medium="image" type="image/png" width="1248" height="768"/>
+      <media:content url="https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-6-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
       <title>Graphing the Brazilian GDP in `R`</title>
