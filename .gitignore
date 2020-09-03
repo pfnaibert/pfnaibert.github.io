@@ -1,2 +1,11 @@
 
 .Rhistory
+
+# Files
+*.csv
+*.rds
+*.rdata
+*.Rdata
+*.RData
+*.xls
+*.xlsx
