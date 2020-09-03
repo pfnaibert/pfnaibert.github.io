@@ -12,3 +12,8 @@
 *.RData
 *.xls
 *.xlsx
+*.txt
+
+
+# on _post folder
+_posts/*.html
