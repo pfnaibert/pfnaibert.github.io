@@ -16,5 +16,5 @@
 
 # on _post folder
 _posts/*/*.html
-_posts/*/*.R
+# _posts/*/*.R
 _posts/*/post_files
