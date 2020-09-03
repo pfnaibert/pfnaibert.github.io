@@ -28,6 +28,8 @@ knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 knitr::opts_chunk$set(fig.width=8, fig.height=4)
 ```
 
+#### Last Updated `r Sys.Date()`
+
 In this post, we will do a not so deep dive in the IBGE release of the 2020:Q2 GDP results.
 As usual, my source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
 

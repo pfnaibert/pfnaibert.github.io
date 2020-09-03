@@ -23,6 +23,8 @@ knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 knitr::opts_chunk$set(fig.width=sqrt(2)*5, fig.height=5)
 ```
 
+#### Last Updated `r Sys.Date()`
+
 On previous posts
 ([here](https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/) and [here](https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/) ),
 I demonstrated how to import and graph data using `R`.
@@ -31,11 +33,11 @@ First we will need to load the data and the functions.
 
 ```{r}
 # funs
-source("../../R/funs.R")
+source("./myfuns.R")
 
 # import data
-y    <- import_gdp("../../_data/PIB_BASE_2000.csv")
-recs <- readRDS("../../_data/recessions.rds")
+y    <- import_gdp("../../data/PIB_BASE_2000.csv")
+recs <- readRDS("../../data/gdp-recessions.rds")
 
 # transform dates
 dates <- date2num(names(y))

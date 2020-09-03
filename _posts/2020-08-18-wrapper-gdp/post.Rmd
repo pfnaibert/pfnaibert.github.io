@@ -25,6 +25,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 ```
 
+#### Last Updated `r Sys.Date()`
+
 In my [last post](https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp), I showed how to import a `.csv` file and plot the data.
 This, entailed following the steps outlined in the post.
 In this post, I will make a [wrapper function](https://en.wikipedia.org/wiki/Wrapper_function) to automate the importing and formating.
@@ -70,13 +72,16 @@ And I can use `import_gdp` to import the file and format it as I like it:
 ls()
 
 # import data
-y <- import_gdp("../../_data/PIB_BASE_2000.csv")
+y <- import_gdp("../../data/PIB_BASE_2000.csv")
 
 # quick visualization
 head(y)
 
 # print whole series
 y
+
+# print series time
+time(y)
 ```
 
 ## Extensions
@@ -109,24 +114,33 @@ lines(data, col="blue", lwd=1.5)
 The `plot_gdp()` function uses the `rec_dates` input to make the recession rectangles, so I must create a vector with recession limit dates.
 We use [this document](https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf) to get the dates.
 
+```{r}
+# fun to transform dates into numeric
+qtr2num <- function(data) return( as.numeric(substring(data, 1, 4)) - 1/4 + as.numeric( substring(data, 7) )/4 )
+```
 
 ```{r}
 # recession limits in numeric dates
-recs <- c( 1981.25, 1983.25,
- 1987.75, 1988.75,
- 1989.75, 1992.25,
- 1995.50, 1995.75,
- 1998.25, 1999.25,
- 2001.50, 2002.00,
- 2003.25, 2003.50,
- 2009.00, 2009.25 )
+
+recs <- c( "1981:Q1", "1983:Q1",
+ "1987:Q3", "1988:Q3",
+ "1989:Q3", "1992:Q1",
+ "1995:Q2", "1995:Q3",
+ "1998:Q1", "1999:Q1",
+ "2001:Q2", "2001:Q4",
+ "2003:Q1", "2003:Q2",
+ "2008:Q4", "2009:Q1" )
+
+saveRDS(recs, "../../data/gdp-recessions.rds")
+
+newrecs <- qtr2num(recs)
 ```
 
 Now I can make the plot with a single line:
 
 ```{r}
 # graph with wrapper
-plot_gdp(y, recs)
+plot_gdp(y, newrecs)
 ```
 
 Beacause the `rec_dates` argument generalizes the recession limit dates, I can make expansion (instead of recession) rectangles.
@@ -134,17 +148,21 @@ Again, we use [this document](https://portalibre.fgv.br/sites/default/files/2020
 
 ```{r}
 # expansion limits in numeric dates
-exps <- c( 1983.50, 1987.50,
-1989.25, 1989.50,
-1992.50, 1995.25,
-1996.00, 1998.00,
-1999.50, 2001.25,
-2002.25, 2003.00,
-2003.75, 2008.75,
-2009.50, 2014.25 )
+exps <- c( "1983:Q2", "1987:Q2",
+"1989:Q1", "1989:Q2",
+"1992:Q2", "1995:Q1",
+"1995:Q4", "1997:Q4",
+"1999:Q2", "2001:Q1",
+"2002:Q1", "2002:Q4",
+"2003:Q3", "2008:Q3",
+"2009:Q2", "2014:Q1" )
+
+saveRDS(recs, "../../data/gdp-expansions.rds")
+
+newexps <- qtr2num(exps)
 
 # graph with wrapper
-plot_gdp(y, exps)
+plot_gdp(y, newexps)
 ```
 
 # Error Catching

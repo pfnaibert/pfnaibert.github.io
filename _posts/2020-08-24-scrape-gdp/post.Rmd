@@ -23,9 +23,11 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, error = FALSE, warning = FALSE)
 knitr::opts_chunk$set(fig.width=8, fig.height=4)
 ```
+
+#### Last Updated `r Sys.Date()`
 
 In this post, we will scrape the brazilian gdp data from the [SIDRA-IBGE](https://sidra.ibge.gov.br/) website.
 Here, I use my own functions (based on other codes) to download the sidra data, but be aware that theres is a CRAN package for that [here](https://cran.r-project.org/web/packages/sidrar/index.html).
@@ -37,7 +39,7 @@ First, let's load up our functions and other libraries.
 
 ```{r}
 # source functions
-source("../../R/funs-macro.R")
+source("./myfuns.R")
 
 # load libraries
 library(dplyr)
@@ -48,29 +50,54 @@ library(ggplot2)
 library(ggthemes)
 ```
 
-The `gdp.dl()` function, downloads the data from the website and saves a `.csv`.
-The `gdp.transform()` loads the `.csv` file, using the paths used in `gdp.dl()`, transforms the data and saves a `data.frame` file and a `xts` file with the `.rds` format.
-I separated the `gdp.dl()` and the `gdp.transform()` functions to avoid connecting to the internet every time I wanted to edit the `.csv` file.
-Also I save a `data.frame` **and** a `xts` object because `paged_table()` and `ggplot()` do not accept `xts` objects, whereas `dygraphs` only accepts time series objects.
+The `gdp.dl.csv()` function, downloads the data from the website and saves a `.csv`.
+The `gdp.save.levels()` and `gdp.save.rets()` functions load the `.csv` file, using the paths used in `gdp.dl.csv()`, transforms the data using the `gdp.csv2df()` function and saves a `data.frame` file with the `.rds` format.
+I separated the functions that download and trassform the data to avoid connecting to the internet every time I wanted to edit the `.csv` file.
+Also, the function `df2ts()` transforms the `data.frame` into a `ts` object because `paged_table()` and `ggplot()` do not accept `ts` objects, whereas `dygraphs` only accepts time series objects.
 
 ```{r, eval=F}
 # download gdp
-gdp.dl()
+gdp.dl.csv()
 
-# transform gdp
-gdp.transform()
+# transform and save data
+gdp.save.levels()
+gdp.save.rets()
 ```
 
-To load the gdp data, I made to wrappers `gdp.load.df()` and `gdp.load.xts()`.
-This is to facilitate the loading and avoid typing the whole path.
+Now, let's load our data.
 
 ```{r}
-# load gdp.df
-gdp.df  <- gdp.load.df()
+# LOAD DATA
 
-# load gdp.xts
-gdp.xts <- gdp.load.xts()
+# levels
+gdp.nominal  <- readRDS("../../data/gdp-nominal.rds")
+gdp.real.NSA <- readRDS("../../data/gdp-real-NSA.rds")
+gdp.real.SA  <- readRDS("../../data/gdp-real-SA.rds")
 
+# rets
+gdp.ret4    <- readRDS("../../data/gdp-ret4.rds")
+gdp.ret1    <- readRDS("../../data/gdp-ret1.rds")
+gdp.retsum4 <- readRDS("../../data/gdp-retsum4.rds")
+gdp.retyear <- readRDS("../../data/gdp-retyear.rds")
+
+# data as ts (for dygraphs)
+gdp.nominal.ts  <- df2ts(gdp.nominal)
+gdp.real.NSA.ts <- df2ts(gdp.real.NSA)
+gdp.real.SA.ts  <- df2ts(gdp.real.SA)
+gdp.ret4.ts     <- df2ts(gdp.ret4)
+gdp.ret1.ts     <- df2ts(gdp.ret1)
+gdp.retsum4.ts  <- df2ts(gdp.retsum4)
+gdp.retyear.ts  <- df2ts(gdp.retyear)
+
+# only GDPs
+gdp.df <- data.frame( gdp.nominal[, c(1,2,3)],  "nominal"=gdp.nominal[, "GDP"], "real.NSA"=gdp.real.NSA[, "GDP"], "real.SA"=gdp.real.SA[, "GDP"],
+					 "ret1"=gdp.ret1[, "GDP"], "ret4"=gdp.ret4[, "GDP"], "retsum4"=gdp.retsum4[, "GDP"] )
+gdp.df$sum4.nomi    <- sum4(gdp.df$nominal)
+gdp.df$sum4.real    <- sum4(gdp.df$real.NSA)
+gdp.ts <- df2ts(gdp.df)
+```
+
+```{r}
 # show gdp.df
 paged_table(gdp.df)
 ```
@@ -78,18 +105,18 @@ paged_table(gdp.df)
 Cool, the data is loaded, let's make a table with the annual gdp data starting in 2014.
 
 ```{r}
-tmp <- filter(gdp.df, dates > "2014-01-01" & month(dates) == "12" )
-mat <- cbind( "Billions of current BRL"=tmp$sum4.nomi/1000, "Billions of 1995 BRL"=tmp$sum4.real/1000, "AC 4Q T/T-4"=tmp$ret.ac4q.real)
-rownames(mat) <- substring( rownames(tmp), 1, 4)
+tmp <- filter(gdp.df, date > "2014-01-01" & month(date) == "12" )
+mat <- cbind( "Billions of current BRL"=tmp$sum4.nomi/1000, "Billions of 1995 BRL"=tmp$sum4.real/1000, "AC 4Q T/T-4"=tmp$retsum4)
+rownames(mat) <- substring( date2qtr(tmp$date), 1, 4)
 kable( t( apply( mat, 2, rev) ), digits=2, caption = "GDP by Year")
 ```
 
 Now, let's make a table with quarterly gdp data starting from 2019.
 
 ```{r}
-tmp <- filter(gdp.df, dates > "2019-01-01" )
-mat <- cbind( "Billions of current BRL"=tmp$nominal/1000, "T/T-1"=tmp$ret1, "T/T-4"=tmp$ret4, "AC 4Q T/T-4"=tmp$ret.ac4q.real)
-rownames(mat) <- rownames(tmp)
+tmp <- filter(gdp.df, date > "2019-01-01" )
+mat <- cbind( "Billions of current BRL"=tmp$nominal/1000, "T/T-1"=tmp$ret1, "T/T-4"=tmp$ret4, "AC 4Q T/T-4"=tmp$retsum4)
+rownames(mat) <- date2qtr(tmp$date)
 kable( t( apply( mat, 2, rev) ), digits=2, caption = "GDP by Quarter")
 ```
 
@@ -97,13 +124,13 @@ Tables are ready, let's graph the GDP percent change for better visualization in
 
 ```{r}
 gdp.df %>%
-filter(dates > "2014-01-01") %>%
-select(dates, ret1, ret4, ret.ac4q.real) %>%
-melt("dates") %>%
-ggplot( aes( x = dates, y = value, fill = variable) ) +
+filter(date > "2014-01-01") %>%
+select(date, ret1, ret4, retsum4) %>%
+melt("date") %>%
+ggplot( aes( x = date, y = value, fill = variable) ) +
 geom_bar( stat="identity", position="dodge" ) +
 scale_fill_discrete(name=" ",
-					breaks=c("ret1", "ret4", "ret.ac4q.real"),
+					breaks=c("ret1", "ret4", "retsum4"),
 					labels=c("T/T-1", "T/T-4", "T/T-4 AC4Q") ) +
 xlab("") + ylab("") +
 ggtitle( "Brazilian GDP %Change" ) +
@@ -114,12 +141,11 @@ theme_economist()
 and interactive version with `dygraphs`:
 
 ```{r}
-tmp <- gdp.xts["2014/"]
-dygraph(cbind(tmp$ret1, tmp$ret4, tmp$ret.ac4q.real),
-	   	main="Brazilian GDP %Change") %>%
+tmp <- window(gdp.ts, start=c(2014,1) )
+dygraph( tmp[, c("ret1", "ret4", "retsum4") ], main="Brazilian GDP %Change" ) %>%
 dySeries("ret1", label = "T/T-1") %>%
 dySeries("ret4", label = "T/T-4") %>%
-dySeries("ret.ac4q.real", label = "AC 4Q T/T-4") %>%
+dySeries("retsum4", label = "AC 4Q T/T-4") %>%
 dyAxis("x", rangePad = 20, drawGrid = FALSE) %>%
 dyBarChart()
 ```
@@ -128,14 +154,14 @@ Now, let's graph the level of the GDP using the Index of chained 1995 BRL, seaso
 In `ggplot2`:
 
 ```{r}
-den.SA  <- mean(gdp.df$real.SA[year(gdp.df$dates)=="2014"] )
-den.NSA <- mean(gdp.df$real.NSA[year(gdp.df$dates)=="2014"] )
+den.SA  <- mean(gdp.df$real.SA[year(gdp.df$date)=="2014"] )
+den.NSA <- mean(gdp.df$real.NSA[year(gdp.df$date)=="2014"] )
 
 gdp.df %>%
-select(dates, real.SA, real.NSA) %>%
+select(date, real.SA, real.NSA) %>%
 mutate(real.SA = 100*real.SA/den.SA, real.NSA = 100*real.NSA/den.NSA ) %>%
-melt(id = "dates") %>%
-ggplot( aes(x = dates, y = value) ) +
+melt(id = "date") %>%
+ggplot( aes(x = date, y = value) ) +
   ggtitle( "GDP Index of 1995 Chained BRL (2014=100)" ) +
   geom_line(aes(color = variable), size = 1) +
   scale_color_manual(name = "", values = c("blue", "red"), labels=c("Seasonal Adj.", "Not Seasonal Adj." ) ) +
@@ -147,7 +173,7 @@ ggplot( aes(x = dates, y = value) ) +
 And with `dygraphs`:
 
 ```{r}
-tmp <- cbind( normalize.yr( gdp.xts$real.SA, "2014"), normalize.yr(gdp.xts$real.NSA, "2014" ) )
+tmp <- cbind( "real.SA"=normalize.yr( gdp.ts[, "real.SA"], 2014), "real.NSA"=normalize.yr(gdp.ts[, "real.NSA"], 2014 ) )
 dygraph(tmp, main="GDP Index of 1995 Chained BRL (2014=100)" ) %>%
 dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
 dyEvent("2002-01-1", "Lula",  labelLoc = "bottom") %>%
@@ -161,17 +187,17 @@ dySeries("real.NSA", label = "NSA") %>%
 dySeries("real.SA", label = "SA")
 ```
 
-We could also normalize by an specific quarter.
+We could (does not mean that we should) also normalize by an specific quarter.
 
 ```{r}
-den.SA  <- gdp.df$real.SA[gdp.df$dates=="2013-09-30"]
-den.NSA <- gdp.df$real.NSA[gdp.df$dates=="2013-09-30"]
+den.SA  <- gdp.df$real.SA[gdp.df$date=="2013-09-30"]
+den.NSA <- gdp.df$real.NSA[gdp.df$date=="2013-09-30"]
 
 gdp.df %>%
-select(dates, real.SA, real.NSA) %>%
+select(date, real.SA, real.NSA) %>%
 mutate(real.SA = 100*real.SA/den.SA, real.NSA = 100*real.NSA/den.NSA ) %>%
-melt(id = "dates") %>%
-ggplot( aes(x = dates, y = value) ) +
+melt(id = "date") %>%
+ggplot( aes(x = date, y = value) ) +
   ggtitle( "GDP Index of 1995 Chained BRL (2013:Q3=100)" ) +
   geom_line(aes(color = variable), size = 1) +
   scale_color_manual(name = "", values = c("blue", "red"), labels=c("Seasonal Adj.", "Not Seasonal Adj." ) ) +
@@ -181,7 +207,7 @@ ggplot( aes(x = dates, y = value) ) +
 ```
 
 ```{r}
-tmp <- cbind( normalize( gdp.xts$real.SA, "2013-09-30"), normalize(gdp.xts$real.NSA, "2013-09-30" ) )
+tmp <- cbind( "real.SA"=normalize( gdp.ts[, "real.SA"], c(2013, 3)), "real.NSA"=normalize(gdp.ts[, "real.NSA"], c(2013,3) ) )
 dygraph(tmp, main="GDP Index of 1995 Chained BRL, (2013:Q3=100)" ) %>%
 dyAxis("x", rangePad = 10, drawGrid = FALSE) %>%
 dyEvent("2002-01-1", "Lula",  labelLoc = "bottom") %>%
@@ -201,7 +227,7 @@ So that is our little report of the brazilian GDP series.
 On future posts I intend to break it up by sectors and components.
 
 ## Automation and cron jobs
-Also, we can run the `gdp.dl()` and  `gdp.transform()` functions separately on an executable script using cron jobs ([more details here](https://en.wikipedia.org/wiki/Cron)) to autmate the scraping part.
+Also, we can run the `gdp.dl.csv()` and  the `gdp.save.levels()` and `gdp.save.rets()` functions separately on an executable script using cron jobs ([more details here](https://en.wikipedia.org/wiki/Cron)) to autmate the scraping part.
 The rest of the script is completely reusable to automate reporting.
 
 ## Future dates
@@ -213,6 +239,5 @@ Finally, [here](https://sidra.ibge.gov.br/home/cnt/brasil) we can find out when 
 |  2020:Q3       | "2020-12-03"    |
 
 Stay tuned.
-
 
 # Thank you for reading!

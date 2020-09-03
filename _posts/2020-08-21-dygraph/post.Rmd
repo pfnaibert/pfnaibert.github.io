@@ -23,6 +23,8 @@ knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
 knitr::opts_chunk$set(fig.width=8, fig.height=4)
 ```
 
+#### Last Updated `r Sys.Date()`
+
 On previous posts, I showed how to make plots with the `base` and `ggplot2` libraries.
 Today, I will make **interactive** plots with dygraphs.
 This package has a terrific documentation website [here](https://rstudio.github.io/dygraphs/).
@@ -31,10 +33,10 @@ First, let's load the data and the functions:
 
 ```{r}
 # import funs
-source("../../R/funs.R")
+source("./myfuns.R")
 
 # import data
-y     <- import_gdp("../../data/PIB_BASE_2000.csv")
+y <- import_gdp("../../data/PIB_BASE_2000.csv")
 
 # visualization
 head(y)
@@ -93,7 +95,7 @@ Before, we have to load the recession limit dates.
 
 ```{r}
 # load recs
-recs  <- qtr2date( readRDS("../../data/recessions.rds") )
+recs  <- qtr2date( readRDS("../../data/gdp-recessions.rds") )
 
 # visualization
 head(recs)
