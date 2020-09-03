@@ -16,4 +16,4 @@
 
 
 # on _post folder
-_posts/*.html
+_posts/**.html
