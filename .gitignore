@@ -1,7 +1,10 @@
 
 .Rhistory
 
-# Files
+# pdf files
+*.pdf
+
+# Data Files
 *.csv
 *.rds
 *.rdata
