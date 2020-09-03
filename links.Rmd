@@ -47,7 +47,9 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Books
 - [R for Data Science](https://r4ds.had.co.nz/)
 - [dscl](https://www.datascienceatthecommandline.com/1e/)
-
+- [ggplot2](https://ggplot2-book.org/)
+- [cookbook-R](http://www.cookbook-r.com/)
+- [cookbook-R graphs](http://www.cookbook-r.com/Graphs/)
 
 ## Specific Links
 - [R profile](http://www.onthelambda.com/2014/09/17/fun-with-rprofile-and-customizing-r-startup/)
@@ -63,7 +65,6 @@ knitr::opts_chunk$set(echo = FALSE)
 ## R packages
 - [itsmr](https://cran.r-project.org/web/packages/itsmr/)
 - [astsa](https://cran.r-project.org/web/packages/astsa/)
-- [ggplot2](https://ggplot2-book.org/)
 - [dygraphs](https://rstudio.github.io/dygraphs/)
 
 ## BCB
@@ -71,3 +72,31 @@ knitr::opts_chunk$set(echo = FALSE)
 - [estatísticas](https://www.bcb.gov.br/estatisticas)
 - [SGS R](https://gabrielrega.com/2017/07/26/baixando-series-diretamente-do-sgs-do-banco-central-pelo-r/)
 - [Tesourro Transparente](https://www.tesourotransparente.gov.br/)
+
+# BEA
+- [National](https://www.bea.gov/national/)
+- [NIPA Primer](https://www.bea.gov/sites/default/files/methodologies/nipa_primer.pdf)
+- [NIPA Handbook Website](https://www.bea.gov/resources/methodologies/nipa-handbook)
+- [NIPA Handbook C.1-4 pdf](https://www.bea.gov/system/files/2019-12/Chapter-1-4.pdf)
+
+## SIDRA IBGE
+- [SIDRA](https://sidra.ibge.gov.br/)
+- [SIDRA CNT](https://sidra.ibge.gov.br/home/cnt)
+- [SIDRA IPCA](https://sidra.ibge.gov.br/home/ipca)
+
+## CNT
+- [SIDRA CNT](https://sidra.ibge.gov.br/home/cnt)
+- [Natinal Accounts](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais.html)
+- [SCNT -- Quarterly](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html?=&t=o-que-e)
+- [SCN -- Annual](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9052-sistema-de-contas-nacionais-brasil.html?=&t=o-que-e)
+
+### CNT Releases
+- [CNT releases](https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=72121)
+- [CNT 2020:Q1 release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_1tri.pdf)
+- [CNT 2020:Q2 release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_2tri.pdf)
+
+## System of National Accounts
+- [UN SNA-2008](https://unstats.un.org/unsd/nationalaccount/docs/SNA2008.pdf)
+- [IMF Quarterly National Accounts](https://www.imf.org/external/pubs/ft/qna/pdf/2017/QNAManual2017text.pdf)
+- [BPM6 pdf](https://www.imf.org/external/pubs/ft/bop/2007/pdf/BPM6.pdf)
+- [BPM6 website](https://www.imf.org/external/pubs/ft/bop/2007/bopman6.htm)
