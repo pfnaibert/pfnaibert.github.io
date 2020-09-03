@@ -1347,13 +1347,14 @@ gtag('config', 'UA-175878647-1');
 </div>
 
 <div class="d-article">
+<h4 id="updated-2020-09-03">Updated 2020-09-03</h4>
 <p>In this post, we want to make a similar plot as the figure in <a href="https://portalibre.fgv.br/sites/default/files/2020-06/comunicado-do-comite-de-datacao-de-ciclos-economicos-29_06_2020-1.pdf">this pdf</a>.</p>
 <h1 id="import">Import</h1>
 <p>First, I already downloaded the data and saved the only column that I will need in a <code>.csv</code> file. Next, I will import the data to <code>R</code> and get some quick visualizations.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # Import
-PIB &lt;- read.csv(&quot;../data/PIB_BASE_2000.csv&quot;)
+PIB &lt;- read.csv(&quot;../../data/PIB_BASE_2000.csv&quot;)
 
 # info about PIB
 str(PIB)</code></pre>
@@ -1529,7 +1530,12 @@ kable(tab.rec)</code></pre>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # get recession limits in numeric dates
-recs2 &lt;-c(1981.25, 1983.25, 1987.75, 1988.75, 1989.75, 1992.25, 1995.5, 1995.75, 1998.25, 1999.25, 2001.5, 2002, 2003.25, 2003.5, 2009, 2009.25 )</code></pre>
+qtr2num &lt;- function(data) return( as.numeric(substring(data, 1, 4)) - 1/4 + as.numeric( substring(data, 7) )/4 )
+recs2 &lt;- qtr2num(recs)
+recs2</code></pre>
+<pre><code>
+ [1] 1981.00 1983.00 1987.50 1988.50 1989.50 1992.00 1995.25 1995.50
+ [9] 1998.00 1999.00 2001.25 2001.75 2003.00 2003.25 2008.75 2009.00</code></pre>
 </div>
 <p>Or we can get the series indices of the recession dates.</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1538,9 +1544,9 @@ recs2 &lt;-c(1981.25, 1983.25, 1987.75, 1988.75, 1989.75, 1992.25, 1995.5, 1995.
 idx &lt;- unlist( sapply(recs, function(x) which(x==dates) ) )
 names(idx) &lt;- recs2; idx</code></pre>
 <pre><code>
-1981.25 1983.25 1987.75 1988.75 1989.75 1992.25  1995.5 1995.75 
+   1981    1983  1987.5  1988.5  1989.5    1992 1995.25  1995.5 
       5      13      31      35      39      49      62      63 
-1998.25 1999.25  2001.5    2002 2003.25  2003.5    2009 2009.25 
+   1998    1999 2001.25 2001.75    2003 2003.25 2008.75    2009 
      73      77      86      88      93      94     116     117 </code></pre>
 </div>
 <p>Now that we have the recession limit dates, we plot the data with some more options, and use the <code>rect()</code> function to plot the graph with the recession bars.</p>
