@@ -30,7 +30,6 @@ knitr::opts_chunk$set(fig.width=8, fig.height=4)
 #### Last Updated `r Sys.Date()`
 
 In this post, we will calculate the participation of GDP by sectors and by demand variables, and make plots and tables.
-As usual, my source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
 
 First, let's load up our functions and other libraries.
 

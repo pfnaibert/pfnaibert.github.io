@@ -31,7 +31,8 @@ knitr::opts_chunk$set(fig.width=8, fig.height=4)
 
 In this post, we will scrape the brazilian gdp data from the [SIDRA-IBGE](https://sidra.ibge.gov.br/) website.
 Here, I use my own functions (based on other codes) to download the sidra data, but be aware that theres is a CRAN package for that [here](https://cran.r-project.org/web/packages/sidrar/index.html).
-My source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
+My source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/_posts/2020-08-24-scrape-gdp/myfuns.R).
+
 Also, there is another post [here](https://www.jfcostasantos.com/post/2015-07-23-r-rmarkdown/) that makes a lot of the things we will be doing.
 
 Ok, disclaimers are out of the way.
