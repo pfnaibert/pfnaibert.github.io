@@ -1,0 +1,224 @@
+---
+title: "Brazilian GDP 2020:Q3"
+description: "Data from the 2020:Q3 Brazilian GDP"
+categories:
+  - R
+  - ggplot2
+  - scraping
+  - webscraping
+  - reproducible-report
+  - reproducible-research
+  - PIB
+  - GDP
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+draft: true
+date: 2020-12-03
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, error = TRUE, warning = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+#### Last Updated `r Sys.Date()`
+
+In this post, we will do a not so deep dive in the IBGE release of the 2020:Q3 GDP results.
+As usual, my source code for the functions can be found [here](https://github.com/pfnaibert/pfnaibert.github.io/blob/master/R/funs-macro.R).
+
+First, let's load up our functions and other libraries.
+
+```{r, error=T, warning=T, message=T}
+# source functions
+source("../../R/funs-gdp.R")
+source("../../R/funs-gdp-floats.R")
+
+# load libraries
+library(kableExtra)
+library(directlabels)
+
+library(reshape2)
+library(ggplot2)
+```
+
+Now, we load the data and make some transformations.
+
+```{r}
+# LOAD DATA
+
+# levels
+gdp.nominal   <- readRDS("../../data/gdp-nominal.rds")
+gdp.real.NSA  <- readRDS("../../data/gdp-real-NSA.rds")
+gdp.real.SA   <- readRDS("../../data/gdp-real-SA.rds")
+gdp.index.NSA <- readRDS("../../data/gdp-index-NSA.rds")
+gdp.index.SA  <- readRDS("../../data/gdp-index-SA.rds")
+
+# rets
+gdp.ret4    <- readRDS("../../data/gdp-ret4.rds")
+gdp.ret1    <- readRDS("../../data/gdp-ret1.rds")
+gdp.retsum4 <- readRDS("../../data/gdp-retsum4.rds")
+gdp.retyear <- readRDS("../../data/gdp-retyear.rds")
+
+# only gdp
+gdp.rets <- cbind(gdp.ret4[, c(1,2,3)], "ret4"=gdp.ret4$GDP, "ret1"=gdp.ret1$GDP, "retsum4"=gdp.retsum4$GDP, "retyear"=gdp.retyear$GDP)
+
+# shares
+# sum gdp.nom over 4 quarters and coerce to data.frame
+gdp.nominal.ac4  <- data.frame( apply( gdp.nominal[,-c(1,2,3)], 2, sum4 ) )
+
+# divide by gdp to get shares
+gdp.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$GDP )
+vab.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$VAB )
+```
+
+
+
+## Bird's Eye View
+
+```{r, fig.width=8, fig.height=6}
+# https://drsimonj.svbtle.com/label-line-ends-in-time-series-with-ggplot2
+# gdp.ggplot.growth(gdp.rets, 2007)
+```
+
+
+```{r}
+gdp.rets <- cbind("Year so far"=gdp.retyear$GDP, "T/T-4 over sums"=gdp.retsum4$GDP, "T/T-4"=gdp.ret4$GDP, "T/T-1 with Seas. Adj"=gdp.ret1$GDP)
+rownames(gdp.rets) <- date2qtr(gdp.ret4$date)
+kbl( t(tail(gdp.rets, 5)), caption="GDP Growths of the Last 5 Quarters" ) %>%
+	kable_classic("hover", full_width = T, font_size=12) %>%
+	column_spec(6, bold = T) %>%
+	footnote(general = "IBGE", general_title = "Data Source: ", footnote_as_chunk = T)
+```
+
+```{r}
+gdp.tab.1(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
+```
+
+```{r}
+gdp.tab.2(gdp.nominal, "GDP Levels by Activity Sector and Demand Variable (Millions of Current BRL)")
+```
+
+```{r}
+gdp.tab.vab.share(vab.share, "VAB Shares")
+gdp.tab.demand.share(gdp.share, "GDP Shares by Demand Variables")
+```
+
+## GDP GROWTH
+
+### T/T-1 (With Seasonal Adjustment)
+
+
+
+```{r, fig.width=8, fig.height=6.5}
+# gdp.ggplot.subsectors(gdp.ret1, "T/T-1 with Seasonal Adjustment")
+```
+
+```{r, fig.width=8, fig.height=5}
+# gdp.ggplot.prod.growth(gdp.ret1, ndates=8, type="T/T-1 with Seasonal Adjustment")
+```
+
+
+```{r, fig.width=8, fig.height=5}
+# gdp.ggplot.demand.growth(gdp.ret1, type = "T/T-1 with Seasonal Adjustment", ndates=8)
+```
+
+
+#### T/T-4
+
+```{r, fig.width=8, fig.height=6.5}
+# gdp.ggplot.subsectors(gdp.ret4, "T/T-4")
+```
+
+```{r, fig.width=8, fig.height=5.5}
+# gdp.ggplot.prod.growth(gdp.ret4, type = "T/T-4", ndate=8)
+```
+
+
+```{r, fig.width=8, fig.height=5.5}
+# gdp.ggplot.demand.growth(gdp.ret4, type="T/T-4", ndate=8)
+```
+
+#### AC4Q T/T-4
+
+```{r, fig.width=8, fig.height=6.5}
+# gdp.ggplot.subsectors(gdp.retsum4, "T/T-4 over sums")
+```
+
+```{r, fig.width=8, fig.height=5.5}
+# gdp.ggplot.prod.growth(gdp.retsum4, "T/T-4 over sums", ndate=8)
+```
+
+
+```{r, fig.width=8, fig.height=5.5}
+# gdp.ggplot.demand.growth(gdp.retsum4, "T/T-4 over sums", ndate=8)
+```
+
+
+## GDP GROWTH TABLES
+
+### T/T-1 (With Seasonal Adjustment)
+
+```{r}
+# paged_table(gdp.table(gdp.ret1, type="ret1", digits=1 ), list(rows.print=12) )
+```
+
+### T/T-4
+
+```{r}
+# paged_table(gdp.table(gdp.ret4, type="ret4", digits=1), list(rows.print=12) )
+```
+
+### AC4Q T/T-4
+
+```{r}
+# paged_table(gdp.table(gdp.retsum4, type="ret4", digits=1), list(rows.print=12) )
+```
+
+## GDP LEVELS
+
+### NOMINAL
+
+
+### REAL
+
+
+## GDP LEVELS TABLES
+
+### NOMINAL (Millions of Current BRL)
+
+```{r}
+# paged_table( gdp.table(gdp.nominal, type="level" , period="qtr", digits=0), list(rows.print=12) )
+```
+
+### REAL (Milliions of 1995 Chained BRL)
+
+```{r}
+# paged_table( gdp.table(gdp.real, type="ret4" , period="qtr", digits=0), list(rows.print=12) )
+```
+
+### INDEX (Chained Index)
+
+```{r}
+# paged_table( gdp.table(gdp.index, type="ret4" , period="qtr", digits=2), list(rows.print=12) )
+```
+
+## NEXT RELEASES FROM IBGE
+
+|Reference Date | Publishing Date |
+|:------------- |:--------------- |
+| 2020:Q3       | 2020-12-03      |
+
+
+## Useful Links
+- [SIDRA-CNT](https://sidra.ibge.gov.br/home/cnt/brasil)
+- [SCNT](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html?=&t=o-que-e)
+- [SCNT-releases](https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=72121)
+- [2020:Q3 IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_3tri.pdf)
+- [2020:Q2 IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_2tri.pdf)
+
+# THANK YOU FOR READING!
