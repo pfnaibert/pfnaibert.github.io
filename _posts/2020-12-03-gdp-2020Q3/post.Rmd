@@ -67,6 +67,8 @@ gdp.retyear <- readRDS("../../data/gdp-retyear.rds")
 # only gdp
 gdp.rets <- cbind(gdp.ret4[, c(1,2,3)], "ret4"=gdp.ret4$GDP, "ret1"=gdp.ret1$GDP, "retsum4"=gdp.retsum4$GDP, "retyear"=gdp.retyear$GDP)
 
+gdp.index <- cbind(gdp.index.NSA[, c(1,2,3)], "NSA"=gdp.index.NSA$GDP, "SA"=gdp.index.SA$GDP)
+
 # shares
 # sum gdp.nom over 4 quarters and coerce to data.frame
 gdp.nominal.ac4  <- data.frame( apply( gdp.nominal[,-c(1,2,3)], 2, sum4 ) )
@@ -76,8 +78,6 @@ gdp.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$
 vab.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$VAB )
 ```
 
-
-
 ## Bird's Eye View
 
 ```{r, fig.width=8, fig.height=6}
@@ -85,27 +85,40 @@ vab.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$
 # gdp.ggplot.growth(gdp.rets, 2007)
 ```
 
-
-```{r}
-gdp.rets <- cbind("Year so far"=gdp.retyear$GDP, "T/T-4 over sums"=gdp.retsum4$GDP, "T/T-4"=gdp.ret4$GDP, "T/T-1 with Seas. Adj"=gdp.ret1$GDP)
-rownames(gdp.rets) <- date2qtr(gdp.ret4$date)
-kbl( t(tail(gdp.rets, 5)), caption="GDP Growths of the Last 5 Quarters" ) %>%
-	kable_classic("hover", full_width = T, font_size=12) %>%
-	column_spec(6, bold = T) %>%
-	footnote(general = "IBGE", general_title = "Data Source: ", footnote_as_chunk = T)
+```{r, fig.width=8, fig.height=5}
+gdp.fig.index(gdp.index, 1996)
 ```
 
 ```{r}
-gdp.tab.1(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
+gdp.fig.rets.1(gdp.retsum4, 1997, qtr=2, subtitle="AC4Q T/T-4")
 ```
 
 ```{r}
-gdp.tab.2(gdp.nominal, "GDP Levels by Activity Sector and Demand Variable (Millions of Current BRL)")
+gdp.fig.rets(gdp.ret4, 2007, 2, subtitle="T/T-4")
+gdp.fig.rets(gdp.ret1, 2007, 2, subtitle="T/T-1")
+gdp.fig.rets(gdp.retsum4, 2007, 2, subtitle="AC4Q T/T-4")
+gdp.fig.rets(gdp.retyear, 2007, 2, subtitle="AC4Q T/T-4")
+```
+
+
+
+```{r}
+gdp.tab.1(gdp.rets, "GDP Growths of the Last 5 Quarters")
 ```
 
 ```{r}
-gdp.tab.vab.share(vab.share, "VAB Shares")
-gdp.tab.demand.share(gdp.share, "GDP Shares by Demand Variables")
+# gdp.tab.2(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
+```
+
+
+```{r}
+# gdp.tab.level(gdp.nominal, "GDP Levels by Activity Sector and Demand Variable (Millions of Current BRL)")
+# gdp.tab.vab.share(vab.share, "VAB Shares")
+# gdp.tab.demand.share(gdp.share, "GDP Shares by Demand Variables")
+```
+
+```{r}
+# gdp.tab.2.full(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
 ```
 
 ## GDP GROWTH
