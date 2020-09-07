@@ -93,6 +93,41 @@ labs(title="GDP Growth (%)",
 }
 
 ####################################################
+gdp.ggplot.demand.growth <- function(data, subtitle, ndates)
+{
+# function to ggplot Growth by SECTORS
+
+# TODO: ERROR CATCHING
+varnames <- c("date", "PIB", "Consumo das \n Famílias", "Consumo do \n Governo", "FBCF", "Exportação de \n Bens e Serviços", "Importação de \n Bens e Serviços")
+vars     <- c("date", "GDP", "C", "G", "FBKF", "X", "M")
+
+newdata      <- tail(data[, vars], ndates); colnames(newdata) <- varnames
+newdata$date <- date2qtr( newdata$date )
+newdata      <- melt( newdata, id="date" )
+
+#plot
+ggplot(newdata, aes( x = variable, y = value, fill=date) ) +
+theme_bw() +
+geom_bar( stat="identity", position=position_dodge2(width = 1) ) +
+geom_text(aes(x=variable, y=value, label=value), position=position_dodge(width = 1), vjust=ifelse(newdata$value>0, "bottom", "top"), hjust=.5) +
+#	geom_text( aes(x=variable, y=value, label=value, vjust=ifelse(value>0, "bottom", "top"), hjust=0.5 ),
+#			  position=position_dodge(width = 1) ) +
+theme(legend.position = "bottom",
+	  legend.title = element_blank(),
+	  legend.text  = element_text(size = 11, face = "bold"),
+	  panel.grid.major.x = element_blank(),
+	  panel.grid.minor.x = element_blank(),
+	  axis.text.x = element_text(color = "black", size = 11),
+  	  plot.title = element_text(face = "bold", hjust = .5),
+  	  plot.subtitle = element_text(hjust = .5),
+  	  plot.caption = element_text(size=11,hjust = 0) ) +
+xlab("") + ylab("") +
+labs(title="GDP Growth by Demand Variables",
+	 subtitle=subtitle,
+	 caption="Data Source: IBGE.")
+}
+
+####################################################
 gdp.ggplot.subsectors <- function(data, type)
 {
 # function to ggplot Growth by SECTORS
@@ -100,7 +135,6 @@ gdp.ggplot.subsectors <- function(data, type)
 # TODO: ERROR CATCHING
 
 vars <- c("AGR", "IND.EXT", "IND.TRANS", "ELEC.ETC", "CONST", "COMM", "TRANS", "INFO.COM", "FIN", "REAL.ESTATE", "SERV.ETC", "ADM", "GDP")
-# varnames <- c("Agropecuária", "Ind. Extrativa", "Ind. de transformação", "Eletricidades e gás, esgoto, ativ. de gestão de resíduos", "Construção", "Comércio", "Transporte, armazenagem e correio", "Informação e Comunicação", "Ativ. financeiras de seguros e serviços realacionados", "Ativ. Imobiliárias", "Outras atividades de serviços", "Adm., defesa, saúde e educação públicas e seguridade social", "PIB")
 varnames <- c("Agropecuária", "Ind. Extrativa", "Ind. de transformação",
 			  "Eletricidades e gás, esgoto, \n ativ. de gestão de resíduos",
 			  "Construção", "Comércio", "Transporte, armazenagem e correio", "Informação e Comunicação",
@@ -139,7 +173,8 @@ gdp.ggplot.prod.growth <- function(data, type, ndates)
 
 # TODO: ERROR CATCHING
 
-vars <- c("date", "GDP", "AGR", "IND", "SER")
+vars     <- c("date", "GDP", "AGR", "IND", "SER")
+varnames <- c("date", "GDP", "AGR", "IND", "SER")
 
 newdata      <- tail(data[, vars], ndates)
 newdata$date <- date2qtr( newdata$date )
@@ -162,34 +197,6 @@ labs(title="GDP Growth by Production Variables",
 	 caption="Data Source: IBGE.")
 }
 
-####################################################
-gdp.ggplot.demand.growth <- function(data, ndates,type)
-{
-# function to ggplot Growth by SECTORS
-
-# TODO: ERROR CATCHING
-vars <- c("date", "GDP", "C", "G", "FBKF", "X", "M")
-
-newdata      <- tail(data[, vars], ndates)
-newdata$date <- date2qtr( newdata$date )
-newdata      <- melt( newdata, id="date" )
-
-#plot
-ggplot(newdata, aes( x = date, y = value, group=variable, color=variable) ) +
-geom_line( size=1 ) +
-geom_hline(yintercept=0 ) +
-theme(legend.position = "top",
-	  legend.title = element_blank(),
-	  legend.text  = element_text(size = 11, face = "bold"),
-	  axis.text.x = element_text(color = "black", size = 11),
-  	  plot.title = element_text(face = "bold", hjust = .5),
-  	  plot.subtitle = element_text(hjust = .5),
-  	  plot.caption = element_text(size=11,hjust = 0) ) +
-xlab("") + ylab("") +
-labs(title="GDP Growth by Demand Variables",
-	 subtitle=type,
-	 caption="Data Source: IBGE.")
-}
 #######################################################
 
 #######################################################
@@ -321,7 +328,7 @@ newdata$I <- newdata$FBKF + newdata$DE
 newdata   <- t( newdata[,c(5,6,11,9,10,4)] ); rownames(newdata) <- varnames
 
 mytab <- kable( newdata , caption=caption, digits=1, format.args=list(decimal.mark=",", big.mark=".") ) %>%
-	kable_classic("hover", full_width = T, font_size=12) %>%
+	kable_classic(c("hover", "striped"), full_width = T, font_size=12) %>%
 	footnote(general = "IBGE",
 			 general_title = "Data Source: ",
 			 footnote_as_chunk = T)
