@@ -68,6 +68,7 @@ gdp.retyear <- readRDS("../../data/gdp-retyear.rds")
 gdp.rets <- cbind(gdp.ret4[, c(1,2,3)], "ret4"=gdp.ret4$GDP, "ret1"=gdp.ret1$GDP, "retsum4"=gdp.retsum4$GDP, "retyear"=gdp.retyear$GDP)
 
 gdp.index <- cbind(gdp.index.NSA[, c(1,2,3)], "NSA"=gdp.index.NSA$GDP, "SA"=gdp.index.SA$GDP)
+gdp.index$diff <- gdp.index$NSA - gdp.index$SA
 
 # shares
 # sum gdp.nom over 4 quarters and coerce to data.frame
@@ -78,20 +79,7 @@ gdp.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$
 vab.share <- cbind( gdp.nominal[,c(1,2,3)], 100*gdp.nominal.ac4/gdp.nominal.ac4$VAB )
 ```
 
-## Bird's Eye View
-
-```{r, fig.width=8, fig.height=6}
-# https://drsimonj.svbtle.com/label-line-ends-in-time-series-with-ggplot2
-# gdp.ggplot.growth(gdp.rets, 2007)
-```
-
-```{r, fig.width=8, fig.height=5}
-gdp.fig.index(gdp.index, 1996)
-```
-
-```{r}
-gdp.fig.rets.1(gdp.retsum4, 1997, qtr=2, subtitle="AC4Q T/T-4")
-```
+# Bird's Eye View
 
 ```{r}
 gdp.fig.rets(gdp.ret4, 2007, 2, subtitle="T/T-4")
@@ -100,124 +88,82 @@ gdp.fig.rets(gdp.retsum4, 2007, 2, subtitle="AC4Q T/T-4")
 gdp.fig.rets(gdp.retyear, 2007, 2, subtitle="AC4Q T/T-4")
 ```
 
-
-
 ```{r}
 gdp.tab.1(gdp.rets, "GDP Growths of the Last 5 Quarters")
 ```
 
-```{r}
-# gdp.tab.2(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
+## T/T-1 with Seasonal Adjustment
+
+```{r, fig.width=8, fig.height=6.5}
+gdp.ggplot.subsectors(gdp.ret1, "T/T-1 with Seasonal Adjustment")
 ```
+
+```{r, fig.width=8, fig.height=5}
+gdp.ggplot.demand.growth(gdp.ret1, subtitle = "T/T-1 with Seasonal Adjustment", 4)
+```
+
+```{r, fig.width=8, fig.height=5}
+gdp.fig.index(gdp.index, 1996)
+```
+
+#### Trend Series
+#### Seasonal Component Series
+
+```{r}
+gdp.tab.2(gdp.ret1, "GDP T/T-1 with Seasonal Adjustment")
+```
+
+## T/T-4
+
+```{r, fig.width=8, fig.height=6.5}
+gdp.ggplot.subsectors(gdp.ret4, "T/T-4")
+```
+
+```{r, fig.width=8, fig.height=5}
+gdp.ggplot.demand.growth(gdp.ret4, subtitle = "T/T-4", 4)
+```
+
+```{r}
+gdp.tab.2(gdp.ret4, "GDP T/T-4")
+```
+
+## T/T-4 AC4Q
+
+```{r, fig.width=8, fig.height=6.5}
+gdp.ggplot.subsectors(gdp.retsum4, "T/T-4 AC4Q")
+```
+
+```{r}
+gdp.fig.rets.1(gdp.retsum4, 1997, qtr=2, subtitle="T/T-4 AC4Q")
+```
+
+```{r, fig.width=8, fig.height=5}
+gdp.ggplot.demand.growth(gdp.retsum4, subtitle = "T/T-4 AC4Q", 2)
+```
+
+```{r}
+gdp.tab.2(gdp.retsum4, "GDP T/T-4 AC4Q")
+```
+
+## Current Values
 
 
 ```{r}
-# gdp.tab.level(gdp.nominal, "GDP Levels by Activity Sector and Demand Variable (Millions of Current BRL)")
-# gdp.tab.vab.share(vab.share, "VAB Shares")
-# gdp.tab.demand.share(gdp.share, "GDP Shares by Demand Variables")
+gdp.tab.level(gdp.nominal, "GDP Levels by Activity Sector and Demand Variable (Millions of Current BRL)")
 ```
+
+```{r}
+gdp.tab.vab.share(vab.share, "VAB Shares")
+```
+
+```{r}
+gdp.tab.demand.share(gdp.share, "GDP Shares by Demand Variables")
+```
+
+## Appendix
 
 ```{r}
 # gdp.tab.2.full(gdp.ret4, "GDP T/T-4 Growths of the Last 5 Quarters")
-```
-
-## GDP GROWTH
-
-### T/T-1 (With Seasonal Adjustment)
-
-
-
-```{r, fig.width=8, fig.height=6.5}
-# gdp.ggplot.subsectors(gdp.ret1, "T/T-1 with Seasonal Adjustment")
-```
-
-```{r, fig.width=8, fig.height=5}
-# gdp.ggplot.prod.growth(gdp.ret1, ndates=8, type="T/T-1 with Seasonal Adjustment")
-```
-
-
-```{r, fig.width=8, fig.height=5}
-# gdp.ggplot.demand.growth(gdp.ret1, type = "T/T-1 with Seasonal Adjustment", ndates=8)
-```
-
-
-#### T/T-4
-
-```{r, fig.width=8, fig.height=6.5}
-# gdp.ggplot.subsectors(gdp.ret4, "T/T-4")
-```
-
-```{r, fig.width=8, fig.height=5.5}
-# gdp.ggplot.prod.growth(gdp.ret4, type = "T/T-4", ndate=8)
-```
-
-
-```{r, fig.width=8, fig.height=5.5}
-# gdp.ggplot.demand.growth(gdp.ret4, type="T/T-4", ndate=8)
-```
-
-#### AC4Q T/T-4
-
-```{r, fig.width=8, fig.height=6.5}
-# gdp.ggplot.subsectors(gdp.retsum4, "T/T-4 over sums")
-```
-
-```{r, fig.width=8, fig.height=5.5}
-# gdp.ggplot.prod.growth(gdp.retsum4, "T/T-4 over sums", ndate=8)
-```
-
-
-```{r, fig.width=8, fig.height=5.5}
-# gdp.ggplot.demand.growth(gdp.retsum4, "T/T-4 over sums", ndate=8)
-```
-
-
-## GDP GROWTH TABLES
-
-### T/T-1 (With Seasonal Adjustment)
-
-```{r}
-# paged_table(gdp.table(gdp.ret1, type="ret1", digits=1 ), list(rows.print=12) )
-```
-
-### T/T-4
-
-```{r}
-# paged_table(gdp.table(gdp.ret4, type="ret4", digits=1), list(rows.print=12) )
-```
-
-### AC4Q T/T-4
-
-```{r}
-# paged_table(gdp.table(gdp.retsum4, type="ret4", digits=1), list(rows.print=12) )
-```
-
-## GDP LEVELS
-
-### NOMINAL
-
-
-### REAL
-
-
-## GDP LEVELS TABLES
-
-### NOMINAL (Millions of Current BRL)
-
-```{r}
-# paged_table( gdp.table(gdp.nominal, type="level" , period="qtr", digits=0), list(rows.print=12) )
-```
-
-### REAL (Milliions of 1995 Chained BRL)
-
-```{r}
-# paged_table( gdp.table(gdp.real, type="ret4" , period="qtr", digits=0), list(rows.print=12) )
-```
-
-### INDEX (Chained Index)
-
-```{r}
-# paged_table( gdp.table(gdp.index, type="ret4" , period="qtr", digits=2), list(rows.print=12) )
 ```
 
 ## NEXT RELEASES FROM IBGE
