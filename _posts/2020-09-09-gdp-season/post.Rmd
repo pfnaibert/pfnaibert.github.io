@@ -1,0 +1,344 @@
+---
+title: "Brazilian Seasonally Adjusted GDP"
+description: "In this post, I will replicate the IBGE Seasonally Adjusted GDP from the GDP Chained Quarterly Index with the seasonal package"
+categories:
+  - R
+  - ggplot2
+  - PIB
+  - GDP
+  - seasonal
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+draft: false
+date: 2020-09-09
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, error = TRUE, warning = TRUE)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+```{r, include=F}
+plot.trend <- function(data)
+{
+newdata <- melt(data[, -c(2,3)], id="date")
+idx2    <- (data$qtr==2 | data$qtr==4)
+tmp     <- data$date[idx2]
+
+ggplot(newdata, aes( x = date, y = value, color=variable) ) +
+theme_bw() +
+geom_line(size=1 ) +
+scale_color_manual(values=c("blue")) +
+scale_x_continuous(labels=date2qtr(tmp), breaks=tmp) +
+scale_y_continuous(limits = c(90, NA), breaks=seq(90, 180, by=10) ) +
+theme(legend.position="none",
+	  legend.title=element_blank(),
+	  axis.text.x = element_text(color = "black", size = 9, angle=90, vjust=.5),
+	  # panel.grid.major.x = element_blank(),
+	  panel.grid.minor.x = element_blank(),
+  	  plot.title = element_text(face = "bold", hjust = .5),
+  	  plot.subtitle = element_text(hjust = .5),
+  	  plot.caption = element_text(size=11, hjust = 0) ) +
+xlab("") + ylab("") +
+labs(title="GDP Chained Quarterly Index",
+ 	 subtitle="Trend Component Series",
+	 caption="Data Source: IBGE.")
+}
+```
+
+```{r, include=F}
+plot.cycle <- function(data)
+{
+newdata <- melt(data[, -c(2,3)], id="date")
+idx2    <- (data$qtr==2 | data$qtr==4)
+tmp     <- data$date[idx2]
+
+ggplot(newdata, aes( x = date, y = value, color=variable) ) +
+theme_bw() +
+geom_line(size=1 ) +
+scale_color_manual(values=c("blue")) +
+scale_x_continuous(labels=date2qtr(tmp), breaks=tmp) +
+scale_y_continuous(limits = c(95, 105), breaks=seq(95, 105, by=5) ) +
+theme(legend.position="none",
+	  legend.title=element_blank(),
+	  axis.text.x = element_text(color = "black", size = 9, angle=90, vjust=.5),
+	  # panel.grid.major.x = element_blank(),
+	  panel.grid.minor.x = element_blank(),
+  	  plot.title = element_text(face = "bold", hjust = .5),
+  	  plot.subtitle = element_text(hjust = .5),
+  	  plot.caption = element_text(size=11, hjust = 0) ) +
+xlab("") + ylab("") +
+labs(title="GDP Chained Quarterly Index",
+ 	 subtitle="Seasonal Component Series",
+	 caption="Data Source: IBGE.")
+}
+```
+
+```{r, include=F}
+myplot <- function(data, year=1996)
+{
+newdata <- melt(data[, -c(2,3)], id="date")
+idx2    <- (data$year >= year & (data$qtr==2 | data$qtr==4) )
+tmp     <- data$date[idx2]
+
+ggplot(newdata, aes( x = date, y = value, color=variable) ) +
+theme_bw() +
+geom_line(size=1 ) +
+geom_hline(yintercept=tail(data$NSA,1), linetype="dashed") +
+scale_color_manual(values=c("blue", "red"), labels=c("PIB Observado", "PIB Ajustado")) +
+scale_x_continuous(labels=date2qtr(tmp), breaks=tmp) +
+scale_y_continuous(limits = c(70, NA), breaks=seq(70, 180, by=10) ) +
+theme(legend.position = "bottom",
+	  legend.title=element_blank(),
+	  axis.text.x = element_text(color = "black", size = 9, angle=90, vjust=.5),
+	  # panel.grid.major.x = element_blank(),
+	  panel.grid.minor.x = element_blank(),
+  	  plot.title = element_text(face = "bold", hjust = .5),
+  	  plot.caption = element_text(size=11, hjust = 0) ) +
+xlab("") + ylab("") +
+labs(title="GDP Chained Quarterly Index, 1995=100",
+	 caption="Data Source: IBGE.")
+}
+```
+
+#### Last Updated `r Sys.Date()`
+
+On the IBGE publication of the Brazilian GDP data, they release, among others, 3 series:
+
+1. GDP Chained Quarterly Index: Table 1620
+2. GDP Chained Quarterly Index with Seasonal Adjustment: Table 1621
+3. GDP Growth T/T-1 with Seasonal Adjustment: Table 5932
+
+On this post, I will try to match the IBGE model of Seasonally Adjusted using the X13-ARIMA software.
+A note of caution is in order here, I am not actually trying to model the series, what we are trying to do is to match the IBGE model.
+
+To replicate the IBGE model, we use the GDP Chained Quarterly Index (with NO seasonal adjustment) and use the X13-ARIMA software through the [`seasonal`](https://cran.r-project.org/web/packages/seasonal/index.html) package.
+
+### Installation
+
+The `seasonal` package depends on the [`x13binary`](https://cran.r-project.org/web/packages/x13binary/index.html) package.
+It should automatically download and compile the `x13` program.
+But, alas, it didn't work on my machine, so I manually downloaded the program from the [census bureau website](https://www.census.gov/srd/www/x13as/) and indicated to `R` where the program was located.
+
+Let's load the `seasonal` package and use the `checkX13()` function to check if it is working:
+
+```{r, error=T, warning=T, message=T}
+library(seasonal)
+
+checkX13()
+```
+
+OK. It works.
+
+## Let's get to Work
+
+First, let's load up our functions and other libraries.
+
+```{r, error=T, warning=T, message=T}
+# source functions
+source("../../R/funs-gdp.R")
+
+# load libraries
+library(reshape2)
+library(ggplot2)
+```
+
+Now, we load the data and make some transformations.
+
+```{r}
+# LOAD DATA
+gdp.index.NSA <-  readRDS("../../data/gdp-index-NSA.rds")
+gdp.index.SA  <-  readRDS("../../data/gdp-index-SA.rds")
+
+gdp.nsa <- df2ts( gdp.index.NSA )[, "GDP"]
+gdp.sa1 <- df2ts( gdp.index.SA )[, "GDP"]
+
+gdp.index <- cbind(gdp.index.NSA[, c(1,2,3)], "NSA"=gdp.index.NSA$GDP, "SA"=gdp.index.SA$GDP)
+```
+
+Now that the data is loaded, let's make a plot.
+
+
+```{r, fig.width=8, fig.height=5, echo = F}
+myplot(gdp.index)
+```
+
+## X13 Arima
+
+### IBGE Model
+On the [IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_2tri.pdf) we can find the model used by IBGE on the Table on Page 24.
+There it says:
+
+|Variável |  sazonalidade | decomposição   | modelo arima   | efeitos de intervenção            |
+|:------- |:------------- |:-------------- |:---------------|:--------------------------------- |
+|PIB      |  Sim          | multiplicativo | (2 1 2)(0 1 1) | TD, Easter[1], LS2008.4, AO2020.2 |
+
+So let's try to replicate it using the `seasonal` package.
+The X13-ARIMA should do everything automatically.
+
+## Trying (and Failing) to replicate
+
+### Automatic Model
+
+First, we try a vanilla call, just `seas(gdp.nsa)`, let's see what it outputs:
+
+```{r}
+# Vanilla Model
+m0 <- seas(gdp.nsa)
+summary(m0)
+```
+
+Also, we can check the call used by the function:
+
+```{r}
+static(m0)
+```
+
+OK, so it is a SARIMA model $(0, 1, 0)(0, 1, 1)$ with level shift on 2008:Q4 and an outlier on 2020:Q2.
+Also, there is a weekday effect.
+Comparing with the IBGE model, it is NOT the same.
+The IBGE model has SARIMA of order $(2, 1, 2)(0, 1, 1)$ and easter effect.
+About the Trading Days (TD), the IBGE release is a little mysterious, what kind of TD did they use?
+There is not a unique specification for that effect.
+
+Now, let's check the difference between IBGE's seasonal ajustment and ours.
+
+```{r}
+mean( abs( gdp.sa1 - final(m0) ) )
+all.equal(gdp.sa1, final(m0))
+```
+
+So it is *really not* the model we want.
+
+### Manual SARIMA (2 1 2)(0 1 1) Model
+
+Let's try some more specifications:
+
+```{r}
+m1 <- seas(
+x = gdp.nsa,
+transform.function = "log",
+arima.model = "(2 1 2)(0 1 1)",
+)
+summary(m1)
+mean( abs( gdp.sa1 - final(m1) ) )
+all.equal(gdp.sa1, final(m1))
+```
+
+OK, there's something wrong.
+Checking the [IBGE CNT website](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html?=&t=downloads) under `Ajuste_Sazonal` there is a pdf that explains how the function call is made by the IBGE researcher.
+We can use the `view(m1)` function to get direct access to the `X13` program by means of a `shiny` app.
+On the `X13` program we have to use the options listed below (the IBGE pdf has a typo, it says *tipes* when it should be *types*):
+
+```
+transform{
+  function = auto
+}
+
+regression{
+  aictest = (td easter)
+}
+
+pickmdl{
+  method = best
+  identify = all
+}
+
+outlier{
+  types = all
+}
+
+forecast{
+  maxlead = 6
+  maxback = 0
+}
+
+x11{
+  savelog = q
+}
+```
+
+Sending the output to the console, we get the `static()` call, which can be summarised as:
+
+
+```{r}
+m1 <- seas(x = gdp.nsa,
+	 automdl = NULL,
+	 pickmdl.method = "best",
+	 pickmdl.identify = "all",
+	 outlier.types = "all",
+	 forecast.maxlead = 6,
+	 forecast.maxback = 0,
+	 x11.savelog = "q")
+```
+
+
+## The IBGE specification
+
+```{r}
+summary(m1)
+mean(abs( gdp.sa1 - final(m1) ))
+all.equal(gdp.sa1, final(m1))
+static(m1)
+```
+
+Now, not only the function returned the specification described on the [IBGE release](https://biblioteca.ibge.gov.br/visualizacao/periodicos/2121/cnt_2020_2tri.pdf), but also the differences are after the 4th decimal place (which suggests rounding errors only).
+
+### Seasonally Adjusted Series Plot
+
+Let's plot the Seasonally Adjusted Index and the differences of the IBGE original series from Table 1621 and our X13 adjustment:
+
+```{r}
+plot(final(m1), col = "blue", lwd=2)
+lines(gdp.sa1, col="red", lwd=2)
+
+plot(final(m1)-gdp.sa1)
+abline(h=0)
+```
+
+Yeah, it is pretty close.
+
+## T/T-1 Growth
+
+Also, let's check if the T/T-1 returns match:
+
+```{r}
+gdp.ret1.full <-  readRDS("../../data/gdp-ret1.rds")
+gdp.ret <- df2ts( gdp.ret1.full )[, "GDP"]
+
+myret1 <- ts(round(ret1(gdp.sa1),1), start=c(1996,1), freq=4)
+myret2 <- ts(round(ret1(final(m1)),1), start=c(1996,1), freq=4)
+all.equal(gdp.ret, myret1)
+all.equal(gdp.ret, myret2)
+```
+
+It does! We did it!
+
+## More Plots
+
+Finally, let's replicate the Figures I.4 and I.5 of the IBGE release with ggplot:
+
+```{r, fig.width=8, fig.height=5, echo = F}
+tmp <- cbind(gdp.index.NSA[, c(1,2,3)], "trend"=trend(m1))
+plot.trend(tmp)
+```
+
+```{r, fig.width=8, fig.height=5, echo = F}
+tmp <- cbind(gdp.index.NSA[, c(1,2,3)], "cycle"=100*series(m1, "d10"))
+plot.cycle(tmp)
+```
+
+And it looks a lot like they are the same plots.
+
+## Final Thoughts
+
+So, thanks to the IBGE documentation we could replicate the Seasonally Adjusted series.
+I think I only wished it was a little easier to find it; also in the release, there could be calls made to the X13 program.
+But well, at least they did publish the calls, it was just a bit out of the way for us to find it.
+
+# THANK YOU FOR READING!
