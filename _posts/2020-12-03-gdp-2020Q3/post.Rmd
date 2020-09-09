@@ -40,8 +40,6 @@ source("../../R/funs-gdp-floats.R")
 
 # load libraries
 library(kableExtra)
-library(directlabels)
-
 library(reshape2)
 library(ggplot2)
 ```
