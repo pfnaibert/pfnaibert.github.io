@@ -1,5 +1,29 @@
 [
   {
+    "path": "posts/2020-09-09-gdp-season/",
+    "title": "Brazilian Seasonally Adjusted GDP",
+    "description": "In this post, I will replicate the IBGE Seasonally Adjusted GDP from the GDP Chained Quarterly Index with the seasonal package",
+    "author": [
+      {
+        "name": "Paulo Ferreira Naibert",
+        "url": "https://github.com/pfnaibert/"
+      }
+    ],
+    "date": "2020-09-09",
+    "categories": [
+      "R",
+      "ggplot2",
+      "PIB",
+      "GDP",
+      "seasonal"
+    ],
+    "preview": "posts/2020-09-09-gdp-season/post_files/figure-html5/unnamed-chunk-7-1.png",
+    "last_modified": "2020-09-09T18:57:05-03:00",
+    "input_file": {},
+    "preview_width": 1536,
+    "preview_height": 960
+  },
+  {
     "path": "posts/2020-09-01-gdp-2020Q2/",
     "title": "Brazilian GDP 2020:Q2",
     "description": "Data from the 2020:Q2 Brazilian GDP",
@@ -51,7 +75,7 @@
     ],
     "preview": "posts/2020-08-27-gdp-shares/post_files/figure-html5/unnamed-chunk-6-1.png",
     "last_modified": "2020-09-03T19:24:16-03:00",
-    "input_file": "post.utf8.md",
+    "input_file": {},
     "preview_width": 1536,
     "preview_height": 768
   },
@@ -79,7 +103,7 @@
     ],
     "preview": "posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-7-1.png",
     "last_modified": "2020-09-03T19:23:49-03:00",
-    "input_file": "post.utf8.md",
+    "input_file": {},
     "preview_width": 1536,
     "preview_height": 768
   },

@@ -7,7 +7,21 @@
     <description>PFN's personal page. R, LaTeX, programming, economics.
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>ter, 01 set 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>qua, 09 set 2020 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Brazilian Seasonally Adjusted GDP</title>
+      <dc:creator>Paulo Ferreira Naibert</dc:creator>
+      <link>https://pfnaibert.github.io/posts/2020-09-09-gdp-season</link>
+      <description>In this post, I will replicate the IBGE Seasonally Adjusted GDP from the GDP Chained Quarterly Index with the seasonal package</description>
+      <category>R</category>
+      <category>ggplot2</category>
+      <category>PIB</category>
+      <category>GDP</category>
+      <category>seasonal</category>
+      <guid>https://pfnaibert.github.io/posts/2020-09-09-gdp-season</guid>
+      <pubDate>qua, 09 set 2020 00:00:00 +0000</pubDate>
+      <media:content url="https://pfnaibert.github.io/posts/2020-09-09-gdp-season/post_files/figure-html5/unnamed-chunk-7-1.png" medium="image" type="image/png" width="1536" height="960"/>
+    </item>
     <item>
       <title>Brazilian GDP 2020:Q2</title>
       <dc:creator>Paulo Ferreira Naibert</dc:creator>
