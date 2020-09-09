@@ -82,6 +82,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## SIDRA IBGE
 - [SIDRA](https://sidra.ibge.gov.br/)
 - [SIDRA CNT](https://sidra.ibge.gov.br/home/cnt)
+- [CNT DOWNLOADS DOCS](https://www.ibge.gov.br/estatisticas/economicas/contas-nacionais/9300-contas-nacionais-trimestrais.html?=&t=downloads)
 - [SIDRA IPCA](https://sidra.ibge.gov.br/home/ipca)
 
 ## CNT
