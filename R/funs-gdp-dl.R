@@ -78,7 +78,7 @@ tmp1 <- c("1846", "1620", "1621", "6612", "6613", "5932-ret4", "5932-ret1", "593
 tmp2 <- c("nominal", "index-NSA", "index-SA", "real-NSA", "real-SA", "ret4", "ret1", "retsum4", "retyear")
 
 table.names  <- paste0( "CNT-SIDRA-", tmp1, ".csv" )
-series.names <-paste0("gdp-", tmp2, ".rds")
+series.names <- paste0("gdp-", tmp2, ".rds")
 
 for(i in seq_along(series.names))
 {

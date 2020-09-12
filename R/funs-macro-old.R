@@ -1,25 +1,4 @@
 ################################################
-# Download ipca long series
-download.ipca <- function()
-{
-
-# urls
-url1 <- "https://sidra.ibge.gov.br/geratabela?format=us.csv&name=tabela1737.csv&terr=N&rank=-&query=t/1737/n1/all/v/2266/p/all/d/v2266%2013/l/v%2Bt,,p"
-
-# Download Data CSV
-download.file(url1, "../data/IPCA-SIDRA-1737.csv")
-
-# Load Data into R
-ipca  <- load.trim("../data/IPCA-SIDRA-1737.csv", 4, 11)
-ipca1 <- date.month.SIDRA(ipca)
-
-# SAVE in RDS
-saveRDS(ipca1,  "../data/ipca.rds" )
-
-return(1)
-}
-
-################################################
 # Download industry long series
 download.pimpfbr <- function()
 {
@@ -190,37 +169,6 @@ T <- NROW(data); dates <- names(data)
 Y <- as.numeric(substring(dates, 1,4))
 M <- as.numeric(substring(dates, 6,7))
 newdata <- ts(data, start = c(Y[1], Q[1]), end = c(Y[T], Q[T]), frequency = 12)
-return(newdata)
-}
-
-####################################################
-date.month.SIDRA <- function(data)
-{
-# IPCA DATES (%B %Y) to %Y:%m
-# format(Sys.Date(), "%B/%Y")
-# format(Sys.Date(), "%Y:%m")
-
-# numeric values
-data2 <- as.numeric(as.character(data[,-1]))
-K     <- NROW(data)
-
-# dates
-dates <- data[,1]
-m1 <- c("janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro")
-m2 <- c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
-
-for(i in 1:12)
-{
-dates <- gsub(m1[i], m2[i], dates )
-}
-
-M <- substring(dates, 1,2); M1 <- as.numeric(M)
-Y <- substring(dates, 4,7); Y1 <- as.numeric(Y)
-names(data2) <- paste0(Y, ":", M)
-
-# newdata
-newdata <- ts(data2, start=c(Y1[1], M1[1]), end=c(Y1[K], M1[K]), frequency=12 )
-
 return(newdata)
 }
 
