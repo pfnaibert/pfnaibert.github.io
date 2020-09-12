@@ -1,0 +1,58 @@
+---
+title: "Brazilian IPCA data"
+description: "Brazilian IPCA data"
+categories:
+  - R
+  - ggplot2
+  - scraping
+  - webscraping
+  - reproducible-report
+  - reproducible-research
+  - Inflation
+  - Inflação
+  - IPCA
+author:
+  - name: "Paulo Ferreira Naibert"
+    url: https://github.com/pfnaibert/
+repository_url: https://github.com/pfnaibert/pfnaibert.github.io
+draft: true
+# date: 2020-09-18
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, error=T)
+knitr::opts_chunk$set(fig.width=8, fig.height=4)
+```
+
+## Libraries and Functions
+
+```{r}
+source("../../R/funs-ipca-floats.R")
+library(ggplot2)
+library(reshape2)
+ipca <- readRDS("../../data/ipca.rds")
+```
+
+## hashssks
+
+```{r}
+rbind(head(ipca), tail(ipca))
+```
+
+```{r}
+plot.ipca.index(ipca, 2010, "08", "IPCA INDEX", NULL, "IBGE.")
+plot.ipca.ac12(ipca, 2010, "08", "IPCA", "Ac. 12 Months", "IBGE.")
+
+plot.ipca.ret(ipca, "ret1",    2010, "08", "IPCA RET1", NULL, "IBGE.")
+plot.ipca.ret(ipca, "retac3",  2010, "08", "IPCA RETAC3", NULL, "IBGE.")
+plot.ipca.ret(ipca, "retac6",  2010, "08", "IPCA RETAC6", NULL, "IBGE.")
+plot.ipca.ret(ipca, "retacyr", 2010, "08", "IPCA RETYR", NULL, "IBGE.")
+
+```
+
+# Thank you for reading!
+
+#### Last Updated `r Sys.Date()`
