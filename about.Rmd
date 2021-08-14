@@ -25,6 +25,17 @@ More Information
 - [LinkedIn](https://www.linkedin.com/in/paulo-naibert)
 - [Printable CV](https://www.github.com/pfnaibert/CV/raw/master/CV-EN.pdf).
 - [CV para impressão](https://www.github.com/pfnaibert/CV/raw/master/CV-PT.pdf).
+- [Lattes CV](http://lattes.cnpq.br/1511789633871437)
+
+Publications
+================
+- [A note on the estimation of minimum tracking error portfolios](https://doi.org/10.12660/bre.v40n12020.79437)
+- [Selection of optimal portfolios under norm constraints in the allocation vectors](https://doi.org/10.12660/rbfin.v13n3.2015.52081)
+
+My Thesis
+================
+- [Essays in Portfolio Optimization](https://github.com/pfnaibert/THESIS)
+
 
 Contact Me
 ==========
