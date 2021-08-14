@@ -7,7 +7,7 @@
     <description>PFN's personal page. R, LaTeX, programming, economics.
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>qua, 09 set 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate>
     <item>
       <title>Brazilian Seasonally Adjusted GDP</title>
       <dc:creator>Paulo Ferreira Naibert</dc:creator>
@@ -19,7 +19,7 @@
       <category>GDP</category>
       <category>seasonal</category>
       <guid>https://pfnaibert.github.io/posts/2020-09-09-gdp-season</guid>
-      <pubDate>qua, 09 set 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-09-09-gdp-season/post_files/figure-html5/unnamed-chunk-7-1.png" medium="image" type="image/png" width="1536" height="960"/>
     </item>
     <item>
@@ -37,7 +37,7 @@
       <category>PIB</category>
       <category>GDP</category>
       <guid>https://pfnaibert.github.io/posts/2020-09-01-gdp-2020Q2</guid>
-      <pubDate>ter, 01 set 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 01 Sep 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-09-01-gdp-2020Q2/post_files/figure-html5/unnamed-chunk-9-1.png" medium="image" type="image/png" width="1536" height="768"/>
     </item>
     <item>
@@ -55,7 +55,7 @@
       <category>PIB</category>
       <category>GDP</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-27-gdp-shares</guid>
-      <pubDate>qui, 27 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-08-27-gdp-shares/post_files/figure-html5/unnamed-chunk-6-1.png" medium="image" type="image/png" width="1536" height="768"/>
     </item>
     <item>
@@ -73,7 +73,7 @@
       <category>PIB</category>
       <category>GDP</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp</guid>
-      <pubDate>seg, 24 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-08-24-scrape-gdp/post_files/figure-html5/unnamed-chunk-7-1.png" medium="image" type="image/png" width="1536" height="768"/>
     </item>
     <item>
@@ -87,7 +87,7 @@
       <category>GDP</category>
       <category>plot</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-21-dygraph</guid>
-      <pubDate>sex, 21 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
     </item>
     <item>
       <title>Times Series Plots with `ggplot2`</title>
@@ -100,7 +100,7 @@
       <category>GDP</category>
       <category>plot</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-20-ggplot</guid>
-      <pubDate>qui, 20 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 20 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-08-20-ggplot/economist_plot.png" medium="image" type="image/png" width="1357" height="960"/>
     </item>
     <item>
@@ -116,7 +116,7 @@
       <category>wrapper</category>
       <category>reproducible-research</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp</guid>
-      <pubDate>ter, 18 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-08-18-wrapper-gdp/post_files/figure-html5/unnamed-chunk-6-1.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
     <item>
@@ -130,7 +130,7 @@
       <category>PIB</category>
       <category>plot</category>
       <guid>https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp</guid>
-      <pubDate>seg, 17 ago 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
       <media:content url="https://pfnaibert.github.io/posts/2020-08-17-plot-base-gdp/gdp.png" medium="image" type="image/png" width="1248" height="768"/>
     </item>
   </channel>

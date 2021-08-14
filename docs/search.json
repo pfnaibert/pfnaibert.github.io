@@ -1,0 +1,28 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "Paulo Ferreira Naibert",
+      "description": "Some additional information about me",
+      "author": [],
+      "contents": "\nAbout\nMy name is Paulo Ferreira Naibert, I have a Phd in Applied Economics from Universidade Federal do Rio Grande do Sul.\nMy research focused mainly in Stock and Bond Markets, and portfolio selection by quantitative methods. I have experience in R software and \\(\\LaTeX\\).\nMy main interests are programming and Economics.\nMore Information\nGitHub\nLinkedIn\nPrintable CV.\nCV para impressão.\nLattes CV\nPublications\nA note on the estimation of minimum tracking error portfolios\nSelection of optimal portfolios under norm constraints in the allocation vectors\nMy Thesis\nEssays in Portfolio Optimization\nContact Me\npaulo.naibert@gmail.com\n\n\n\n",
+      "last_modified": "2021-08-14T12:13:51-03:00"
+    },
+    {
+      "path": "index.html",
+      "title": "Paulo Ferreira Naibert",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2021-08-14T12:08:32-03:00"
+    },
+    {
+      "path": "links.html",
+      "title": "Paulo Ferreira Naibert",
+      "description": "Some Links I find Useful (or fun)",
+      "author": [],
+      "contents": "\nInteresting Links\nnefin\nr-bloggers\nr-econometrics\nReproducible Finance\nstatmethods\nrcpp\nNumerical Recipes\neconwiki\nCVX - Convex Optimization\ntufte handout\nKen French Data Library\nJournals\nR Journal\nPersonal Websites\nGabrielito\nBrian Kernighan\nChiu Yu Ko\nstoffer\nFrancis X. Diebold\nYihui Xie\nMatt Might\nJohn Cochrane\nGrumpy Economist\nEric Zivot\nDennis M. Ritchie\nJesus Fernandez Villaverde\nRob Tibshirani\nRavi Jagannathan\nKen French\nJames D. Hamilton\nBooks\nR for Data Science\ndscl\nggplot2\ncookbook-R\ncookbook-R graphs\nSpecific Links\nR profile\nR profile statmethods\nTikZ examples\nvim-R\nstoffer-Rissues\nstoffer-R-plots\nR-plot shades\nR-plot shaddes\nProject-oriented workflow\nR packages\nitsmr\nastsa\ndygraphs\nBCB\ndados abertos\nestatísticas\nSGS R\nTesourro Transparente\nBEA\nNational\nNIPA Primer\nNIPA Handbook Website\nNIPA Handbook C.1-4 pdf\nSIDRA IBGE\nSIDRA\nSIDRA CNT\nCNT DOWNLOADS DOCS\nSIDRA IPCA\nCNT\nSIDRA CNT\nNatinal Accounts\nSCNT – Quarterly\nSCN – Annual\nCNT Releases\nCNT releases\nCNT 2020:Q1 release\nCNT 2020:Q2 release\nSystem of National Accounts\nUN SNA-2008\nIMF Quarterly National Accounts\nBPM6 pdf\nBPM6 website\n",
+      "last_modified": "2020-09-09T18:57:13-03:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}
